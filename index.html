@@ -711,15 +711,6 @@
       <p class="err-sub">Confira sua conexão e tente de novo. Na primeira abertura o app precisa de internet.</p>
     </div>
     <button class="btn-primary" id="retryBtn">Tentar de novo</button>
-    <details class="err-mais">
-      <summary>Sou eu que cuido da planilha</summary>
-      <div class="errbox">
-        A planilha precisa estar compartilhada para leitura pública.<br><br>
-        1. Abra <b>BD_vocabulario_ingles</b> no Google Sheets.<br>
-        2. <b>Compartilhar</b> → em "Acesso geral", escolha <b>Qualquer pessoa com o link</b> → função <b>Leitor</b>.<br>
-        3. Salve e recarregue.
-      </div>
-    </details>
   </section>
 
   <!-- HOME -->
@@ -764,11 +755,9 @@
 </main>
 
 <script>
-/* ====== FONTE DE DADOS: sua planilha do Google ====== */
-const SHEET_ID = '1FaJ_46Svmf62AttHV1WBbfMa5AvwCDYQn5vxFbU_9xo';
-const SHEET_NAME = 'Página1';
-const CSV_URL = 'https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:csv&sheet='+encodeURIComponent(SHEET_NAME);
-const CACHE_KEY = 'lucas_words_cache_v2';
+/* ====== FONTE DE DADOS: data.json (gerado pelo build a partir da base) ====== */
+const DATA_URL = 'data.json';
+const CACHE_KEY = 'bora_data_cache_v3';
 const AV_WIN="avatar_win.png";
 const AV_FAIL="avatar_fail.png";
 const AV_COVER="avatar.png";
@@ -850,12 +839,36 @@ function rowsToWords(rows){
   }
   return out;
 }
+/* Adaptador: data.json (degraus→licoes→vocab/rules) -> formato plano do motor.
+   Passo 1 da migração: level = degrau, mantendo o motor guiado intacto.
+   A estrutura de lição/checkpoint fica preservada no data.json para o passo 2. */
+function flattenData(data){
+  const ruleById={};
+  for(const deg of (data.degraus||[]))
+    for(const lic of (deg.licoes||[]))
+      for(const r of (lic.rules||[])) ruleById[r.rule_id]=r;   /* mapa global de cartas */
+  const out=[];
+  for(const deg of (data.degraus||[])){
+    for(const lic of (deg.licoes||[])){
+      for(const v of (lic.vocab||[])){
+        const examples=[], F=v.frases||{};
+        if(F.afe&&F.afe.en)   examples.push({label:'Afirmativa', en:F.afe.en,  pt:F.afe.pt||''});
+        if(F.neg&&F.neg.en)   examples.push({label:'Negativa',   en:F.neg.en,  pt:F.neg.pt||''});
+        if(F.perg&&F.perg.en) examples.push({label:'Pergunta',   en:F.perg.en, pt:F.perg.pt||''});
+        const rule = v.rule_ref ? ruleById[v.rule_ref] : null;
+        out.push({ level:String(deg.degrau), en:v.en, pt:v.pt, pron:v.pron||'',
+                   examples, explain: rule?(rule.balao||''):'' });
+      }
+    }
+  }
+  return out;
+}
 async function loadWords(){
   try{
-    const res = await fetch(CSV_URL+'&_t='+Date.now(), {cache:'no-store'});
+    const res = await fetch(DATA_URL+'?_t='+Date.now(), {cache:'no-store'});
     if(!res.ok) throw new Error('http '+res.status);
-    const txt = await res.text();
-    const w = rowsToWords(parseCSV(txt));
+    const data = await res.json();
+    const w = flattenData(data);
     if(!w.length) throw new Error('vazio');
     try{ localStorage.setItem(CACHE_KEY, JSON.stringify(w)); }catch(e){}
     return {words:w, source:'online'};

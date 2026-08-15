@@ -1,0 +1,1125 @@
+{
+  "version": "1.0.0",
+  "degraus": [
+    {
+      "degrau": 1,
+      "nome": "Nomear + Ser",
+      "licoes": [
+        {
+          "licao": "1.1",
+          "titulo": "Pessoas e família",
+          "vocab": [
+            {
+              "id": "VOC_0001",
+              "en": "brother",
+              "pt": "irmão",
+              "tema": "familia",
+              "frases": {
+                "afe": {
+                  "en": "This is my brother.",
+                  "pt": "Este é meu irmão."
+                },
+                "neg": {
+                  "en": "He is not my brother.",
+                  "pt": "Ele não é meu irmão."
+                },
+                "perg": {
+                  "en": "Is he your brother?",
+                  "pt": "Ele é seu irmão?"
+                }
+              },
+              "pron": "brâdâr",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0002",
+              "en": "sister",
+              "pt": "irmã",
+              "tema": "familia",
+              "frases": {
+                "afe": {
+                  "en": "My sister is very smart.",
+                  "pt": "Minha irmã é muito inteligente."
+                },
+                "neg": {
+                  "en": "My sister is not at home.",
+                  "pt": "Minha irmã não está em casa."
+                },
+                "perg": {
+                  "en": "Is she your sister?",
+                  "pt": "Ela é sua irmã?"
+                }
+              },
+              "pron": "sistâr",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0003",
+              "en": "mother",
+              "pt": "mãe",
+              "tema": "familia",
+              "frases": {
+                "afe": {
+                  "en": "My mother is a teacher.",
+                  "pt": "Minha mãe é professora."
+                },
+                "neg": {
+                  "en": "She is not my mother.",
+                  "pt": "Ela não é minha mãe."
+                },
+                "perg": {
+                  "en": "Is your mother at work?",
+                  "pt": "Sua mãe está no trabalho?"
+                }
+              },
+              "pron": "mâdâr",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0004",
+              "en": "father",
+              "pt": "pai",
+              "tema": "familia",
+              "frases": {
+                "afe": {
+                  "en": "My father is very tall.",
+                  "pt": "Meu pai é muito alto."
+                },
+                "neg": {
+                  "en": "My father is not old.",
+                  "pt": "Meu pai não é velho."
+                },
+                "perg": {
+                  "en": "Is he your father?",
+                  "pt": "Ele é seu pai?"
+                }
+              },
+              "pron": "fádâr",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0005",
+              "en": "son",
+              "pt": "filho",
+              "tema": "familia",
+              "frases": {
+                "afe": {
+                  "en": "He is my son.",
+                  "pt": "Ele é meu filho."
+                },
+                "neg": {
+                  "en": "This is not my son.",
+                  "pt": "Este não é meu filho."
+                },
+                "perg": {
+                  "en": "Is he your son?",
+                  "pt": "Ele é seu filho?"
+                }
+              },
+              "pron": "sân",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0006",
+              "en": "daughter",
+              "pt": "filha",
+              "tema": "familia",
+              "frases": {
+                "afe": {
+                  "en": "She is my daughter.",
+                  "pt": "Ela é minha filha."
+                },
+                "neg": {
+                  "en": "She is not my daughter.",
+                  "pt": "Ela não é minha filha."
+                },
+                "perg": {
+                  "en": "Is your daughter happy?",
+                  "pt": "Sua filha está feliz?"
+                }
+              },
+              "pron": "dótâr",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0007",
+              "en": "grandfather",
+              "pt": "avô",
+              "tema": "familia",
+              "frases": {
+                "afe": {
+                  "en": "My grandfather is very old.",
+                  "pt": "Meu avô é muito velho."
+                },
+                "neg": {
+                  "en": "He is not my grandfather.",
+                  "pt": "Ele não é meu avô."
+                },
+                "perg": {
+                  "en": "Is he your grandfather?",
+                  "pt": "Ele é seu avô?"
+                }
+              },
+              "pron": "grãnfádâr",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0008",
+              "en": "grandmother",
+              "pt": "avó",
+              "tema": "familia",
+              "frases": {
+                "afe": {
+                  "en": "My grandmother is at home.",
+                  "pt": "Minha avó está em casa."
+                },
+                "neg": {
+                  "en": "My grandmother is not here.",
+                  "pt": "Minha avó não está aqui."
+                },
+                "perg": {
+                  "en": "Is she your grandmother?",
+                  "pt": "Ela é sua avó?"
+                }
+              },
+              "pron": "grãnmâdâr",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0009",
+              "en": "uncle",
+              "pt": "tio",
+              "tema": "familia",
+              "frases": {
+                "afe": {
+                  "en": "He is my uncle.",
+                  "pt": "Ele é meu tio."
+                },
+                "neg": {
+                  "en": "He is not my uncle.",
+                  "pt": "Ele não é meu tio."
+                },
+                "perg": {
+                  "en": "Is he your uncle?",
+                  "pt": "Ele é seu tio?"
+                }
+              },
+              "pron": "ânkôl",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0010",
+              "en": "aunt",
+              "pt": "tia",
+              "tema": "familia",
+              "frases": {
+                "afe": {
+                  "en": "My aunt is a doctor.",
+                  "pt": "Minha tia é médica."
+                },
+                "neg": {
+                  "en": "She is not my aunt.",
+                  "pt": "Ela não é minha tia."
+                },
+                "perg": {
+                  "en": "Is your aunt here?",
+                  "pt": "Sua tia está aqui?"
+                }
+              },
+              "pron": "ént",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0011",
+              "en": "cousin",
+              "pt": "primo / prima",
+              "tema": "familia",
+              "frases": {
+                "afe": {
+                  "en": "He is my cousin.",
+                  "pt": "Ele é meu primo."
+                },
+                "neg": {
+                  "en": "She is not my cousin.",
+                  "pt": "Ela não é minha prima."
+                },
+                "perg": {
+                  "en": "Are they your cousins?",
+                  "pt": "Eles são seus primos?"
+                }
+              },
+              "pron": "kâzân",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0012",
+              "en": "friend",
+              "pt": "amigo / amiga",
+              "tema": "familia",
+              "frases": {
+                "afe": {
+                  "en": "She is my friend.",
+                  "pt": "Ela é minha amiga."
+                },
+                "neg": {
+                  "en": "He is not my friend.",
+                  "pt": "Ele não é meu amigo."
+                },
+                "perg": {
+                  "en": "Are you my friend?",
+                  "pt": "Você é meu amigo?"
+                }
+              },
+              "pron": "frend",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            }
+          ],
+          "rules": []
+        },
+        {
+          "licao": "1.2",
+          "titulo": "O verbo To Be",
+          "vocab": [
+            {
+              "id": "VOC_0013",
+              "en": "student",
+              "pt": "estudante",
+              "tema": "pessoas",
+              "frases": {
+                "afe": {
+                  "en": "I am a student.",
+                  "pt": "Eu sou estudante."
+                },
+                "neg": {
+                  "en": "He is not a student.",
+                  "pt": "Ele não é estudante."
+                },
+                "perg": {
+                  "en": "Are you a student?",
+                  "pt": "Você é estudante?"
+                }
+              },
+              "pron": "stúdent",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0014",
+              "en": "teacher",
+              "pt": "professor / professora",
+              "tema": "pessoas",
+              "frases": {
+                "afe": {
+                  "en": "She is my English teacher.",
+                  "pt": "Ela é minha professora de inglês."
+                },
+                "neg": {
+                  "en": "He is not a teacher.",
+                  "pt": "Ele não é professor."
+                },
+                "perg": {
+                  "en": "Are you a teacher?",
+                  "pt": "Você é professor?"
+                }
+              },
+              "pron": "títcher",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0015",
+              "en": "doctor",
+              "pt": "médico / médica",
+              "tema": "pessoas",
+              "frases": {
+                "afe": {
+                  "en": "My father is a doctor.",
+                  "pt": "Meu pai é médico."
+                },
+                "neg": {
+                  "en": "She is not a doctor.",
+                  "pt": "Ela não é médica."
+                },
+                "perg": {
+                  "en": "Is he a doctor?",
+                  "pt": "Ele é médico?"
+                }
+              },
+              "pron": "dáktâr",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0016",
+              "en": "engineer",
+              "pt": "engenheiro / engenheira",
+              "tema": "pessoas",
+              "frases": {
+                "afe": {
+                  "en": "I am an engineer.",
+                  "pt": "Eu sou engenheiro."
+                },
+                "neg": {
+                  "en": "He is not an engineer.",
+                  "pt": "Ele não é engenheiro."
+                },
+                "perg": {
+                  "en": "Are you an engineer?",
+                  "pt": "Você é engenheiro?"
+                }
+              },
+              "pron": "endjiníâr",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0017",
+              "en": "person",
+              "pt": "pessoa",
+              "tema": "pessoas",
+              "frases": {
+                "afe": {
+                  "en": "She is a good person.",
+                  "pt": "Ela é uma boa pessoa."
+                },
+                "neg": {
+                  "en": "He is not a bad person.",
+                  "pt": "Ele não é uma pessoa má."
+                },
+                "perg": {
+                  "en": "Is she a nice person?",
+                  "pt": "Ela é uma pessoa legal?"
+                }
+              },
+              "pron": "pârsân",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0018",
+              "en": "man",
+              "pt": "homem",
+              "tema": "pessoas",
+              "frases": {
+                "afe": {
+                  "en": "He is a tall man.",
+                  "pt": "Ele é um homem alto."
+                },
+                "neg": {
+                  "en": "He is not a young man.",
+                  "pt": "Ele não é um homem jovem."
+                },
+                "perg": {
+                  "en": "Is he a strong man?",
+                  "pt": "Ele é um homem forte?"
+                }
+              },
+              "pron": "men",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0019",
+              "en": "woman",
+              "pt": "mulher",
+              "tema": "pessoas",
+              "frases": {
+                "afe": {
+                  "en": "She is a smart woman.",
+                  "pt": "Ela é uma mulher inteligente."
+                },
+                "neg": {
+                  "en": "She is not an old woman.",
+                  "pt": "Ela não é uma mulher velha."
+                },
+                "perg": {
+                  "en": "Is she a happy woman?",
+                  "pt": "Ela é uma mulher feliz?"
+                }
+              },
+              "pron": "úmân",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0020",
+              "en": "name",
+              "pt": "nome",
+              "tema": "pessoas",
+              "frases": {
+                "afe": {
+                  "en": "My name is Lucas.",
+                  "pt": "Meu nome é Lucas."
+                },
+                "neg": {
+                  "en": "My name is not John.",
+                  "pt": "Meu nome não é John."
+                },
+                "perg": {
+                  "en": "What is your name?",
+                  "pt": "Qual é o seu nome?"
+                }
+              },
+              "pron": "neim",
+              "tags_gram": [
+                "substantivo"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            }
+          ],
+          "rules": [
+            {
+              "rule_id": "RULE_TOBE_PRESENT",
+              "titulo": "Verbo To Be no Presente",
+              "balao": "O 'to be' tem conjugação própria (am/is/are). Em perguntas e negativas ele nunca usa 'do/does' — inverte direto com o sujeito.",
+              "estrutura": "Afirm.: Sujeito + am/is/are + compl. | Neg.: + not | Perg.: Am/Is/Are + sujeito?",
+              "exemplo": {
+                "en": "Are you at home?",
+                "pt": "Você está em casa?"
+              },
+              "erro_comum": "Usar 'do/does' com o to be (dizer 'Do you are at home?').",
+              "pagina_fonte": "15,16,17",
+              "frase_ancora": "(a preencher na revisão — não verificável no PDF atual)"
+            }
+          ]
+        },
+        {
+          "licao": "1.3",
+          "titulo": "Como me sinto",
+          "vocab": [
+            {
+              "id": "VOC_0021",
+              "en": "tired",
+              "pt": "cansado",
+              "tema": "estado",
+              "frases": {
+                "afe": {
+                  "en": "I am very tired.",
+                  "pt": "Estou muito cansado."
+                },
+                "neg": {
+                  "en": "I am not tired.",
+                  "pt": "Não estou cansado."
+                },
+                "perg": {
+                  "en": "Are you tired?",
+                  "pt": "Você está cansado?"
+                }
+              },
+              "pron": "táiârd",
+              "tags_gram": [
+                "adjetivo_estado"
+              ],
+              "rule_ref": "RULE_ADJ_ORDER"
+            },
+            {
+              "id": "VOC_0022",
+              "en": "hungry",
+              "pt": "com fome",
+              "tema": "estado",
+              "frases": {
+                "afe": {
+                  "en": "I am hungry.",
+                  "pt": "Estou com fome."
+                },
+                "neg": {
+                  "en": "She is not hungry.",
+                  "pt": "Ela não está com fome."
+                },
+                "perg": {
+                  "en": "Are you hungry?",
+                  "pt": "Você está com fome?"
+                }
+              },
+              "pron": "rângri",
+              "tags_gram": [
+                "adjetivo_estado"
+              ],
+              "rule_ref": "RULE_ADJ_ORDER"
+            },
+            {
+              "id": "VOC_0023",
+              "en": "thirsty",
+              "pt": "com sede",
+              "tema": "estado",
+              "frases": {
+                "afe": {
+                  "en": "He is thirsty.",
+                  "pt": "Ele está com sede."
+                },
+                "neg": {
+                  "en": "I am not thirsty.",
+                  "pt": "Não estou com sede."
+                },
+                "perg": {
+                  "en": "Are you thirsty?",
+                  "pt": "Você está com sede?"
+                }
+              },
+              "pron": "thârsti",
+              "tags_gram": [
+                "adjetivo_estado"
+              ],
+              "rule_ref": "RULE_ADJ_ORDER"
+            },
+            {
+              "id": "VOC_0024",
+              "en": "happy",
+              "pt": "feliz",
+              "tema": "estado",
+              "frases": {
+                "afe": {
+                  "en": "She is very happy.",
+                  "pt": "Ela está muito feliz."
+                },
+                "neg": {
+                  "en": "He is not happy.",
+                  "pt": "Ele não está feliz."
+                },
+                "perg": {
+                  "en": "Are you happy?",
+                  "pt": "Você está feliz?"
+                }
+              },
+              "pron": "répi",
+              "tags_gram": [
+                "adjetivo_estado"
+              ],
+              "rule_ref": "RULE_ADJ_ORDER"
+            },
+            {
+              "id": "VOC_0025",
+              "en": "sad",
+              "pt": "triste",
+              "tema": "estado",
+              "frases": {
+                "afe": {
+                  "en": "I am sad today.",
+                  "pt": "Estou triste hoje."
+                },
+                "neg": {
+                  "en": "She is not sad.",
+                  "pt": "Ela não está triste."
+                },
+                "perg": {
+                  "en": "Why are you sad?",
+                  "pt": "Por que você está triste?"
+                }
+              },
+              "pron": "séd",
+              "tags_gram": [
+                "adjetivo_estado"
+              ],
+              "rule_ref": "RULE_ADJ_ORDER"
+            },
+            {
+              "id": "VOC_0026",
+              "en": "busy",
+              "pt": "ocupado",
+              "tema": "estado",
+              "frases": {
+                "afe": {
+                  "en": "I am very busy today.",
+                  "pt": "Estou muito ocupado hoje."
+                },
+                "neg": {
+                  "en": "He is not busy.",
+                  "pt": "Ele não está ocupado."
+                },
+                "perg": {
+                  "en": "Are you busy now?",
+                  "pt": "Você está ocupado agora?"
+                }
+              },
+              "pron": "bízi",
+              "tags_gram": [
+                "adjetivo_estado"
+              ],
+              "rule_ref": "RULE_ADJ_ORDER"
+            },
+            {
+              "id": "VOC_0027",
+              "en": "cold",
+              "pt": "com frio",
+              "tema": "estado",
+              "frases": {
+                "afe": {
+                  "en": "I am cold.",
+                  "pt": "Estou com frio."
+                },
+                "neg": {
+                  "en": "It is not cold today.",
+                  "pt": "Não está frio hoje."
+                },
+                "perg": {
+                  "en": "Are you cold?",
+                  "pt": "Você está com frio?"
+                }
+              },
+              "pron": "kôuld",
+              "tags_gram": [
+                "adjetivo_estado"
+              ],
+              "rule_ref": "RULE_ADJ_ORDER"
+            },
+            {
+              "id": "VOC_0028",
+              "en": "hot",
+              "pt": "com calor",
+              "tema": "estado",
+              "frases": {
+                "afe": {
+                  "en": "It is very hot today.",
+                  "pt": "Está muito quente hoje."
+                },
+                "neg": {
+                  "en": "I am not hot.",
+                  "pt": "Não estou com calor."
+                },
+                "perg": {
+                  "en": "Is it hot outside?",
+                  "pt": "Está quente lá fora?"
+                }
+              },
+              "pron": "rát",
+              "tags_gram": [
+                "adjetivo_estado"
+              ],
+              "rule_ref": "RULE_ADJ_ORDER"
+            },
+            {
+              "id": "VOC_0029",
+              "en": "sick",
+              "pt": "doente",
+              "tema": "estado",
+              "frases": {
+                "afe": {
+                  "en": "She is sick today.",
+                  "pt": "Ela está doente hoje."
+                },
+                "neg": {
+                  "en": "I am not sick.",
+                  "pt": "Não estou doente."
+                },
+                "perg": {
+                  "en": "Are you sick?",
+                  "pt": "Você está doente?"
+                }
+              },
+              "pron": "sik",
+              "tags_gram": [
+                "adjetivo_estado"
+              ],
+              "rule_ref": "RULE_ADJ_ORDER"
+            },
+            {
+              "id": "VOC_0030",
+              "en": "ready",
+              "pt": "pronto",
+              "tema": "estado",
+              "frases": {
+                "afe": {
+                  "en": "I am ready.",
+                  "pt": "Estou pronto."
+                },
+                "neg": {
+                  "en": "He is not ready yet.",
+                  "pt": "Ele ainda não está pronto."
+                },
+                "perg": {
+                  "en": "Are you ready?",
+                  "pt": "Você está pronto?"
+                }
+              },
+              "pron": "rédi",
+              "tags_gram": [
+                "adjetivo_estado"
+              ],
+              "rule_ref": "RULE_ADJ_ORDER"
+            }
+          ],
+          "rules": [
+            {
+              "rule_id": "RULE_ADJ_ORDER",
+              "titulo": "Posição do Adjetivo e Sensações",
+              "balao": "O adjetivo vem antes do substantivo. E sensações físicas usam o to be direto, sem 'with' (com): I am hungry, não 'I am with hunger'.",
+              "estrutura": "Adjetivo + substantivo (a new house). Sensação: Sujeito + to be + adjetivo (I am hungry / I am cold).",
+              "exemplo": {
+                "en": "She is a pretty girl.",
+                "pt": "Ela é uma garota bonita."
+              },
+              "erro_comum": "Traduzir 'com fome/frio' usando 'with' ou 'have' ('I am with hungry').",
+              "pagina_fonte": "19,20",
+              "frase_ancora": "(a preencher na revisão — não verificável no PDF atual)"
+            }
+          ]
+        },
+        {
+          "licao": "1.4",
+          "titulo": "Onde eu estou",
+          "vocab": [
+            {
+              "id": "VOC_0031",
+              "en": "home",
+              "pt": "casa / em casa",
+              "tema": "lugar",
+              "frases": {
+                "afe": {
+                  "en": "I am at home.",
+                  "pt": "Estou em casa."
+                },
+                "neg": {
+                  "en": "She is not at home.",
+                  "pt": "Ela não está em casa."
+                },
+                "perg": {
+                  "en": "Are you at home?",
+                  "pt": "Você está em casa?"
+                }
+              },
+              "pron": "roum",
+              "tags_gram": [
+                "substantivo",
+                "lugar"
+              ],
+              "rule_ref": "RULE_ARTICLES_AAN"
+            },
+            {
+              "id": "VOC_0032",
+              "en": "school",
+              "pt": "escola",
+              "tema": "lugar",
+              "frases": {
+                "afe": {
+                  "en": "The children are at school.",
+                  "pt": "As crianças estão na escola."
+                },
+                "neg": {
+                  "en": "He is not at school today.",
+                  "pt": "Ele não está na escola hoje."
+                },
+                "perg": {
+                  "en": "Are you at school?",
+                  "pt": "Você está na escola?"
+                }
+              },
+              "pron": "skúl",
+              "tags_gram": [
+                "substantivo",
+                "lugar"
+              ],
+              "rule_ref": "RULE_ARTICLES_AAN"
+            },
+            {
+              "id": "VOC_0033",
+              "en": "work",
+              "pt": "trabalho",
+              "tema": "lugar",
+              "frases": {
+                "afe": {
+                  "en": "My father is at work.",
+                  "pt": "Meu pai está no trabalho."
+                },
+                "neg": {
+                  "en": "I am not at work today.",
+                  "pt": "Não estou no trabalho hoje."
+                },
+                "perg": {
+                  "en": "Is she at work?",
+                  "pt": "Ela está no trabalho?"
+                }
+              },
+              "pron": "uârk",
+              "tags_gram": [
+                "substantivo",
+                "lugar"
+              ],
+              "rule_ref": "RULE_ARTICLES_AAN"
+            },
+            {
+              "id": "VOC_0034",
+              "en": "office",
+              "pt": "escritório",
+              "tema": "lugar",
+              "frases": {
+                "afe": {
+                  "en": "This is an office.",
+                  "pt": "Este é um escritório."
+                },
+                "neg": {
+                  "en": "It is not a big office.",
+                  "pt": "Não é um escritório grande."
+                },
+                "perg": {
+                  "en": "Is it your office?",
+                  "pt": "É o seu escritório?"
+                }
+              },
+              "pron": "ófis",
+              "tags_gram": [
+                "substantivo",
+                "lugar"
+              ],
+              "rule_ref": "RULE_ARTICLES_AAN"
+            },
+            {
+              "id": "VOC_0035",
+              "en": "restaurant",
+              "pt": "restaurante",
+              "tema": "lugar",
+              "frases": {
+                "afe": {
+                  "en": "It is a nice restaurant.",
+                  "pt": "É um restaurante legal."
+                },
+                "neg": {
+                  "en": "This is not a good restaurant.",
+                  "pt": "Este não é um bom restaurante."
+                },
+                "perg": {
+                  "en": "Are you at the restaurant?",
+                  "pt": "Você está no restaurante?"
+                }
+              },
+              "pron": "réstârant",
+              "tags_gram": [
+                "substantivo",
+                "lugar"
+              ],
+              "rule_ref": "RULE_ARTICLES_AAN"
+            },
+            {
+              "id": "VOC_0036",
+              "en": "supermarket",
+              "pt": "supermercado",
+              "tema": "lugar",
+              "frases": {
+                "afe": {
+                  "en": "She is at the supermarket.",
+                  "pt": "Ela está no supermercado."
+                },
+                "neg": {
+                  "en": "It is not a big supermarket.",
+                  "pt": "Não é um supermercado grande."
+                },
+                "perg": {
+                  "en": "Is he at the supermarket?",
+                  "pt": "Ele está no supermercado?"
+                }
+              },
+              "pron": "súpârmárket",
+              "tags_gram": [
+                "substantivo",
+                "lugar"
+              ],
+              "rule_ref": "RULE_ARTICLES_AAN"
+            },
+            {
+              "id": "VOC_0037",
+              "en": "airport",
+              "pt": "aeroporto",
+              "tema": "lugar",
+              "frases": {
+                "afe": {
+                  "en": "I am at the airport.",
+                  "pt": "Estou no aeroporto."
+                },
+                "neg": {
+                  "en": "It is not a big airport.",
+                  "pt": "Não é um aeroporto grande."
+                },
+                "perg": {
+                  "en": "Is it an old airport?",
+                  "pt": "É um aeroporto antigo?"
+                }
+              },
+              "pron": "érport",
+              "tags_gram": [
+                "substantivo",
+                "lugar"
+              ],
+              "rule_ref": "RULE_ARTICLES_AAN"
+            },
+            {
+              "id": "VOC_0038",
+              "en": "hospital",
+              "pt": "hospital",
+              "tema": "lugar",
+              "frases": {
+                "afe": {
+                  "en": "She is at the hospital.",
+                  "pt": "Ela está no hospital."
+                },
+                "neg": {
+                  "en": "It is not a new hospital.",
+                  "pt": "Não é um hospital novo."
+                },
+                "perg": {
+                  "en": "Is he at the hospital?",
+                  "pt": "Ele está no hospital?"
+                }
+              },
+              "pron": "róspital",
+              "tags_gram": [
+                "substantivo",
+                "lugar"
+              ],
+              "rule_ref": "RULE_ARTICLES_AAN"
+            },
+            {
+              "id": "VOC_0039",
+              "en": "hotel",
+              "pt": "hotel",
+              "tema": "lugar",
+              "frases": {
+                "afe": {
+                  "en": "It is a nice hotel.",
+                  "pt": "É um hotel legal."
+                },
+                "neg": {
+                  "en": "This is not an expensive hotel.",
+                  "pt": "Este não é um hotel caro."
+                },
+                "perg": {
+                  "en": "Is it a good hotel?",
+                  "pt": "É um hotel bom?"
+                }
+              },
+              "pron": "routél",
+              "tags_gram": [
+                "substantivo",
+                "lugar"
+              ],
+              "rule_ref": "RULE_ARTICLES_AAN"
+            },
+            {
+              "id": "VOC_0040",
+              "en": "beach",
+              "pt": "praia",
+              "tema": "lugar",
+              "frases": {
+                "afe": {
+                  "en": "We are at the beach.",
+                  "pt": "Estamos na praia."
+                },
+                "neg": {
+                  "en": "It is not a big beach.",
+                  "pt": "Não é uma praia grande."
+                },
+                "perg": {
+                  "en": "Are you at the beach?",
+                  "pt": "Você está na praia?"
+                }
+              },
+              "pron": "bítch",
+              "tags_gram": [
+                "substantivo",
+                "lugar"
+              ],
+              "rule_ref": "RULE_ARTICLES_AAN"
+            }
+          ],
+          "rules": [
+            {
+              "rule_id": "RULE_ARTICLES_AAN",
+              "titulo": "Artigos Indefinidos (A / An)",
+              "balao": "Use 'a' antes de som de consoante e 'an' antes de som de vogal. Substantivos incontáveis não aceitam a/an (usa-se 'some').",
+              "estrutura": "A + som consonantal (a boy). An + som vocálico (an engineer). Incontáveis: some + subst. (some juice).",
+              "exemplo": {
+                "en": "I want to be an engineer.",
+                "pt": "Eu quero ser engenheiro."
+              },
+              "erro_comum": "Pôr a/an antes de incontável ('a juice' em vez de 'some juice').",
+              "pagina_fonte": "14,15,19,50",
+              "frase_ancora": "(a preencher na revisão — não verificável no PDF atual)"
+            }
+          ]
+        }
+      ],
+      "checkpoint": {
+        "min_acerto": 0.8,
+        "fonte": "todas as licoes do degrau 1"
+      }
+    }
+  ],
+  "verbs": [
+    {
+      "verb_id": "VRB_SPEAK",
+      "infinitivo": "to speak",
+      "passado": "spoke",
+      "participio": "spoken",
+      "traducao": "falar",
+      "tipo": "irregular",
+      "degrau": 3
+    }
+  ]
+}
