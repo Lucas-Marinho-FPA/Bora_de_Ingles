@@ -614,6 +614,23 @@
       animation-duration:.01ms!important;animation-iteration-count:1!important;
       transition-duration:.01ms!important;scroll-behavior:auto!important}
   }
+  /* ── Motor: exposição e intro de etapa ── */
+  .expo-head{text-align:center;font-weight:600;color:var(--txt-soft,#cfe0f5);margin:var(--sp-8) 0 var(--sp-16)}
+  .expo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--sp-8)}
+  .expo-card{display:flex;flex-direction:column;gap:2px;padding:var(--sp-12);border-radius:var(--r-12,14px);
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);text-align:center;cursor:pointer;
+    color:inherit;font:inherit;transition:background .15s,transform .1s}
+  .expo-card:active{transform:scale(.97);background:rgba(255,255,255,.12)}
+  .expo-en{font-family:'Fredoka',system-ui,sans-serif;font-weight:600;font-size:var(--fs-lead,1.2rem)}
+  .expo-pron{font-size:.8rem;opacity:.6}
+  .expo-pt{font-size:.95rem;color:var(--brand,#ff8a00);font-weight:500}
+  .expo-foot{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-12);margin-top:var(--sp-16)}
+  .expo-timer{font-weight:700;font-size:1.1rem;opacity:.85}
+  .mode-intro{text-align:center;padding:var(--sp-24) var(--sp-16)}
+  .mi-step{font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;opacity:.6}
+  .mi-title{font-family:'Fredoka',system-ui,sans-serif;font-weight:600;font-size:2rem;margin:var(--sp-8) 0 4px}
+  .mi-sub{opacity:.75;margin-bottom:var(--sp-24)}
+  .restudy .rs-hint{font-size:.8rem;opacity:.6;margin-top:4px;font-weight:400}
 </style>
 </head>
 <body>
@@ -787,7 +804,7 @@ function topAnswer(correct, answerText){
   s.innerHTML = (correct?'Certo!':'Errado!') + (answerText?(' <span class="ans">'+esc(answerText)+'</span>'):'');
 }
 
-let WORDS = [], ACTIVE = [];
+let WORDS = [];
 
 /* ---------- CSV ---------- */
 function parseCSV(text){
@@ -932,12 +949,6 @@ function speak(text){
   const u = new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=SPEAK_RATE;
   speechSynthesis.cancel(); speechSynthesis.speak(u);
 }
-function distractors(correct, key, n){
-  const pool = shuffle(ACTIVE.filter(w=>w[key]!==correct[key])).slice(0,n).map(w=>w[key]);
-  return shuffle([...pool, correct[key]]);
-}
-
-
 /* escapa HTML e destaca a palavra estudada dentro da frase */
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function highlight(sentence, word){
@@ -1015,9 +1026,7 @@ async function init(force){
 const LOTE = 10, BLOCO = 3;
 const STAGE_LABEL = { enpt:'Qual a tradução?', pten:'Como se escreve em inglês?', type:'Escrita — digite em inglês' };
 const STAGE_SHORT = { enpt:'EN→PT', pten:'PT→EN', type:'Escrita' };
-const STAGE_ORDER = ['enpt','pten','type'];
-let gStage='enpt', gLevel='', gLoteWords=[], gQueue=[], gCurrent=null, gTotal=0, gDone=0;
-let gLote=0, gBloco=0, gLoteAll=[];
+let gStage='enpt', gLevel='', gLoteWords=[], gCurrent=null;
 
 function keyOf(w){ return (w.en||'').toLowerCase().trim(); }
 function levelsAsc(){
@@ -1120,96 +1129,150 @@ function revisaoDaRodada(){
     '</p><ul class="rev-l">'+itens+'</ul></section>';
 }
 
-function espalhar(itens){
-  /* monta a fila sempre puxando da palavra com mais perguntas restantes,
-     nunca a mesma da pergunta anterior — garante o espaçamento */
-  const porPalavra=new Map();
-  shuffle(itens).forEach(it=>{ const k=keyOf(it.w);
-    if(!porPalavra.has(k)) porPalavra.set(k,[]); porPalavra.get(k).push(it); });
-  const fila=[]; let ultimo=null;
-  while(true){
-    let alvo=null, max=0;
-    porPalavra.forEach((lista,k)=>{ if(lista.length>max && k!==ultimo){ max=lista.length; alvo=k; } });
-    if(!alvo){ /* só sobrou a palavra anterior */
-      porPalavra.forEach((lista,k)=>{ if(lista.length>max){ max=lista.length; alvo=k; } });
-      if(!alvo) break;
-    }
-    fila.push(porPalavra.get(alvo).pop()); ultimo=alvo;
-    if(!porPalavra.get(alvo).length) porPalavra.delete(alvo);
-  }
-  return fila;
-}
+/* ═══════════════ MOTOR DA METODOLOGIA ═══════════════
+   Ciclo de cada lote (10 palavras):
+   1) EXPOSIÇÃO — mostra as 10 (en+pron+áudio+pt) com tempo pra gravar.
+   2) RAMPA POR MODO — reconhecer (EN→PT) → produzir (PT→EN) → escrever.
+      Todas as 10 num modo antes de trocar. Do fácil ao difícil.
+   3) REESTUDO NO ERRO — errou, mostra a palavra e ela volta ao fim da fila.
+   Iscas vêm SÓ do mesmo nível (nunca uma composição como isca de palavra). */
+
+/* Segundos da tela de exposição por degrau. Generoso no começo (memorizar sem
+   pressa), aperta conforme avança (fluência). AJUSTE AQUI se quiser. */
+const EXPO_SEG = {1:20, 2:16, 3:12, 4:9, 5:7, 6:5};
+const MODES = ['enpt','pten','type'];
+const MODE_INTRO = {
+  enpt:{n:1, t:'Reconhecer', d:'Inglês → Português'},
+  pten:{n:2, t:'Produzir',   d:'Português → Inglês'},
+  type:{n:3, t:'Escrever',   d:'Digite em inglês'},
+};
+let gLoteAll=[], gLote=0, mvModeIdx=0, mvQueue=[], mvDone=0, mvTotal=0, mvTimer=null;
 
 async function startGuided(){
-  if(!window.BoraCloud){ toast&&toast('Entre no seu perfil.'); return; }
+  if(!window.BoraCloud){ return; }
   const st=await computeGuidedState();
   if(st.done){ renderGuidedInfo(); return; }
-  gLevel=st.level; gLote=st.loteIdx; gBloco=st.blocoIdx;
-  gLoteWords=st.blocoWords; gLoteAll=st.loteAll;
-  ACTIVE = WORDS.slice();                 /* iscas podem vir de qualquer palavra */
-  const itens=[];
-  st.blocoWords.forEach(w=>{ const k=keyOf(w);
-    ['enpt','pten','type'].forEach(t=>{ if(!st.prog[t].has(k)) itens.push({w:w,t:t}); }); });
-  gQueue = espalhar(itens);
-  gTotal = gQueue.length; gDone=0;
+  gLevel=st.level; gLote=st.loteIdx; gLoteAll=st.loteAll.slice(); gLoteWords=gLoteAll;
+  gErrados=[];
   document.getElementById('home').classList.add('hidden');
   document.getElementById('quiz').classList.remove('hidden');
   document.getElementById('topProgress').classList.remove('hidden');
   { const pb=document.getElementById('profileBar'); if(pb) pb.classList.add('hidden'); }
   { const gr=document.getElementById('greeting'); if(gr) gr.classList.add('hidden'); }
-  renderGuided();
+  mvExpose();
 }
 
-function renderGuided(){
-  if(!gQueue.length){ guidedStageDone(); return; }
-  const it=gQueue[0]; const w=it.w; gStage=it.t; gCurrent=w; window.scrollTo(0,0);
+/* 1) EXPOSIÇÃO */
+function mvExpose(){
+  gStage='expo'; topHide(); window.scrollTo(0,0);
   document.getElementById('qExamples').innerHTML='';
   document.getElementById('qNext').innerHTML='';
-  document.getElementById('qBar').style.width=(gTotal?gDone/gTotal*100:0)+'%';
-  document.getElementById('qCount').textContent=gDone+' / '+gTotal+' dominadas';
+  document.getElementById('qBar').style.width='0%';
+  document.getElementById('qCount').textContent='Grave estas '+gLoteAll.length+' palavras';
+  document.getElementById('qScore').textContent='Estudar';
+  document.getElementById('qStreak').textContent=(gLevel===''?'':'Nv '+gLevel);
+  const cards=gLoteAll.map((w,i)=>'<button class="expo-card" data-i="'+i+'"><div class="expo-en">'+esc(w.en)+' 🔊</div>'+(w.pron?'<div class="expo-pron">'+esc(w.pron)+'</div>':'')+'<div class="expo-pt">'+esc(w.pt)+'</div></button>').join('');
+  const body=document.getElementById('qQuestion');
+  body.innerHTML='<div class="expo-head">👀 Grave as palavras — toque para ouvir</div><div class="expo-grid">'+cards+'</div><div class="expo-foot"><span class="expo-timer" id="expoTimer"></span><button class="btn-primary" id="expoGo">Já decorei ›</button></div>';
+  [...body.querySelectorAll('.expo-card')].forEach(c=>{ c.onclick=()=>speak(gLoteAll[+c.dataset.i].en); });
+  let t=EXPO_SEG[parseInt(gLevel)]||14;
+  const go=()=>{ clearInterval(mvTimer); mvStartMode(0); };
+  const tick=()=>{ const el=document.getElementById('expoTimer'); if(el) el.textContent='⏳ '+t+'s'; if(t<=0){ go(); return; } t--; };
+  tick(); mvTimer=setInterval(tick,1000);
+  document.getElementById('expoGo').onclick=go;
+}
+
+/* 2) INÍCIO DE UM MODO */
+function mvStartMode(i){
+  mvModeIdx=i; gStage=MODES[i];
+  const p=window.BoraCloud.getProgress();
+  mvQueue=shuffle(gLoteAll.filter(w=> !p[gStage].has(keyOf(w))));
+  if(!mvQueue.length){                       /* já dominado neste modo — pula */
+    if(i<MODES.length-1) return mvStartMode(i+1);
+    return guidedStageDone();
+  }
+  mvTotal=mvQueue.length; mvDone=0;
+  const m=MODE_INTRO[gStage]; topHide(); window.scrollTo(0,0);
+  document.getElementById('qExamples').innerHTML='';
+  document.getElementById('qNext').innerHTML='';
+  document.getElementById('qBar').style.width='0%';
+  document.getElementById('qCount').textContent='Etapa '+m.n+' de 3';
   document.getElementById('qScore').textContent=STAGE_SHORT[gStage];
-  document.getElementById('qStreak').textContent=(gLevel===''?'Sem nível':'Nv '+gLevel);
+  document.getElementById('qStreak').textContent=(gLevel===''?'':'Nv '+gLevel);
+  document.getElementById('qQuestion').innerHTML=
+    '<div class="mode-intro"><div class="mi-step">Etapa '+m.n+' de 3</div>'+
+    '<div class="mi-title">'+m.t+'</div><div class="mi-sub">'+m.d+' · '+mvTotal+' palavra'+(mvTotal>1?'s':'')+'</div>'+
+    '<button class="btn-primary" id="miGo">Começar ›</button></div>';
+  document.getElementById('miGo').onclick=mvRender;
+}
+
+/* iscas do MESMO nível (corrige frase-como-isca) */
+function mvDistractors(correct, key, n){
+  let pool=gLoteAll.filter(w=>w[key]!==correct[key]);
+  if(pool.length<n) pool=pool.concat(WORDS.filter(w=>String(w.level)===String(correct.level)&&w[key]!==correct[key]));
+  const uniq=[...new Map(pool.map(w=>[w[key],w])).values()];
+  const chosen=shuffle(uniq).slice(0,n).map(w=>w[key]);
+  return shuffle([...chosen, correct[key]]);
+}
+
+/* PERGUNTA */
+function mvRender(){
+  if(!mvQueue.length){
+    if(mvModeIdx<MODES.length-1) return mvStartMode(mvModeIdx+1);
+    return guidedStageDone();
+  }
+  const w=mvQueue[0]; gCurrent=w; gStage=MODES[mvModeIdx]; window.scrollTo(0,0);
+  document.getElementById('qExamples').innerHTML='';
+  document.getElementById('qNext').innerHTML='';
+  document.getElementById('qBar').style.width=(mvTotal?mvDone/mvTotal*100:0)+'%';
+  document.getElementById('qCount').textContent=mvDone+' / '+mvTotal+' nesta etapa';
+  document.getElementById('qScore').textContent=STAGE_SHORT[gStage];
+  document.getElementById('qStreak').textContent=(gLevel===''?'':'Nv '+gLevel);
   const body=document.getElementById('qQuestion'); body.innerHTML='';
   if(gStage==='enpt' || gStage==='pten'){
     const showKey= gStage==='enpt'?'en':'pt';
     const ansKey = gStage==='enpt'?'pt':'en';
-    topQuestion(STAGE_LABEL[gStage], w.level);
+    topQuestion(STAGE_LABEL[gStage], gLevel);
     body.innerHTML='<div class="prompt"><div class="wordrow"><span class="word">'+esc(w[showKey])+'</span>'+(gStage==='enpt'?'<button class="speak-sm" title="Ouvir">🔊</button>':'')+'</div>'+((gStage==='enpt'&&w.pron)?'<div class="pronq">'+esc(w.pron)+'</div>':'')+'</div><div class="options"></div>';
     if(gStage==='enpt'){ const sb=body.querySelector('.speak-sm'); if(sb) sb.onclick=()=>speak(w.en); }
-    const opts=distractors(w, ansKey, 3);
+    const opts=mvDistractors(w, ansKey, 3);
     const box=body.querySelector('.options'); box.dataset.answer=w[ansKey];
-    opts.forEach(o=>{ const b=document.createElement('button'); b.className='opt'; b.textContent=o; b.onclick=()=>guidedChoose(b, o===w[ansKey], w, box, ansKey); box.appendChild(b); });
+    opts.forEach(o=>{ const b=document.createElement('button'); b.className='opt'; b.textContent=o; b.onclick=()=>mvChoose(b, o===w[ansKey], w, box, ansKey); box.appendChild(b); });
   } else {
     const ansKey='en';
-    topQuestion(STAGE_LABEL.type, w.level);
+    topQuestion(STAGE_LABEL.type, gLevel);
     body.innerHTML='<div class="prompt"><div class="wordrow"><span class="word">'+esc(w.pt)+'</span></div></div><input class="type-in" id="typeIn" placeholder="digite em inglês..." autocomplete="off" autocapitalize="off"><button class="next-btn" id="checkBtn">Conferir</button>';
     const inp=document.getElementById('typeIn'); if(inp) inp.focus();
-    const check=()=>{ const val=inp.value; const exact=val.trim().toLowerCase()===w.en.trim().toLowerCase(); const ok=isCorrect(val, w[ansKey]); inp.disabled=true; const cb=document.getElementById('checkBtn'); if(cb) cb.remove(); guidedResolve(ok,w,ansKey,(ok&&!exact)?w.en:null); };
+    const check=()=>{ const val=inp.value; const exact=val.trim().toLowerCase()===w.en.trim().toLowerCase(); const ok=isCorrect(val, w[ansKey]); inp.disabled=true; const cb=document.getElementById('checkBtn'); if(cb) cb.remove(); mvResolve(ok,w,ansKey,(ok&&!exact)?w.en:null); };
     document.getElementById('checkBtn').onclick=check;
     inp.addEventListener('keydown',e=>{ if(e.key==='Enter') check(); });
   }
 }
 
-function guidedChoose(btn, correct, w, box, ansKey){
+function mvChoose(btn, correct, w, box, ansKey){
   [...box.children].forEach(b=>b.disabled=true);
   if(correct){ btn.classList.add('correct'); }
   else{ btn.classList.add('wrong'); const t=box.dataset.answer; [...box.children].forEach(b=>{ if(b.textContent===t) b.classList.add('correct'); }); }
-  guidedResolve(correct,w,ansKey);
+  mvResolve(correct,w,ansKey);
 }
 
-function guidedResolve(correct, w, ansKey, correction){
+/* RESOLVE + REESTUDO NO ERRO */
+function mvResolve(correct, w, ansKey, correction){
   topAnswer(correct, correct?null:w[ansKey]);
   if(!correct && gErrados.indexOf(w)<0) gErrados.push(w);
   const host=document.getElementById('qExamples'); host.innerHTML='';
   if(correction){ const c=document.createElement('div'); c.className='correction'; c.innerHTML='Quase! A grafia correta é <b>'+esc(correction)+'</b>.'; host.appendChild(c); }
+  if(!correct){ const rc=document.createElement('div'); rc.className='correction restudy';
+    rc.innerHTML='📌 <b>'+esc(w.en)+'</b> = '+esc(w.pt)+(w.pron?' · <i>'+esc(w.pron)+'</i>':'')+'<div class="rs-hint">Ela volta no fim da fila.</div>';
+    host.appendChild(rc); }
   const ex=buildExamples(w); if(ex) host.appendChild(ex);
-  if(correct){ gQueue.shift(); gDone++; window.BoraCloud.markMastered(gStage, keyOf(w), gLevel); }
-  else{ const cur=gQueue.shift(); gQueue.push(cur); }
-  document.getElementById('qBar').style.width=(gTotal?gDone/gTotal*100:0)+'%';
-  document.getElementById('qCount').textContent=gDone+' / '+gTotal+' dominadas';
+  if(correct){ mvQueue.shift(); mvDone++; window.BoraCloud.markMastered(gStage, keyOf(w), gLevel); }
+  else{ const cur=mvQueue.shift(); mvQueue.push(cur); }
+  document.getElementById('qBar').style.width=(mvTotal?mvDone/mvTotal*100:0)+'%';
+  document.getElementById('qCount').textContent=mvDone+' / '+mvTotal+' nesta etapa';
   const nx=document.getElementById('qNext');
   nx.innerHTML='<button class="next-btn" id="gContinue">Continuar ›</button>';
-  document.getElementById('gContinue').onclick=renderGuided;
+  document.getElementById('gContinue').onclick=mvRender;
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
