@@ -900,7 +900,8 @@ function flattenData(data){
       const examples=(c.base_refs||[]).map(w=>({label:'Peça', en:w, pt:ptByEn[(w||'').toLowerCase()]||''}));
       const rule = c.rule_ref ? ruleById[c.rule_ref] : null;
       out.push({ level:String(deg.degrau)+'.5', en:c.en, pt:c.pt, pron:c.pron||'',
-                 examples, explain: rule?(rule.balao||''):'' });
+                 examples, explain: rule?(rule.balao||''):'',
+                 base_refs:(c.base_refs||[]).map(x=>String(x).toLowerCase().trim()) });
     }
   }
   return out;
@@ -1055,12 +1056,27 @@ function levelsAsc(){
 function wordsOfLevel(lv){ return WORDS.filter(w=>w.level===lv); }
 function domAll(p,k){ return p.enpt.has(k)&&p.pten.has(k)&&p.type.has(k); }
 
+/* MOTOR DE DOMÍNIO
+   Uma composição só está "liberada" quando TODAS as suas palavras-base já
+   foram dominadas nos 3 modos por ESTE usuário. Palavra solta é sempre elegível. */
+function mvCompEligible(w, p){
+  if(!w.base_refs || !w.base_refs.length) return true;
+  return w.base_refs.every(b => domAll(p, String(b).toLowerCase().trim()));
+}
+/* palavras (soltas) que o usuário domina de fato — base para injetar inglês já sabido */
+function mvMasteredWords(){
+  if(!window.BoraCloud) return [];
+  const p=window.BoraCloud.getProgress();
+  return WORDS.filter(w => (!w.base_refs||!w.base_refs.length) && domAll(p, keyOf(w)));
+}
+
 async function computeGuidedState(){
   if(!window.BoraCloud) return {done:true};
   const p = window.BoraCloud.getProgress();
   for(const lv of levelsAsc()){
     if(p.completed.has(String(lv))) continue;
-    const lw = wordsOfLevel(lv); if(!lw.length) continue;
+    const lw = wordsOfLevel(lv).filter(w => mvCompEligible(w, p)); /* trava composição sem base dominada */
+    if(!lw.length) continue;
     const lotes=[]; for(let i=0;i<lw.length;i+=LOTE) lotes.push(lw.slice(i,i+LOTE));
     let li = lotes.findIndex(ch => ch.some(w=> !domAll(p,keyOf(w))));
     if(li<0){ await window.BoraCloud.completeLevel(lv); continue; }
@@ -1484,6 +1500,18 @@ function avatarSVG(id){ const a=ANIMAL_BY_ID[id]; const nm=(a?id:'harpia'); cons
 
 /* ---------- estado ---------- */
 let db=null, auth=null, ready=false, session=null;
+/* versão do modelo de progresso. Ao subir, zera o progresso/XP antigos
+   (era do CSV) uma vez por usuário — o "reset permitido" da metodologia nova. */
+const PROG_VER = 2;
+async function migrateProgressIfNeeded(){
+  if(!session || session.prog_ver === PROG_VER) return;
+  const zerado = { xp:0, xp_hoje:0, m_enpt:[], m_pten:[], m_type:[],
+                   completed_levels:[], xp_por_nivel:{}, bonus_dia_pagos:[],
+                   meia_lote:'', prog_ver:PROG_VER };
+  Object.assign(session, zerado);
+  try{ await updateDoc(doc(db,'usuarios',session.apelido_lower), zerado); }
+  catch(e){ console.error('reset de progresso', e); }
+}
 let draft={nick:'',avatar:null};
 let pinMode='set', pinBuf='', pinFirst='', loginNick='';
 const $=id=>document.getElementById(id);
@@ -1551,7 +1579,7 @@ async function createProfile(pin){
   try{
     const ref=doc(db,'usuarios',key);
     if((await getDoc(ref)).exists()){ toastMsg('Esse apelido já existe. Escolha outro.'); obShow('ob-nick'); $('ob-keypad').classList.remove('ob-busy'); return; }
-    const data={ nick:draft.nick, apelido_lower:key, avatar:draft.avatar, pin_hash:await hashPin(pin,key), owner_uid:auth.currentUser.uid, xp:0, streak:1, last_active:todayStr(), ap_learned:[], m_enpt:[], m_pten:[], m_type:[], completed_levels:[], criado_em:serverTimestamp() };
+    const data={ nick:draft.nick, apelido_lower:key, avatar:draft.avatar, pin_hash:await hashPin(pin,key), owner_uid:auth.currentUser.uid, xp:0, streak:1, last_active:todayStr(), ap_learned:[], m_enpt:[], m_pten:[], m_type:[], completed_levels:[], prog_ver:PROG_VER, criado_em:serverTimestamp() };
     await setDoc(ref,data); session=data; localStorage.setItem('bora_session',key); enterApp();
   }catch(e){ console.error(e); toastMsg('Sem conexão. Tente de novo.'); $('ob-keypad').classList.remove('ob-busy'); }
 }
@@ -1607,9 +1635,10 @@ function renderProfileBar(){
 }
 /* linha secundária: progresso no nível, sem enquadramento de déficit */
 window.setProfileSub=function(txt){ const e=document.getElementById('pb-sub'); if(e) e.textContent=txt||''; };
-function enterApp(){
+async function enterApp(){
   document.body.classList.remove('welcome-mode');
   $('onboard').classList.add('hidden'); $('rankScreen').classList.add('hidden');
+  await migrateProgressIfNeeded();          /* limpa progresso da era antiga, uma vez */
   renderProfileBar(); $('profileBar').classList.remove('hidden');
   if(typeof window.startApp==='function') window.startApp(session.apelido_lower);
 }
