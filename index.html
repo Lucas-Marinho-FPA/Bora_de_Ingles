@@ -642,6 +642,7 @@
     background:rgba(10,30,60,.95);border:1px solid rgba(255,255,255,.16);font-style:italic;opacity:.9}
   .pron-bubble.show{display:inline-block;animation:revealIn .2s ease both}
   .play-ic{width:.85em;height:.85em;vertical-align:-1px;margin-left:.15em;fill:currentColor;display:inline-block}
+  .cp-facts{font-size:.9rem;opacity:.7;border-top:1px solid rgba(255,255,255,.1);padding-top:var(--sp-12);margin-top:var(--sp-8)}
   /* ritual de preparação — tela limpa, SEM palavras atrás */
   .prep-screen{display:flex;align-items:center;justify-content:center;min-height:56vh;padding:var(--sp-16)}
   .prep-card{max-width:460px;text-align:center;
@@ -1502,6 +1503,18 @@ function mvResolve(correct, w, ansKey, info){
    (mais PT→EN e escrita), sem dica/reestudo. 80% passa; senão, revanche só
    do que faltou, com questões novas, até fechar. */
 const CP_N = 15, CP_PASS = 0.8;
+/* Banco da entrada do chefe (fundido das duas IAs, curado: empodera, deixa claro
+   que é escrita/produção, sem estética de guerra). {nome} = apelido. */
+const CP_INTRO = [
+  {k:'Hora de provar 🏆',      t:'{nome}, você chegou até aqui por mérito.', b:'Agora é colocar o inglês no papel, de cabeça, e mostrar o que domina. Você treinou pra isso.'},
+  {k:'Não é chute, é saber ✍️', t:'{nome}, não é sobre adivinhar. É sobre saber.', b:'Você construiu isso no treino. Respira, pensa e escreve o inglês que já é seu.'},
+  {k:'Você está pronto 🎯',    t:'{nome}, o degrau foi todo construído por você.', b:'Aqui você digita cada resposta em inglês — o vocabulário já está na ponta dos dedos. Confia no seu preparo.'},
+  {k:'Seu momento chegou ⚡',  t:'{nome}, você treinou pra este momento.', b:'A prova pede que você produza o inglês, não só reconheça uma resposta. Mostra o que sabe.'},
+  {k:'Direto da memória 🧠',   t:'Sua base é sólida, {nome}.', b:'Hora de escrever direto da memória. Quem treinou com consistência não precisa de atalho.'},
+  {k:'De frente pro chefe',    t:'{nome}, você fez o trabalho. Agora, mostra.', b:'Chegou a hora de produzir o inglês sem depender de opções. Escreve de cabeça e deixa o treino falar por você.'},
+  {k:'Agora é com você',       t:'{nome}, tudo que você praticou te trouxe aqui.', b:'Você vai produzir o inglês por conta própria — e é assim que o domínio aparece de verdade.'},
+];
+function cpIntroMsg(){ return CP_INTRO[Math.floor(Math.random()*CP_INTRO.length)]; }
 const PLAY_SVG = ' <svg class="play-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5v14l12-7z"/></svg>';
 let cpDeg=0, cpQueue=[], cpTotal=0, cpRight=0, cpWrong=[], cpFase='';
 
@@ -1529,6 +1542,8 @@ function cpQuizChrome(){
 function startCheckpoint(deg){
   cpDeg=deg; cpQuizChrome(); topHide(); window.scrollTo(0,0);
   const nome=(window.__nick||'').trim()||'Vamos lá';
+  const sub = s => (s||'').replace(/\{nome\}/g, esc(nome));
+  const c = cpIntroMsg();
   document.getElementById('qExamples').innerHTML=''; document.getElementById('qNext').innerHTML='';
   document.getElementById('qBar').style.width='0%';
   document.getElementById('qCount').textContent='Chefe do Degrau '+deg;
@@ -1536,9 +1551,10 @@ function startCheckpoint(deg){
   document.getElementById('qStreak').textContent='';
   document.getElementById('qQuestion').innerHTML=
     '<div class="prep-screen"><div class="prep-card">'+
-    '<div class="prep-kicker">Chefe do Degrau '+deg+' 🏆</div>'+
-    '<div class="prep-title">'+esc(nome)+', hora do teste.</div>'+
-    '<div class="prep-body"><b>'+CP_N+' questões</b> pra provar que você domina o degrau. Sem dica, sem tempo — vale a pontaria. Você precisa de <b>80%</b> pra passar.</div>'+
+    '<div class="prep-kicker">'+sub(c.k)+'</div>'+
+    '<div class="prep-title">'+sub(c.t)+'</div>'+
+    '<div class="prep-body">'+sub(c.b)+'</div>'+
+    '<div class="prep-body cp-facts">Chefe do Degrau '+deg+' · <b>'+CP_N+' questões</b>, a maioria escrita. Precisa de <b>80%</b> pra passar — sem dica, sem tempo.</div>'+
     '<div class="prep-body">Errou? A revanche cobra só o que faltou, com questões novas.</div>'+
     '<button class="btn-primary" id="cpGo">Encarar o chefe'+PLAY_SVG+'</button></div></div>';
   document.getElementById('cpGo').onclick=cpBegin;
