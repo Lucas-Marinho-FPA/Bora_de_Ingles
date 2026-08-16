@@ -641,6 +641,7 @@
   .pron-bubble{display:none;margin-top:6px;padding:6px 10px;border-radius:10px;
     background:rgba(10,30,60,.95);border:1px solid rgba(255,255,255,.16);font-style:italic;opacity:.9}
   .pron-bubble.show{display:inline-block;animation:revealIn .2s ease both}
+  .play-ic{width:.85em;height:.85em;vertical-align:-1px;margin-left:.15em;fill:currentColor;display:inline-block}
   /* ritual de preparação — tela limpa, SEM palavras atrás */
   .prep-screen{display:flex;align-items:center;justify-content:center;min-height:56vh;padding:var(--sp-16)}
   .prep-card{max-width:460px;text-align:center;
@@ -1327,7 +1328,8 @@ function mvExpose(){
   const p0 = window.BoraCloud.getProgress();
   const jaComecou = p0.enpt.size>0 || p0.pten.size>0 || p0.type.size>0;  /* não é a 1ª vez */
   const dom = WORDS.filter(w=>domAll(p0, keyOf(w))).length;              /* palavras dominadas */
-  const BTN = 'Bora de Inglês! ›';   /* a marca na boca do usuário a cada rodada */
+  const BTN = 'Bora de Inglês!';   /* a marca na boca do usuário a cada rodada */
+  const PLAY = ' <svg class="play-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5v14l12-7z"/></svg>';
   const sub = s => (s||'').replace(/\{nome\}/g, esc(oi));               /* injeta o apelido */
   const c = mvPrepMsg(dom);          /* mensagem de continuidade pela faixa de progresso */
 
@@ -1335,7 +1337,7 @@ function mvExpose(){
     ? '<div class="prep-kicker">Etapa nova 🧩</div>'+
       '<div class="prep-title">'+esc(oi)+', agora a gente <b>junta</b>.</div>'+
       '<div class="prep-body">Você já domina estas palavras sozinhas. Aqui elas aparecem <b>combinadas</b> — em duplas e frases curtas. É assim que o inglês vira frase de verdade.</div>'+
-      '<div class="prep-body">Leia com calma. Quando entender, aperte '+BTN.replace(' ›','')+'.</div>'
+      '<div class="prep-body">Leia com calma. Quando entender, aperte '+BTN+'.</div>'
     : jaComecou
     ? '<div class="prep-kicker">'+sub(c.k)+'</div>'+
       '<div class="prep-title">'+sub(c.t)+'</div>'+
@@ -1345,10 +1347,10 @@ function mvExpose(){
     : '<div class="prep-kicker">Primeiro desafio 🎯</div>'+
       '<div class="prep-title">'+esc(oi)+', o foco é <b>gravar</b>.</div>'+
       '<div class="prep-body">Antes de responder, o desafio é <b>atenção e memória</b>. Você terá <b>'+secs+' segundos</b> para gravar '+gLoteAll.length+' palavra'+(gLoteAll.length>1?'s':'')+' — toque em cada uma para ouvir.</div>'+
-      '<div class="prep-body">Respira. Quando estiver pronto(a), aperte '+BTN.replace(' ›','')+' — o tempo começa aí.</div>';
+      '<div class="prep-body">Respira. Quando estiver pronto(a), aperte '+BTN+' — o tempo começa aí.</div>';
 
   document.getElementById('qQuestion').innerHTML=
-    '<div class="prep-screen"><div class="prep-card">'+prep+'<button class="btn-primary" id="prepOk">'+BTN+'</button></div></div>';
+    '<div class="prep-screen"><div class="prep-card">'+prep+'<button class="btn-primary" id="prepOk">'+BTN+PLAY+'</button></div></div>';
   document.getElementById('prepOk').onclick=()=> mvReveal(isComp, secs);
 }
 
@@ -1361,7 +1363,7 @@ function mvReveal(isComp, secs){
   body.innerHTML=
     '<div class="expo-head reveal-in">👀 Toque para ouvir</div>'+
     '<div class="expo-grid reveal-in">'+cards+'</div>'+
-    '<div class="expo-foot"><span class="expo-timer" id="expoTimer"></span><button class="btn-primary" id="expoGo">Já decorei ›</button></div>';
+    '<div class="expo-foot"><span class="expo-timer" id="expoTimer"></span><button class="btn-primary" id="expoGo">Já decorei, Bora de Inglês! <svg class="play-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5v14l12-7z"/></svg></button></div>';
   [...body.querySelectorAll('.expo-card')].forEach(c=>{ c.onclick=()=>speak(gLoteAll[+c.dataset.i].en); });
   const go=()=>{ clearInterval(mvTimer); mvStartMode(0); };
   document.getElementById('expoGo').onclick=go;
