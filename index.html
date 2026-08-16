@@ -633,17 +633,19 @@
   .restudy .rs-hint{font-size:.8rem;opacity:.6;margin-top:4px;font-weight:400}
   /* nota de pontuação (acerto que ensina) */
   .punctnote{background:rgba(80,170,255,.12);border-color:rgba(80,170,255,.35)}
-  /* chapa de ritual sobre a exposição */
-  .expo-wrap{position:relative}
-  .prep-overlay{position:absolute;inset:-8px;display:flex;align-items:center;justify-content:center;
-    background:rgba(6,24,52,.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-    border-radius:var(--r-16,18px);z-index:5;padding:var(--sp-16)}
-  .prep-card{max-width:440px;text-align:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);
-    border-radius:var(--r-16,18px);padding:var(--sp-24) var(--sp-16);box-shadow:0 12px 40px rgba(0,0,0,.35)}
-  .prep-kicker{font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;opacity:.7;margin-bottom:var(--sp-8)}
-  .prep-title{font-family:'Fredoka',system-ui,sans-serif;font-weight:600;font-size:1.5rem;margin-bottom:var(--sp-12);line-height:1.25}
-  .prep-body{opacity:.9;margin-bottom:var(--sp-12);line-height:1.5}
-  .prep-card .btn-primary{margin-top:var(--sp-8)}
+  /* ritual de preparação — tela limpa, SEM palavras atrás */
+  .prep-screen{display:flex;align-items:center;justify-content:center;min-height:56vh;padding:var(--sp-16)}
+  .prep-card{max-width:460px;text-align:center;
+    background:linear-gradient(180deg,rgba(18,44,82,.96),rgba(10,30,60,.96));
+    border:1px solid rgba(255,255,255,.12);border-radius:var(--r-16,18px);
+    padding:var(--sp-24);box-shadow:0 18px 50px rgba(0,0,0,.45)}
+  .prep-kicker{font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--brand,#ff8a00);opacity:.9;margin-bottom:var(--sp-12)}
+  .prep-title{font-family:'Fredoka',system-ui,sans-serif;font-weight:600;font-size:1.6rem;margin-bottom:var(--sp-16);line-height:1.25}
+  .prep-body{opacity:.92;margin-bottom:var(--sp-12);line-height:1.55}
+  .prep-card .btn-primary{margin-top:var(--sp-12);width:100%}
+  /* reveal suave das palavras após o OK */
+  @keyframes revealIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .reveal-in{animation:revealIn .28s ease both}
 </style>
 </head>
 <body>
@@ -1185,23 +1187,20 @@ function mvPunctLesson(en){
   return 'atenção à <b>pontuação</b> — ela também conta.';
 }
 
-/* 1) EXPOSIÇÃO */
+/* 1) RITUAL DE PREPARAÇÃO (tela limpa, sem palavras) */
 function mvExpose(){
   gStage='expo'; topHide(); window.scrollTo(0,0);
   document.getElementById('qExamples').innerHTML='';
   document.getElementById('qNext').innerHTML='';
   document.getElementById('qBar').style.width='0%';
-  document.getElementById('qScore').textContent='Estudar';
+  document.getElementById('qScore').textContent='Preparar';
   document.getElementById('qStreak').textContent=(gLevel===''?'':'Nv '+gLevel);
   const isComp = String(gLevel).indexOf('.5')>=0;   /* lição de composição */
-  document.getElementById('qCount').textContent = isComp ? 'Juntando as palavras' : 'Grave estas '+gLoteAll.length+' palavras';
+  document.getElementById('qCount').textContent = isComp ? 'Juntando as palavras' : 'Preparação';
   const secs = EXPO_SEG[parseInt(gLevel)]||14;
   const nome = (window.__nick||'').trim();
   const oi = nome ? nome : 'Vamos lá';
-  const cards=gLoteAll.map((w,i)=>'<button class="expo-card" data-i="'+i+'"><div class="expo-en">'+esc(w.en)+' 🔊</div>'+(w.pron?'<div class="expo-pron">'+esc(w.pron)+'</div>':'')+'<div class="expo-pt">'+esc(w.pt)+'</div></button>').join('');
-  const body=document.getElementById('qQuestion');
 
-  /* mensagem do ritual — diferente pra palavra solta vs composição */
   const prep = isComp
     ? '<div class="prep-kicker">Etapa nova 🧩</div>'+
       '<div class="prep-title">'+esc(oi)+', agora a gente <b>junta</b>.</div>'+
@@ -1209,28 +1208,31 @@ function mvExpose(){
       '<div class="prep-body">Leia com calma. Quando entender, aperte OK.</div>'
     : '<div class="prep-kicker">Primeiro desafio 🎯</div>'+
       '<div class="prep-title">'+esc(oi)+', o foco é <b>gravar</b>.</div>'+
-      '<div class="prep-body">Antes de responder, o desafio é <b>atenção e memória</b>. Você terá <b>'+secs+' segundos</b> para gravar '+gLoteAll.length+' palavra'+(gLoteAll.length>1?'s':'')+' (toque em cada uma para ouvir).</div>'+
+      '<div class="prep-body">Antes de responder, o desafio é <b>atenção e memória</b>. Você terá <b>'+secs+' segundos</b> para gravar '+gLoteAll.length+' palavra'+(gLoteAll.length>1?'s':'')+' — toque em cada uma para ouvir.</div>'+
       '<div class="prep-body">Respira. Quando estiver pronto(a), aperte OK — o tempo começa aí.</div>';
 
-  body.innerHTML=
-    '<div class="expo-wrap">'+
-      '<div class="expo-head">👀 Toque para ouvir</div>'+
-      '<div class="expo-grid">'+cards+'</div>'+
-      '<div class="expo-foot"><span class="expo-timer" id="expoTimer"></span><button class="btn-primary" id="expoGo">Já decorei ›</button></div>'+
-      '<div class="prep-overlay" id="prepOverlay"><div class="prep-card">'+prep+'<button class="btn-primary" id="prepOk">OK, bora ›</button></div></div>'+
-    '</div>';
-  [...body.querySelectorAll('.expo-card')].forEach(c=>{ c.onclick=()=>speak(gLoteAll[+c.dataset.i].en); });
+  document.getElementById('qQuestion').innerHTML=
+    '<div class="prep-screen"><div class="prep-card">'+prep+'<button class="btn-primary" id="prepOk">OK, bora ›</button></div></div>';
+  document.getElementById('prepOk').onclick=()=> mvReveal(isComp, secs);
+}
 
+/* revela as palavras e (só então) começa o tempo */
+function mvReveal(isComp, secs){
+  document.getElementById('qCount').textContent = isComp ? 'Leia as combinações' : 'Grave estas '+gLoteAll.length+' palavras';
+  document.getElementById('qScore').textContent='Estudar';
+  const cards=gLoteAll.map((w,i)=>'<button class="expo-card" data-i="'+i+'"><div class="expo-en">'+esc(w.en)+' 🔊</div>'+(w.pron?'<div class="expo-pron">'+esc(w.pron)+'</div>':'')+'<div class="expo-pt">'+esc(w.pt)+'</div></button>').join('');
+  const body=document.getElementById('qQuestion');
+  body.innerHTML=
+    '<div class="expo-head reveal-in">👀 Toque para ouvir</div>'+
+    '<div class="expo-grid reveal-in">'+cards+'</div>'+
+    '<div class="expo-foot"><span class="expo-timer" id="expoTimer"></span><button class="btn-primary" id="expoGo">Já decorei ›</button></div>';
+  [...body.querySelectorAll('.expo-card')].forEach(c=>{ c.onclick=()=>speak(gLoteAll[+c.dataset.i].en); });
   const go=()=>{ clearInterval(mvTimer); mvStartMode(0); };
-  /* o cronômetro só começa depois do OK (palavra solta). Composição não corre relógio. */
-  document.getElementById('prepOk').onclick=()=>{
-    const ov=document.getElementById('prepOverlay'); if(ov) ov.remove();
-    if(isComp){ const tm=document.getElementById('expoTimer'); if(tm) tm.style.display='none'; return; }
-    let t=secs;
-    const tick=()=>{ const el=document.getElementById('expoTimer'); if(el) el.textContent='⏳ '+t+'s'; if(t<=0){ go(); return; } t--; };
-    tick(); mvTimer=setInterval(tick,1000);
-  };
   document.getElementById('expoGo').onclick=go;
+  if(isComp){ const tm=document.getElementById('expoTimer'); if(tm) tm.style.display='none'; return; }
+  let t=secs;
+  const tick=()=>{ const el=document.getElementById('expoTimer'); if(el) el.textContent='⏳ '+t+'s'; if(t<=0){ go(); return; } t--; };
+  tick(); mvTimer=setInterval(tick,1000);
 }
 
 /* 2) INÍCIO DE UM MODO */
