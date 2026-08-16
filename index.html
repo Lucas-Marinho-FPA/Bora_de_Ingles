@@ -643,6 +643,10 @@
   .pron-bubble.show{display:inline-block;animation:revealIn .2s ease both}
   .play-ic{width:.85em;height:.85em;vertical-align:-1px;margin-left:.15em;fill:currentColor;display:inline-block}
   .cp-facts{font-size:.9rem;opacity:.7;border-top:1px solid rgba(255,255,255,.1);padding-top:var(--sp-12);margin-top:var(--sp-8)}
+  .srs-cta{display:block;width:100%;margin:0 0 var(--sp-16);padding:var(--sp-12) var(--sp-16);
+    background:rgba(80,170,255,.14);border:1px solid rgba(80,170,255,.45);border-radius:var(--r-12,14px);
+    color:#cfe6ff;font:inherit;font-weight:600;cursor:pointer;transition:background .15s,transform .1s}
+  .srs-cta:active{transform:scale(.98);background:rgba(80,170,255,.22)}
   /* ritual de preparação — tela limpa, SEM palavras atrás */
   .prep-screen{display:flex;align-items:center;justify-content:center;min-height:56vh;padding:var(--sp-16)}
   .prep-card{max-width:460px;text-align:center;
@@ -1120,14 +1124,16 @@ async function renderGuidedInfo(){
   if(!window.BoraCloud){ box.innerHTML='<p class="gi-sub">Entre no seu perfil para começar.</p>'; return; }
   const st=await computeGuidedState();
   const start=document.getElementById('startBtn');
+  const _due=srsDue(window.BoraCloud.getProgress()).length;
+  const rev=_due>0 ? '<button class="srs-cta" onclick="startReview()">🔁 Revisar '+_due+' palavra'+(_due>1?'s':'')+' de hoje</button>' : '';
   if(st.done){
     const pend=pendingCheckpoint(window.BoraCloud.getProgress());
     if(pend){
-      box.innerHTML='<p class="gi-title">Chefe do Degrau '+pend+' 🏆</p>'+
+      box.innerHTML=rev+'<p class="gi-title">Chefe do Degrau '+pend+' 🏆</p>'+
         '<p class="gi-sub">Você dominou o degrau! Encare o chefe pra concluir: '+CP_N+' questões, 80% pra passar.</p>';
       start.disabled=false; start.textContent='Encarar o chefe'; return;
     }
-    box.innerHTML='<p class="gi-title">Tudo dominado 🏆</p>'+
+    box.innerHTML=rev+'<p class="gi-title">Tudo dominado 🏆</p>'+
       '<p class="gi-sub">Você concluiu este degrau. Novos degraus estão chegando.</p>';
     start.disabled=true; start.textContent='Tudo dominado'; return;
   }
@@ -1156,6 +1162,7 @@ async function renderGuidedInfo(){
   const xpHoje=cloud.xpHoje||0;
 
   box.innerHTML=
+    rev+
     '<p class="gi-lv">'+nivel+'</p>'+
     '<p class="gi-grp">Grupo '+(st.loteIdx+1)+' de '+st.loteCount+'</p>'+
     '<div class="caps" role="img" aria-label="'+dom+' de '+n+' palavras dominadas neste grupo">'+caps+'</div>'+
@@ -1664,6 +1671,90 @@ function cpPass(score){
   document.getElementById('cpDone').onclick=()=>{ if(typeof goHome==='function') goHome(); };
 }
 
+/* ═══════════════ SRS — REVISÃO ENTRE DIAS ═══════════════
+   A palavra dominada volta noutro dia, no intervalo certo. Acertou → intervalo
+   cresce; errou → volta pro começo. É o que faz o app parar de "ensinar e esquecer". */
+function srsDue(p){ return WORDS.filter(w=>{ const e=p.srs&&p.srs[keyOf(w)]; return e && e.due <= p.hoje; }); }
+function srsMode(){ const r=Math.random(); return r<0.5?'pten': r<0.8?'type':'enpt'; } /* puxa recuperação */
+let srvQueue=[], srvTotal=0, srvRight=0;
+function startReview(){
+  if(!window.BoraCloud) return;
+  const due=srsDue(window.BoraCloud.getProgress());
+  if(!due.length){ return; }
+  srvQueue=shuffle(due).map(w=>({w,mode:srsMode()})); srvTotal=srvQueue.length; srvRight=0;
+  cpQuizChrome(); topHide(); window.scrollTo(0,0);
+  const nome=(window.__nick||'').trim()||'Vamos lá';
+  document.getElementById('qExamples').innerHTML=''; document.getElementById('qNext').innerHTML='';
+  document.getElementById('qBar').style.width='0%';
+  document.getElementById('qCount').textContent='Revisão de hoje';
+  document.getElementById('qScore').textContent='Revisar';
+  document.getElementById('qStreak').textContent='';
+  document.getElementById('qQuestion').innerHTML=
+    '<div class="prep-screen"><div class="prep-card">'+
+    '<div class="prep-kicker">Revisão de hoje 🔁</div>'+
+    '<div class="prep-title">'+esc(nome)+', hora de firmar o que é seu.</div>'+
+    '<div class="prep-body"><b>'+srvTotal+' palavra'+(srvTotal>1?'s':'')+'</b> que voltaram no tempo certo. Revisar na hora certa é o que faz não esquecer nunca mais.</div>'+
+    '<button class="btn-primary" id="srvGo">Bora de Inglês!'+PLAY_SVG+'</button></div></div>';
+  document.getElementById('srvGo').onclick=srvRender;
+}
+function srvRender(){
+  if(!srvQueue.length){ return srvFinish(); }
+  const it=srvQueue[0], w=it.w, mode=it.mode; gCurrent=w; window.scrollTo(0,0);
+  document.getElementById('qExamples').innerHTML=''; document.getElementById('qNext').innerHTML='';
+  const feito=srvTotal-srvQueue.length;
+  document.getElementById('qBar').style.width=(srvTotal?feito/srvTotal*100:0)+'%';
+  document.getElementById('qCount').textContent='Revisão '+(feito+1)+' de '+srvTotal;
+  document.getElementById('qScore').textContent='Revisar';
+  document.getElementById('qStreak').textContent='';
+  const body=document.getElementById('qQuestion'); body.innerHTML='';
+  if(mode==='enpt'||mode==='pten'){
+    const showKey=mode==='enpt'?'en':'pt', ansKey=mode==='enpt'?'pt':'en';
+    topQuestion(mode==='enpt'?'Qual a tradução?':'Como se escreve em inglês?','');
+    body.innerHTML='<div class="prompt"><div class="wordrow"><span class="word">'+esc(w[showKey])+'</span></div></div><div class="options"></div>';
+    const opts=mvDistractors(w,ansKey,3); const boxo=body.querySelector('.options'); boxo.dataset.answer=w[ansKey];
+    opts.forEach(o=>{ const b=document.createElement('button'); b.className='opt'; b.textContent=o; b.onclick=()=>srvChoose(b,o===w[ansKey],boxo); boxo.appendChild(b); });
+  } else {
+    topQuestion('Escreva em inglês','');
+    body.innerHTML='<div class="prompt"><div class="wordrow"><span class="word">'+esc(w.pt)+'</span></div></div><input class="type-in" id="typeIn" placeholder="digite em inglês..." autocomplete="off" autocapitalize="off"><button class="next-btn" id="checkBtn">Responder</button>';
+    const inp=document.getElementById('typeIn'); if(inp) inp.focus();
+    const check=()=>{ const val=inp.value; const exact=val.trim().toLowerCase()===w.en.trim().toLowerCase(); const punc=!exact&&mvStripPunct(val)===mvStripPunct(w.en); const ok=exact||punc||isCorrect(val,w.en); inp.disabled=true; const cb=document.getElementById('checkBtn'); if(cb) cb.remove(); srvResolve(ok); };
+    document.getElementById('checkBtn').onclick=check; inp.addEventListener('keydown',e=>{ if(e.key==='Enter') check(); });
+  }
+}
+function srvChoose(btn,correct,box){
+  [...box.children].forEach(b=>b.disabled=true);
+  if(correct) btn.classList.add('correct');
+  else{ btn.classList.add('wrong'); const t=box.dataset.answer; [...box.children].forEach(b=>{ if(b.textContent===t) b.classList.add('correct'); }); }
+  srvResolve(correct);
+}
+function srvResolve(correct){
+  const it=srvQueue.shift(); const ansKey=it.mode==='enpt'?'pt':'en';
+  topAnswer(correct, correct?null:it.w[ansKey]);
+  if(correct) srvRight++;
+  if(window.BoraCloud) window.BoraCloud.srsReview(keyOf(it.w), correct);
+  const host=document.getElementById('qExamples'); host.innerHTML='';
+  if(!correct){ const rc=document.createElement('div'); rc.className='correction restudy';
+    rc.innerHTML='📌 <b>'+esc(it.w.en)+'</b> = '+esc(it.w.pt)+(it.w.pron?' · <i>'+esc(it.w.pron)+'</i>':''); host.appendChild(rc); }
+  const nx=document.getElementById('qNext'); nx.innerHTML='<button class="next-btn" id="srvNext">Continuar ›</button>';
+  document.getElementById('srvNext').onclick=srvRender; window.scrollTo({top:0,behavior:'smooth'});
+}
+function srvFinish(){
+  const nome=(window.__nick||'').trim();
+  topHide(); window.scrollTo(0,0);
+  document.getElementById('qExamples').innerHTML=''; document.getElementById('qNext').innerHTML='';
+  document.getElementById('qBar').style.width='100%';
+  document.getElementById('qCount').textContent='Revisão concluída';
+  document.getElementById('qScore').textContent='🎉';
+  document.getElementById('qStreak').textContent='';
+  document.getElementById('qQuestion').innerHTML=
+    '<div class="prep-screen"><div class="prep-card">'+
+    '<div class="prep-kicker">Revisão concluída 🎉</div>'+
+    '<div class="prep-title">Firmado'+(nome?', '+esc(nome):'')+'!</div>'+
+    '<div class="prep-body">Você revisou '+srvTotal+' palavra'+(srvTotal>1?'s':'')+' na hora certa. Cada revisão dessas empurra a memória mais pra frente — e volta mais longe da próxima vez.</div>'+
+    '<button class="btn-primary" id="srvDone">Voltar ao início</button></div></div>';
+  document.getElementById('srvDone').onclick=()=>{ if(typeof goHome==='function') goHome(); };
+}
+
 async function guidedStageDone(){
   const prevLevel=gLevel, prevLote=gLote, prevAll=gLoteAll.slice();
   const p=window.BoraCloud.getProgress();
@@ -1807,11 +1898,12 @@ let db=null, auth=null, ready=false, session=null;
 /* versão do modelo de progresso. Ao subir, zera o progresso/XP antigos
    (era do CSV) uma vez por usuário — o "reset permitido" da metodologia nova. */
 const PROG_VER = 2;
+const SRS_DIAS = [1,3,7,16,35,60];  /* escada de intervalos (dias) do SRS */
 async function migrateProgressIfNeeded(){
   if(!session || session.prog_ver === PROG_VER) return;
   const zerado = { xp:0, xp_hoje:0, m_enpt:[], m_pten:[], m_type:[],
                    completed_levels:[], xp_por_nivel:{}, bonus_dia_pagos:[],
-                   meia_lote:'', prog_ver:PROG_VER };
+                   meia_lote:'', srs:[], prog_ver:PROG_VER };
   Object.assign(session, zerado);
   try{ await updateDoc(doc(db,'usuarios',session.apelido_lower), zerado); }
   catch(e){ console.error('reset de progresso', e); }
@@ -1883,7 +1975,7 @@ async function createProfile(pin){
   try{
     const ref=doc(db,'usuarios',key);
     if((await getDoc(ref)).exists()){ toastMsg('Esse apelido já existe. Escolha outro.'); obShow('ob-nick'); $('ob-keypad').classList.remove('ob-busy'); return; }
-    const data={ nick:draft.nick, apelido_lower:key, avatar:draft.avatar, pin_hash:await hashPin(pin,key), owner_uid:auth.currentUser.uid, xp:0, streak:1, last_active:todayStr(), ap_learned:[], m_enpt:[], m_pten:[], m_type:[], completed_levels:[], prog_ver:PROG_VER, criado_em:serverTimestamp() };
+    const data={ nick:draft.nick, apelido_lower:key, avatar:draft.avatar, pin_hash:await hashPin(pin,key), owner_uid:auth.currentUser.uid, xp:0, streak:1, last_active:todayStr(), ap_learned:[], m_enpt:[], m_pten:[], m_type:[], completed_levels:[], srs:[], prog_ver:PROG_VER, criado_em:serverTimestamp() };
     await setDoc(ref,data); session=data; localStorage.setItem('bora_session',key); enterApp();
   }catch(e){ console.error(e); toastMsg('Sem conexão. Tente de novo.'); $('ob-keypad').classList.remove('ob-busy'); }
 }
@@ -2004,10 +2096,12 @@ function nvKey(lv){ const s=String(lv===''||lv==null?'sn':lv).replace(/[^a-zA-Z0
 
 window.BoraCloud={
   onCorrect, openRanking,
-  getProgress: ()=>({ enpt:new Set((session&&session.m_enpt)||[]), pten:new Set((session&&session.m_pten)||[]), type:new Set((session&&session.m_type)||[]), completed:new Set((session&&session.completed_levels)||[]), checkpoints:new Set((session&&session.checkpoints)||[]), xp:(session&&session.xp)||0, streak:(session&&session.streak)||0, bonusDia:((session&&session.dia_ref)===diaBR()?((session&&session.bonus_dia_pagos)||[]):[]), meiaLote:(session&&session.meia_lote)||'', meiaHoje:((session&&session.meia_dia)===diaBR()), xpHoje:((session&&session.dia_ref)===diaBR()?((session&&session.xp_hoje)||0):0) }),
-  markMastered: async (t,key,lv)=>{ if(!session) return; const f={enpt:'m_enpt',pten:'m_pten',type:'m_type'}[t]; if(!f) return; session[f]=session[f]||[]; if(session[f].includes(key)) return; session[f].push(key); session.xp=(session.xp||0)+10; $('pb-xp').textContent=session.xp; const patch={ [f]:arrayUnion(key), xp:increment(10) }; resetDia(patch); session.xp_hoje=(session.xp_hoje||0)+10; patch.xp_hoje=session.xp_hoje; if(lv!==undefined){ patch['xp_por_nivel.'+nvKey(lv)]=increment(10); } try{ await updateDoc(doc(db,'usuarios',session.apelido_lower),patch); }catch(e){ console.error(e); } },
+  getProgress: ()=>({ enpt:new Set((session&&session.m_enpt)||[]), pten:new Set((session&&session.m_pten)||[]), type:new Set((session&&session.m_type)||[]), completed:new Set((session&&session.completed_levels)||[]), checkpoints:new Set((session&&session.checkpoints)||[]), srs:(()=>{const o={};((session&&session.srs)||[]).forEach(e=>o[e.k]=e);return o;})(), hoje:diaBR(), xp:(session&&session.xp)||0, streak:(session&&session.streak)||0, bonusDia:((session&&session.dia_ref)===diaBR()?((session&&session.bonus_dia_pagos)||[]):[]), meiaLote:(session&&session.meia_lote)||'', meiaHoje:((session&&session.meia_dia)===diaBR()), xpHoje:((session&&session.dia_ref)===diaBR()?((session&&session.xp_hoje)||0):0) }),
+  markMastered: async (t,key,lv)=>{ if(!session) return; const f={enpt:'m_enpt',pten:'m_pten',type:'m_type'}[t]; if(!f) return; session[f]=session[f]||[]; if(session[f].includes(key)) return; session[f].push(key); session.xp=(session.xp||0)+10; $('pb-xp').textContent=session.xp; const patch={ [f]:arrayUnion(key), xp:increment(10) }; resetDia(patch); session.xp_hoje=(session.xp_hoje||0)+10; patch.xp_hoje=session.xp_hoje; if(lv!==undefined){ patch['xp_por_nivel.'+nvKey(lv)]=increment(10); } const full=(session.m_enpt||[]).includes(key)&&(session.m_pten||[]).includes(key)&&(session.m_type||[]).includes(key); session.srs=session.srs||[]; if(full && !session.srs.some(e=>e.k===key)){ session.srs.push({k:key,box:1,due:diaSoma(diaBR(),SRS_DIAS[0])}); patch.srs=session.srs; } try{ await updateDoc(doc(db,'usuarios',session.apelido_lower),patch); }catch(e){ console.error(e); } },
 
   passCheckpoint: async (deg)=>{ if(!session) return; session.checkpoints=session.checkpoints||[]; if(session.checkpoints.includes(deg)) return; session.checkpoints.push(deg); session.xp=(session.xp||0)+300; const el=$('pb-xp'); if(el) el.textContent=session.xp; try{ await updateDoc(doc(db,'usuarios',session.apelido_lower),{ checkpoints:arrayUnion(deg), xp:increment(300) }); }catch(e){ console.error(e); } },
+
+  srsReview: async (key, correct)=>{ if(!session) return; session.srs=session.srs||[]; let e=session.srs.find(x=>x.k===key); if(!e){ e={k:key,box:1,due:diaBR()}; session.srs.push(e); } e.box = correct ? Math.min(e.box+1, SRS_DIAS.length) : 1; e.due = diaSoma(diaBR(), SRS_DIAS[e.box-1]); try{ await updateDoc(doc(db,'usuarios',session.apelido_lower),{ srs:session.srs }); }catch(err){ console.error(err); } },
 
   /* fecha uma meia-rodada de 5 palavras: paga bônus (uma vez só) e cuida da sequência */
   closeHalf: async ({level, lote, half, last})=>{
