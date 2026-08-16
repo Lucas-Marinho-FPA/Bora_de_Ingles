@@ -631,6 +631,19 @@
   .mi-title{font-family:'Fredoka',system-ui,sans-serif;font-weight:600;font-size:2rem;margin:var(--sp-8) 0 4px}
   .mi-sub{opacity:.75;margin-bottom:var(--sp-24)}
   .restudy .rs-hint{font-size:.8rem;opacity:.6;margin-top:4px;font-weight:400}
+  /* nota de pontuação (acerto que ensina) */
+  .punctnote{background:rgba(80,170,255,.12);border-color:rgba(80,170,255,.35)}
+  /* chapa de ritual sobre a exposição */
+  .expo-wrap{position:relative}
+  .prep-overlay{position:absolute;inset:-8px;display:flex;align-items:center;justify-content:center;
+    background:rgba(6,24,52,.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-radius:var(--r-16,18px);z-index:5;padding:var(--sp-16)}
+  .prep-card{max-width:440px;text-align:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);
+    border-radius:var(--r-16,18px);padding:var(--sp-24) var(--sp-16);box-shadow:0 12px 40px rgba(0,0,0,.35)}
+  .prep-kicker{font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;opacity:.7;margin-bottom:var(--sp-8)}
+  .prep-title{font-family:'Fredoka',system-ui,sans-serif;font-weight:600;font-size:1.5rem;margin-bottom:var(--sp-12);line-height:1.25}
+  .prep-body{opacity:.9;margin-bottom:var(--sp-12);line-height:1.5}
+  .prep-card .btn-primary{margin-top:var(--sp-8)}
 </style>
 </head>
 <body>
@@ -1162,23 +1175,61 @@ async function startGuided(){
   mvExpose();
 }
 
+/* pontuação: comparar ignorando pontuação/caixa, e ensinar quando só ela falhou */
+function mvStripPunct(s){ return (s||'').toLowerCase().replace(/[^\p{L}\p{N}\s]/gu,'').replace(/\s+/g,' ').trim(); }
+function mvPunctLesson(en){
+  const t=(en||'').trim();
+  if(/[?]$/.test(t)) return 'toda <b>pergunta</b> termina com <b>?</b>. A pontuação faz parte da frase.';
+  if(/[!]$/.test(t)) return 'frases <b>enfáticas</b> terminam com <b>!</b> — a exclamação mostra a emoção.';
+  if(/[.]$/.test(t)) return 'toda frase com começo, meio e fim leva <b>ponto final (.)</b> para fechar a ideia.';
+  return 'atenção à <b>pontuação</b> — ela também conta.';
+}
+
 /* 1) EXPOSIÇÃO */
 function mvExpose(){
   gStage='expo'; topHide(); window.scrollTo(0,0);
   document.getElementById('qExamples').innerHTML='';
   document.getElementById('qNext').innerHTML='';
   document.getElementById('qBar').style.width='0%';
-  document.getElementById('qCount').textContent='Grave estas '+gLoteAll.length+' palavras';
   document.getElementById('qScore').textContent='Estudar';
   document.getElementById('qStreak').textContent=(gLevel===''?'':'Nv '+gLevel);
+  const isComp = String(gLevel).indexOf('.5')>=0;   /* lição de composição */
+  document.getElementById('qCount').textContent = isComp ? 'Juntando as palavras' : 'Grave estas '+gLoteAll.length+' palavras';
+  const secs = EXPO_SEG[parseInt(gLevel)]||14;
+  const nome = (window.__nick||'').trim();
+  const oi = nome ? nome : 'Vamos lá';
   const cards=gLoteAll.map((w,i)=>'<button class="expo-card" data-i="'+i+'"><div class="expo-en">'+esc(w.en)+' 🔊</div>'+(w.pron?'<div class="expo-pron">'+esc(w.pron)+'</div>':'')+'<div class="expo-pt">'+esc(w.pt)+'</div></button>').join('');
   const body=document.getElementById('qQuestion');
-  body.innerHTML='<div class="expo-head">👀 Grave as palavras — toque para ouvir</div><div class="expo-grid">'+cards+'</div><div class="expo-foot"><span class="expo-timer" id="expoTimer"></span><button class="btn-primary" id="expoGo">Já decorei ›</button></div>';
+
+  /* mensagem do ritual — diferente pra palavra solta vs composição */
+  const prep = isComp
+    ? '<div class="prep-kicker">Etapa nova 🧩</div>'+
+      '<div class="prep-title">'+esc(oi)+', agora a gente <b>junta</b>.</div>'+
+      '<div class="prep-body">Você já domina estas palavras sozinhas. Aqui elas aparecem <b>combinadas</b> — em duplas e frases curtas. É assim que o inglês vira frase de verdade.</div>'+
+      '<div class="prep-body">Leia com calma. Quando entender, aperte OK.</div>'
+    : '<div class="prep-kicker">Primeiro desafio 🎯</div>'+
+      '<div class="prep-title">'+esc(oi)+', o foco é <b>gravar</b>.</div>'+
+      '<div class="prep-body">Antes de responder, o desafio é <b>atenção e memória</b>. Você terá <b>'+secs+' segundos</b> para gravar '+gLoteAll.length+' palavra'+(gLoteAll.length>1?'s':'')+' (toque em cada uma para ouvir).</div>'+
+      '<div class="prep-body">Respira. Quando estiver pronto(a), aperte OK — o tempo começa aí.</div>';
+
+  body.innerHTML=
+    '<div class="expo-wrap">'+
+      '<div class="expo-head">👀 Toque para ouvir</div>'+
+      '<div class="expo-grid">'+cards+'</div>'+
+      '<div class="expo-foot"><span class="expo-timer" id="expoTimer"></span><button class="btn-primary" id="expoGo">Já decorei ›</button></div>'+
+      '<div class="prep-overlay" id="prepOverlay"><div class="prep-card">'+prep+'<button class="btn-primary" id="prepOk">OK, bora ›</button></div></div>'+
+    '</div>';
   [...body.querySelectorAll('.expo-card')].forEach(c=>{ c.onclick=()=>speak(gLoteAll[+c.dataset.i].en); });
-  let t=EXPO_SEG[parseInt(gLevel)]||14;
+
   const go=()=>{ clearInterval(mvTimer); mvStartMode(0); };
-  const tick=()=>{ const el=document.getElementById('expoTimer'); if(el) el.textContent='⏳ '+t+'s'; if(t<=0){ go(); return; } t--; };
-  tick(); mvTimer=setInterval(tick,1000);
+  /* o cronômetro só começa depois do OK (palavra solta). Composição não corre relógio. */
+  document.getElementById('prepOk').onclick=()=>{
+    const ov=document.getElementById('prepOverlay'); if(ov) ov.remove();
+    if(isComp){ const tm=document.getElementById('expoTimer'); if(tm) tm.style.display='none'; return; }
+    let t=secs;
+    const tick=()=>{ const el=document.getElementById('expoTimer'); if(el) el.textContent='⏳ '+t+'s'; if(t<=0){ go(); return; } t--; };
+    tick(); mvTimer=setInterval(tick,1000);
+  };
   document.getElementById('expoGo').onclick=go;
 }
 
@@ -1243,7 +1294,18 @@ function mvRender(){
     topQuestion(STAGE_LABEL.type, gLevel);
     body.innerHTML='<div class="prompt"><div class="wordrow"><span class="word">'+esc(w.pt)+'</span></div></div><input class="type-in" id="typeIn" placeholder="digite em inglês..." autocomplete="off" autocapitalize="off"><button class="next-btn" id="checkBtn">Conferir</button>';
     const inp=document.getElementById('typeIn'); if(inp) inp.focus();
-    const check=()=>{ const val=inp.value; const exact=val.trim().toLowerCase()===w.en.trim().toLowerCase(); const ok=isCorrect(val, w[ansKey]); inp.disabled=true; const cb=document.getElementById('checkBtn'); if(cb) cb.remove(); mvResolve(ok,w,ansKey,(ok&&!exact)?w.en:null); };
+    const check=()=>{
+      const val=inp.value;
+      const alvo=w.en.trim();
+      const exact = val.trim().toLowerCase()===alvo.toLowerCase();
+      const puncOnly = !exact && mvStripPunct(val)===mvStripPunct(alvo);  /* só faltou/errou pontuação */
+      const ok = exact || puncOnly || isCorrect(val, w[ansKey]);
+      inp.disabled=true; const cb=document.getElementById('checkBtn'); if(cb) cb.remove();
+      mvResolve(ok, w, ansKey, {
+        correction: (ok && !exact && !puncOnly) ? w.en : null,   /* grafia tolerada (typo) */
+        punctNote:  puncOnly ? mvPunctLesson(alvo) : null,        /* só pontuação -> ensina */
+      });
+    };
     document.getElementById('checkBtn').onclick=check;
     inp.addEventListener('keydown',e=>{ if(e.key==='Enter') check(); });
   }
@@ -1257,11 +1319,15 @@ function mvChoose(btn, correct, w, box, ansKey){
 }
 
 /* RESOLVE + REESTUDO NO ERRO */
-function mvResolve(correct, w, ansKey, correction){
+function mvResolve(correct, w, ansKey, info){
+  const correction = info && info.correction;
+  const punctNote  = info && info.punctNote;
   topAnswer(correct, correct?null:w[ansKey]);
   if(!correct && gErrados.indexOf(w)<0) gErrados.push(w);
   const host=document.getElementById('qExamples'); host.innerHTML='';
-  if(correction){ const c=document.createElement('div'); c.className='correction'; c.innerHTML='Quase! A grafia correta é <b>'+esc(correction)+'</b>.'; host.appendChild(c); }
+  if(punctNote){ const pn=document.createElement('div'); pn.className='correction punctnote';
+    pn.innerHTML='✅ Certo! Só um detalhe: '+punctNote; host.appendChild(pn); }
+  else if(correction){ const c=document.createElement('div'); c.className='correction'; c.innerHTML='Quase! A grafia correta é <b>'+esc(correction)+'</b>.'; host.appendChild(c); }
   if(!correct){ const rc=document.createElement('div'); rc.className='correction restudy';
     rc.innerHTML='📌 <b>'+esc(w.en)+'</b> = '+esc(w.pt)+(w.pron?' · <i>'+esc(w.pron)+'</i>':'')+'<div class="rs-hint">Ela volta no fim da fila.</div>';
     host.appendChild(rc); }
