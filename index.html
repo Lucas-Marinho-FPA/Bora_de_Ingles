@@ -1216,19 +1216,40 @@ function mvExpose(){
   const secs = EXPO_SEG[parseInt(gLevel)]||14;
   const nome = (window.__nick||'').trim();
   const oi = nome ? nome : 'Vamos lá';
+  const p0 = window.BoraCloud.getProgress();
+  const jaComecou = p0.enpt.size>0 || p0.pten.size>0 || p0.type.size>0;  /* não é a 1ª vez */
+  const BTN = 'Bora de Inglês! ›';   /* a marca na boca do usuário a cada rodada */
+
+  /* continuidade (lote 2+): reconhece desempenho + evolução, variando */
+  const contin = [
+    {k:'Bora de novo 🔥', t:esc(oi)+', mandou bem!',
+     b:'Seu vocabulário tá crescendo. Agora mais um punhado pra <b>gravar</b> — respira, no seu tempo.'},
+    {k:'Próxima rodada 💪', t:'Muito bom, '+esc(oi)+'!',
+     b:'Cada rodada dessas te deixa mais fluente. Mesma ideia: grave as palavras com <b>calma</b>.'},
+    {k:'Seguindo forte 🚀', t:esc(oi)+', tá voando!',
+     b:'Seu inglês tá ganhando corpo. Grave estas próximas — <b>sem pressa</b>, no seu ritmo.'},
+    {k:'Mais um passo ✨', t:'Boa, '+esc(oi)+'!',
+     b:'Mais vocabulário novo no bolso. Bora gravar as próximas — respira e <b>vá no seu tempo</b>.'},
+  ];
+  const c = contin[Math.floor(Math.random()*contin.length)];
 
   const prep = isComp
     ? '<div class="prep-kicker">Etapa nova 🧩</div>'+
       '<div class="prep-title">'+esc(oi)+', agora a gente <b>junta</b>.</div>'+
       '<div class="prep-body">Você já domina estas palavras sozinhas. Aqui elas aparecem <b>combinadas</b> — em duplas e frases curtas. É assim que o inglês vira frase de verdade.</div>'+
-      '<div class="prep-body">Leia com calma. Quando entender, aperte OK.</div>'
+      '<div class="prep-body">Leia com calma. Quando entender, aperte '+BTN.replace(' ›','')+'.</div>'
+    : jaComecou
+    ? '<div class="prep-kicker">'+c.k+'</div>'+
+      '<div class="prep-title">'+c.t+'</div>'+
+      '<div class="prep-body">'+c.b+'</div>'+
+      '<div class="prep-body">Quando estiver pronto(a), o tempo começa ao apertar.</div>'
     : '<div class="prep-kicker">Primeiro desafio 🎯</div>'+
       '<div class="prep-title">'+esc(oi)+', o foco é <b>gravar</b>.</div>'+
       '<div class="prep-body">Antes de responder, o desafio é <b>atenção e memória</b>. Você terá <b>'+secs+' segundos</b> para gravar '+gLoteAll.length+' palavra'+(gLoteAll.length>1?'s':'')+' — toque em cada uma para ouvir.</div>'+
-      '<div class="prep-body">Respira. Quando estiver pronto(a), aperte OK — o tempo começa aí.</div>';
+      '<div class="prep-body">Respira. Quando estiver pronto(a), aperte '+BTN.replace(' ›','')+' — o tempo começa aí.</div>';
 
   document.getElementById('qQuestion').innerHTML=
-    '<div class="prep-screen"><div class="prep-card">'+prep+'<button class="btn-primary" id="prepOk">OK, bora ›</button></div></div>';
+    '<div class="prep-screen"><div class="prep-card">'+prep+'<button class="btn-primary" id="prepOk">'+BTN+'</button></div></div>';
   document.getElementById('prepOk').onclick=()=> mvReveal(isComp, secs);
 }
 
