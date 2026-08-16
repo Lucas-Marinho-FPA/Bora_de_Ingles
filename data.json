@@ -540,7 +540,7 @@
             {
               "rule_id": "RULE_TOBE_PRESENT",
               "titulo": "Verbo To Be no Presente",
-              "balao": "O 'to be' tem conjugação própria (am/is/are). Em perguntas e negativas ele nunca usa 'do/does' — inverte direto com o sujeito.",
+              "balao": "O verbo \"to be\" inverte de lugar com o sujeito para fazer perguntas e recebe \"not\" para negar: \"Are you at home?\" (Você está em casa?). Nunca use \"do\" ou \"does\" com ele, evitando o erro comum de falar \"Do you are at home?\".",
               "estrutura": "Afirm.: Sujeito + am/is/are + compl. | Neg.: + not | Perg.: Am/Is/Are + sujeito?",
               "exemplo": {
                 "en": "Are you at home?",
@@ -811,7 +811,7 @@
             {
               "rule_id": "RULE_ADJ_ORDER",
               "titulo": "Posição do Adjetivo e Sensações",
-              "balao": "O adjetivo vem antes do substantivo. E sensações físicas usam o to be direto, sem 'with' (com): I am hungry, não 'I am with hunger'.",
+              "balao": "Em inglês, a característica vem sempre antes do substantivo: \"She is a pretty girl.\" (Ela é uma garota bonita.). Para sensações físicas, use o verbo \"to be\" direto sem a preposição \"with\": fale \"I am hungry\" (Estou com fome), e nunca \"I am with hunger\".",
               "estrutura": "Adjetivo + substantivo (a new house). Sensação: Sujeito + to be + adjetivo (I am hungry / I am cold).",
               "exemplo": {
                 "en": "She is a pretty girl.",
@@ -1092,7 +1092,7 @@
             {
               "rule_id": "RULE_ARTICLES_AAN",
               "titulo": "Artigos Indefinidos (A / An)",
-              "balao": "Use 'a' antes de som de consoante e 'an' antes de som de vogal. Substantivos incontáveis não aceitam a/an (usa-se 'some').",
+              "balao": "Use \"a\" antes de sons de consoante e \"an\" antes de sons de vogal: \"I want to be an engineer.\" (Eu quero ser engenheiro.). Antes de itens incontáveis, nunca use \"a\", e sim a palavra \"some\": fale \"some juice\" e nunca \"a juice\".",
               "estrutura": "A + som consonantal (a boy). An + som vocálico (an engineer). Incontáveis: some + subst. (some juice).",
               "exemplo": {
                 "en": "I want to be an engineer.",
