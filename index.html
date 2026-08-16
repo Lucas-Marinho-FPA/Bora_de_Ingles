@@ -1049,23 +1049,6 @@ async function init(force){
 
   WORDS = words;
   topHome();
-
-  /* ATALHO DE TESTE: abrir com ?degrau=N começa direto no Degrau N, marcando
-     em MEMÓRIA (sem gravar na nuvem) todos os níveis anteriores como concluídos.
-     Assim o motor guiado pula naturalmente para o degrau escolhido, sem gambiarra.
-     (só pra desenvolvimento — remova ?degrau e ?chefe antes do lançamento.) */
-  try{
-    const md=(location.search||'').match(/degrau=(\d+)/);
-    if(md && window.BoraCloud && session){
-      const alvo=parseInt(md[1]);
-      const anteriores=[...new Set(WORDS.map(w=>w.level))]
-        .filter(lv=>parseFloat(lv) < alvo);   /* ex.: alvo=2 -> marca '1' e '1.5' */
-      session.completed_levels=session.completed_levels||[];
-      anteriores.forEach(lv=>{ if(!session.completed_levels.includes(String(lv)))
-        session.completed_levels.push(String(lv)); });
-    }
-  }catch(e){ console.error('atalho degrau:', e); }
-
   document.getElementById('home').classList.remove('hidden');
   renderGuidedInfo();
   /* ATALHO DE TESTE: abrir com ?chefe=1 na URL dispara o chefe do degrau na hora.
@@ -2052,6 +2035,26 @@ async function enterApp(){
   document.body.classList.remove('welcome-mode');
   $('onboard').classList.add('hidden'); $('rankScreen').classList.add('hidden');
   await migrateProgressIfNeeded();          /* limpa progresso da era antiga, uma vez */
+
+  /* ATALHO DE TESTE: abrir com ?degrau=N começa direto no Degrau N, marcando em
+     MEMÓRIA (sem gravar na nuvem) os níveis anteriores como concluídos. Fica aqui,
+     no módulo (onde 'session' existe), DEPOIS do migrate para não ser zerado.
+     (só desenvolvimento — remova ?degrau e ?chefe antes do lançamento.) */
+  try{
+    const md=(location.search||'').match(/degrau=(\d+)/);
+    if(md && session){
+      const alvo=parseInt(md[1]);
+      session.completed_levels=session.completed_levels||[];
+      /* níveis abaixo do alvo: '1','1.5' para alvo=2, etc. Sem depender de WORDS
+         (que vive no outro script): gera 1, 1.5, 2, 2.5 … até o alvo. */
+      for(let n=1; n<alvo; n++){
+        [String(n), n+'.5'].forEach(lv=>{
+          if(!session.completed_levels.includes(lv)) session.completed_levels.push(lv);
+        });
+      }
+    }
+  }catch(e){ console.error('atalho degrau:', e); }
+
   renderProfileBar(); $('profileBar').classList.remove('hidden');
   if(typeof window.startApp==='function') window.startApp(session.apelido_lower);
 }
