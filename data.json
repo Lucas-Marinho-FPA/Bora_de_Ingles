@@ -1105,6 +1105,151 @@
           ]
         }
       ],
+      "composicoes": [
+        {
+          "id": "COMP_0001",
+          "en": "a happy mother",
+          "pt": "uma mãe feliz",
+          "base_refs": [
+            "happy",
+            "mother"
+          ],
+          "padrao": "art+adj+noun",
+          "licao": "1.5",
+          "nivel_comp": 2,
+          "rule_ref": "RULE_ADJ_ORDER"
+        },
+        {
+          "id": "COMP_0002",
+          "en": "a tired father",
+          "pt": "um pai cansado",
+          "base_refs": [
+            "tired",
+            "father"
+          ],
+          "padrao": "art+adj+noun",
+          "licao": "1.5",
+          "nivel_comp": 2,
+          "rule_ref": "RULE_ADJ_ORDER"
+        },
+        {
+          "id": "COMP_0003",
+          "en": "a busy doctor",
+          "pt": "um médico ocupado",
+          "base_refs": [
+            "busy",
+            "doctor"
+          ],
+          "padrao": "art+adj+noun",
+          "licao": "1.5",
+          "nivel_comp": 2,
+          "rule_ref": "RULE_ADJ_ORDER"
+        },
+        {
+          "id": "COMP_0004",
+          "en": "a sick friend",
+          "pt": "um amigo doente",
+          "base_refs": [
+            "sick",
+            "friend"
+          ],
+          "padrao": "art+adj+noun",
+          "licao": "1.5",
+          "nivel_comp": 2,
+          "rule_ref": "RULE_ADJ_ORDER"
+        },
+        {
+          "id": "COMP_0005",
+          "en": "a sad woman",
+          "pt": "uma mulher triste",
+          "base_refs": [
+            "sad",
+            "woman"
+          ],
+          "padrao": "art+adj+noun",
+          "licao": "1.5",
+          "nivel_comp": 2,
+          "rule_ref": "RULE_ADJ_ORDER"
+        },
+        {
+          "id": "COMP_0006",
+          "en": "a busy restaurant",
+          "pt": "um restaurante movimentado",
+          "base_refs": [
+            "busy",
+            "restaurant"
+          ],
+          "padrao": "art+adj+noun",
+          "licao": "1.5",
+          "nivel_comp": 2,
+          "rule_ref": "RULE_ADJ_ORDER"
+        },
+        {
+          "id": "COMP_0007",
+          "en": "a happy student",
+          "pt": "um estudante feliz",
+          "base_refs": [
+            "happy",
+            "student"
+          ],
+          "padrao": "art+adj+noun",
+          "licao": "1.5",
+          "nivel_comp": 2,
+          "rule_ref": "RULE_ADJ_ORDER"
+        },
+        {
+          "id": "COMP_0008",
+          "en": "The teacher is busy.",
+          "pt": "O professor está ocupado.",
+          "base_refs": [
+            "teacher",
+            "busy"
+          ],
+          "padrao": "noun+be+adj",
+          "licao": "1.5",
+          "nivel_comp": 3,
+          "rule_ref": "RULE_TOBE_PRESENT"
+        },
+        {
+          "id": "COMP_0009",
+          "en": "The doctor is ready.",
+          "pt": "O médico está pronto.",
+          "base_refs": [
+            "doctor",
+            "ready"
+          ],
+          "padrao": "noun+be+adj",
+          "licao": "1.5",
+          "nivel_comp": 3,
+          "rule_ref": "RULE_TOBE_PRESENT"
+        },
+        {
+          "id": "COMP_0010",
+          "en": "The student is tired.",
+          "pt": "O estudante está cansado.",
+          "base_refs": [
+            "student",
+            "tired"
+          ],
+          "padrao": "noun+be+adj",
+          "licao": "1.5",
+          "nivel_comp": 3,
+          "rule_ref": "RULE_TOBE_PRESENT"
+        },
+        {
+          "id": "COMP_0011",
+          "en": "Is the woman happy?",
+          "pt": "A mulher está feliz?",
+          "base_refs": [
+            "woman",
+            "happy"
+          ],
+          "padrao": "be+noun+adj",
+          "licao": "1.5",
+          "nivel_comp": 3,
+          "rule_ref": "RULE_TOBE_PRESENT"
+        }
+      ],
       "checkpoint": {
         "min_acerto": 0.8,
         "fonte": "todas as licoes do degrau 1"

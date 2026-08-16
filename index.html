@@ -843,12 +843,15 @@ function rowsToWords(rows){
    Passo 1 da migração: level = degrau, mantendo o motor guiado intacto.
    A estrutura de lição/checkpoint fica preservada no data.json para o passo 2. */
 function flattenData(data){
-  const ruleById={};
+  const ruleById={}, ptByEn={};
   for(const deg of (data.degraus||[]))
-    for(const lic of (deg.licoes||[]))
-      for(const r of (lic.rules||[])) ruleById[r.rule_id]=r;   /* mapa global de cartas */
+    for(const lic of (deg.licoes||[])){
+      for(const r of (lic.rules||[])) ruleById[r.rule_id]=r;      /* mapa global de cartas */
+      for(const v of (lic.vocab||[])) ptByEn[(v.en||'').toLowerCase()]=v.pt;  /* palavra->tradução */
+    }
   const out=[];
   for(const deg of (data.degraus||[])){
+    /* 1) palavras soltas — nível = degrau */
     for(const lic of (deg.licoes||[])){
       for(const v of (lic.vocab||[])){
         const examples=[], F=v.frases||{};
@@ -859,6 +862,13 @@ function flattenData(data){
         out.push({ level:String(deg.degrau), en:v.en, pt:v.pt, pron:v.pron||'',
                    examples, explain: rule?(rule.balao||''):'' });
       }
+    }
+    /* 2) composições — nível = degrau.5 (entram DEPOIS das palavras soltas) */
+    for(const c of (deg.composicoes||[])){
+      const examples=(c.base_refs||[]).map(w=>({label:'Peça', en:w, pt:ptByEn[(w||'').toLowerCase()]||''}));
+      const rule = c.rule_ref ? ruleById[c.rule_ref] : null;
+      out.push({ level:String(deg.degrau)+'.5', en:c.en, pt:c.pt, pron:c.pron||'',
+                 examples, explain: rule?(rule.balao||''):'' });
     }
   }
   return out;
@@ -1042,7 +1052,7 @@ async function computeGuidedState(){
 }
 
 /* nomes dos níveis — ajuste conforme a sua planilha */
-const LEVEL_NAMES = {'1':'Iniciante','2':'Básico','3':'Pré-intermediário','4':'Intermediário','5':'Avançado','6':'Fluente'};
+const LEVEL_NAMES = {'1':'Iniciante','1.5':'Juntando palavras','2':'Básico','2.5':'Juntando palavras','3':'Pré-intermediário','4':'Intermediário','5':'Avançado','6':'Fluente'};
 
 function renderGreeting(){
   const el=document.getElementById('gr-hi'); if(!el) return;
