@@ -1257,6 +1257,942 @@
         "min_acerto": 0.8,
         "fonte": "todas as licoes do degrau 1"
       }
+    },
+    {
+      "degrau": 2,
+      "nome": "Agir no presente",
+      "licoes": [
+        {
+          "licao": "2.1",
+          "titulo": "Ações do dia a dia",
+          "vocab": [
+            {
+              "id": "VOC_0041",
+              "en": "work",
+              "pt": "trabalhar",
+              "tema": "acao",
+              "frases": {
+                "afe": {
+                  "en": "You work every day.",
+                  "pt": "Você trabalha todos os dias."
+                },
+                "neg": {
+                  "en": "You do not work every day.",
+                  "pt": "Você não trabalha todos os dias."
+                },
+                "perg": {
+                  "en": "Do you work every day?",
+                  "pt": "Você trabalha todos os dias?"
+                }
+              },
+              "pron": "uârk",
+              "tags_gram": [
+                "verbo",
+                "acao",
+                "nucleo"
+              ],
+              "rule_ref": "RULE_PRESENT_SIMPLE"
+            },
+            {
+              "id": "VOC_0042",
+              "en": "like",
+              "pt": "gostar (de)",
+              "tema": "acao",
+              "frases": {
+                "afe": {
+                  "en": "I like English.",
+                  "pt": "Eu gosto de inglês."
+                },
+                "neg": {
+                  "en": "I do not like English.",
+                  "pt": "Eu não gosto de inglês."
+                },
+                "perg": {
+                  "en": "Do you like English?",
+                  "pt": "Você gosta de inglês?"
+                }
+              },
+              "pron": "láik",
+              "tags_gram": [
+                "verbo",
+                "acao",
+                "nucleo"
+              ],
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "nota_sentido": "like = gostar (de), mas em inglês SEM 'of': 'like English', nunca 'like of English'."
+            },
+            {
+              "id": "VOC_0043",
+              "en": "want",
+              "pt": "querer",
+              "tema": "acao",
+              "frases": {
+                "afe": {
+                  "en": "I want water.",
+                  "pt": "Eu quero água."
+                },
+                "neg": {
+                  "en": "I do not want water.",
+                  "pt": "Eu não quero água."
+                },
+                "perg": {
+                  "en": "Do you want water?",
+                  "pt": "Você quer água?"
+                }
+              },
+              "pron": "uânt",
+              "tags_gram": [
+                "verbo",
+                "acao",
+                "nucleo"
+              ],
+              "rule_ref": "RULE_PRESENT_SIMPLE"
+            },
+            {
+              "id": "VOC_0044",
+              "en": "eat",
+              "pt": "comer",
+              "tema": "acao",
+              "frases": {
+                "afe": {
+                  "en": "They eat every day.",
+                  "pt": "Eles comem todos os dias."
+                },
+                "neg": {
+                  "en": "They do not eat every day.",
+                  "pt": "Eles não comem todos os dias."
+                },
+                "perg": {
+                  "en": "Do they eat every day?",
+                  "pt": "Eles comem todos os dias?"
+                }
+              },
+              "pron": "ít",
+              "tags_gram": [
+                "verbo",
+                "acao",
+                "nucleo"
+              ],
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "nota_sentido": "Sem objeto de propósito, para evitar 'eat food' (tautológico); 'eat' funciona sozinho com marcador de tempo."
+            },
+            {
+              "id": "VOC_0045",
+              "en": "study",
+              "pt": "estudar",
+              "tema": "acao",
+              "frases": {
+                "afe": {
+                  "en": "We study English.",
+                  "pt": "Nós estudamos inglês."
+                },
+                "neg": {
+                  "en": "We do not study English.",
+                  "pt": "Nós não estudamos inglês."
+                },
+                "perg": {
+                  "en": "Do we study English?",
+                  "pt": "Nós estudamos inglês?"
+                }
+              },
+              "pron": "stâdi",
+              "tags_gram": [
+                "verbo",
+                "acao",
+                "nucleo"
+              ],
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "nota_sentido": "Pronúncia 'stâdi' (não 'estâdi'): sem a vogal de apoio que o brasileiro tende a inserir."
+            },
+            {
+              "id": "VOC_0046",
+              "en": "food",
+              "pt": "comida",
+              "tema": "objeto",
+              "frases": {
+                "afe": {
+                  "en": "I want food.",
+                  "pt": "Eu quero comida."
+                },
+                "neg": {
+                  "en": "I do not want food.",
+                  "pt": "Eu não quero comida."
+                },
+                "perg": {
+                  "en": "Do you want food?",
+                  "pt": "Você quer comida?"
+                }
+              },
+              "pron": "fúd",
+              "tags_gram": [
+                "substantivo",
+                "objeto"
+              ],
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "nota_sentido": "Objeto novo do D2 (justifica 'eat'). Vai com 'want' para evitar 'eat food' (tautológico)."
+            },
+            {
+              "id": "VOC_0047",
+              "en": "water",
+              "pt": "água",
+              "tema": "objeto",
+              "frases": {
+                "afe": {
+                  "en": "They want water.",
+                  "pt": "Eles querem água."
+                },
+                "neg": {
+                  "en": "They do not want water.",
+                  "pt": "Eles não querem água."
+                },
+                "perg": {
+                  "en": "Do they want water?",
+                  "pt": "Eles querem água?"
+                }
+              },
+              "pron": "uóter",
+              "tags_gram": [
+                "substantivo",
+                "objeto"
+              ],
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "nota_sentido": "Objeto novo do D2 (justifica want/need). Liga ao 'thirsty' (com sede) do D1."
+            },
+            {
+              "id": "VOC_0048",
+              "en": "English",
+              "pt": "inglês",
+              "tema": "idioma",
+              "frases": {
+                "afe": {
+                  "en": "You study English.",
+                  "pt": "Você estuda inglês."
+                },
+                "neg": {
+                  "en": "You do not study English.",
+                  "pt": "Você não estuda inglês."
+                },
+                "perg": {
+                  "en": "Do you study English?",
+                  "pt": "Você estuda inglês?"
+                }
+              },
+              "pron": "ínglish",
+              "tags_gram": [
+                "substantivo",
+                "idioma"
+              ],
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "nota_sentido": "Idioma (classe própria, não 'objeto'). Justifica speak/study/understand."
+            }
+          ],
+          "rules": []
+        },
+        {
+          "licao": "2.2",
+          "titulo": "Ele, ela: o -s",
+          "vocab": [
+            {
+              "id": "VOC_0049",
+              "en": "speak",
+              "pt": "falar",
+              "tema": "acao",
+              "frases": {
+                "afe": {
+                  "en": "He speaks English.",
+                  "pt": "Ele fala inglês."
+                },
+                "neg": {
+                  "en": "He does not speak English.",
+                  "pt": "Ele não fala inglês."
+                },
+                "perg": {
+                  "en": "Does he speak English?",
+                  "pt": "Ele fala inglês?"
+                }
+              },
+              "pron": "spík",
+              "tags_gram": [
+                "verbo",
+                "acao",
+                "nucleo"
+              ],
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "nota_sentido": "speak = falar (não 'falar com': 'speak English' é falar inglês)."
+            },
+            {
+              "id": "VOC_0050",
+              "en": "need",
+              "pt": "precisar (de)",
+              "tema": "acao",
+              "frases": {
+                "afe": {
+                  "en": "She needs water.",
+                  "pt": "Ela precisa de água."
+                },
+                "neg": {
+                  "en": "She does not need water.",
+                  "pt": "Ela não precisa de água."
+                },
+                "perg": {
+                  "en": "Does she need water?",
+                  "pt": "Ela precisa de água?"
+                }
+              },
+              "pron": "níd",
+              "tags_gram": [
+                "verbo",
+                "acao",
+                "nucleo"
+              ],
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "nota_sentido": "need = precisar (de), mas em inglês SEM preposição: 'need water'."
+            },
+            {
+              "id": "VOC_0051",
+              "en": "help",
+              "pt": "ajudar",
+              "tema": "acao",
+              "frases": {
+                "afe": {
+                  "en": "The doctor helps the man.",
+                  "pt": "O médico ajuda o homem."
+                },
+                "neg": {
+                  "en": "The doctor does not help the man.",
+                  "pt": "O médico não ajuda o homem."
+                },
+                "perg": {
+                  "en": "Does the doctor help the man?",
+                  "pt": "O médico ajuda o homem?"
+                }
+              },
+              "pron": "hélp",
+              "tags_gram": [
+                "verbo",
+                "acao",
+                "enriquecimento"
+              ],
+              "rule_ref": "RULE_PRESENT_SIMPLE"
+            },
+            {
+              "id": "VOC_0052",
+              "en": "write",
+              "pt": "escrever",
+              "tema": "acao",
+              "frases": {
+                "afe": {
+                  "en": "She writes a letter.",
+                  "pt": "Ela escreve uma carta."
+                },
+                "neg": {
+                  "en": "She does not write a letter.",
+                  "pt": "Ela não escreve uma carta."
+                },
+                "perg": {
+                  "en": "Does she write a letter?",
+                  "pt": "Ela escreve uma carta?"
+                }
+              },
+              "pron": "ráit",
+              "tags_gram": [
+                "verbo",
+                "acao",
+                "nucleo"
+              ],
+              "rule_ref": "RULE_PRESENT_SIMPLE"
+            },
+            {
+              "id": "VOC_0053",
+              "en": "understand",
+              "pt": "entender",
+              "tema": "acao",
+              "frases": {
+                "afe": {
+                  "en": "He understands English.",
+                  "pt": "Ele entende inglês."
+                },
+                "neg": {
+                  "en": "He does not understand English.",
+                  "pt": "Ele não entende inglês."
+                },
+                "perg": {
+                  "en": "Does he understand English?",
+                  "pt": "Ele entende inglês?"
+                }
+              },
+              "pron": "andersténd",
+              "tags_gram": [
+                "verbo",
+                "acao",
+                "nucleo"
+              ],
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "nota_sentido": "Pronúncia com tônica em 'sténd'."
+            },
+            {
+              "id": "VOC_0054",
+              "en": "letter",
+              "pt": "carta",
+              "tema": "objeto",
+              "frases": {
+                "afe": {
+                  "en": "He writes a letter.",
+                  "pt": "Ele escreve uma carta."
+                },
+                "neg": {
+                  "en": "He does not write a letter.",
+                  "pt": "Ele não escreve uma carta."
+                },
+                "perg": {
+                  "en": "Does he write a letter?",
+                  "pt": "Ele escreve uma carta?"
+                }
+              },
+              "pron": "léter",
+              "tags_gram": [
+                "substantivo",
+                "objeto"
+              ],
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "nota_sentido": "Objeto novo do D2 (justifica 'write')."
+            }
+          ],
+          "rules": []
+        },
+        {
+          "licao": "2.3",
+          "titulo": "Perguntar e negar",
+          "vocab": [
+            {
+              "id": "VOC_0055",
+              "en": "open",
+              "pt": "abrir",
+              "tema": "acao",
+              "frases": {
+                "afe": {
+                  "en": "You open the door.",
+                  "pt": "Você abre a porta."
+                },
+                "neg": {
+                  "en": "You do not open the door.",
+                  "pt": "Você não abre a porta."
+                },
+                "perg": {
+                  "en": "Do you open the door?",
+                  "pt": "Você abre a porta?"
+                }
+              },
+              "pron": "ôupen",
+              "tags_gram": [
+                "verbo",
+                "acao",
+                "nucleo"
+              ],
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "nota_sentido": "open é também adjetivo no D1 ('aberto'); aqui é verbo ('abrir'). Sujeito 'you' → auxiliar 'do'."
+            },
+            {
+              "id": "VOC_0056",
+              "en": "close",
+              "pt": "fechar",
+              "tema": "acao",
+              "frases": {
+                "afe": {
+                  "en": "They close the window.",
+                  "pt": "Eles fecham a janela."
+                },
+                "neg": {
+                  "en": "They do not close the window.",
+                  "pt": "Eles não fecham a janela."
+                },
+                "perg": {
+                  "en": "Do they close the window?",
+                  "pt": "Eles fecham a janela?"
+                }
+              },
+              "pron": "clôuz",
+              "tags_gram": [
+                "verbo",
+                "acao",
+                "nucleo"
+              ],
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "nota_sentido": "Sujeito 'they' → auxiliar 'do'."
+            },
+            {
+              "id": "VOC_0057",
+              "en": "ask",
+              "pt": "perguntar",
+              "tema": "acao",
+              "frases": {
+                "afe": {
+                  "en": "The teacher asks a question.",
+                  "pt": "O professor faz uma pergunta."
+                },
+                "neg": {
+                  "en": "The teacher does not ask a question.",
+                  "pt": "O professor não faz uma pergunta."
+                },
+                "perg": {
+                  "en": "Does the teacher ask a question?",
+                  "pt": "O professor faz uma pergunta?"
+                }
+              },
+              "pron": "ésk",
+              "tags_gram": [
+                "verbo",
+                "acao",
+                "enriquecimento"
+              ],
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "nota_sentido": "ask = perguntar; 'ask a question' = FAZER uma pergunta (não se traduz ao pé da letra). Sujeito singular → 'does'."
+            },
+            {
+              "id": "VOC_0058",
+              "en": "answer",
+              "pt": "responder",
+              "tema": "acao",
+              "frases": {
+                "afe": {
+                  "en": "The student answers the question.",
+                  "pt": "O estudante responde à pergunta."
+                },
+                "neg": {
+                  "en": "The student does not answer the question.",
+                  "pt": "O estudante não responde à pergunta."
+                },
+                "perg": {
+                  "en": "Does the student answer the question?",
+                  "pt": "O estudante responde à pergunta?"
+                }
+              },
+              "pron": "ânser",
+              "tags_gram": [
+                "verbo",
+                "acao",
+                "enriquecimento"
+              ],
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "nota_sentido": "answer = responder (verbo). O substantivo 'resposta' (mesma grafia) fica para um degrau à frente, para não embaralhar a identidade da palavra agora."
+            },
+            {
+              "id": "VOC_0059",
+              "en": "door",
+              "pt": "porta",
+              "tema": "objeto",
+              "frases": {
+                "afe": {
+                  "en": "We open the door.",
+                  "pt": "Nós abrimos a porta."
+                },
+                "neg": {
+                  "en": "We do not open the door.",
+                  "pt": "Nós não abrimos a porta."
+                },
+                "perg": {
+                  "en": "Do we open the door?",
+                  "pt": "Nós abrimos a porta?"
+                }
+              },
+              "pron": "dór",
+              "tags_gram": [
+                "substantivo",
+                "objeto"
+              ],
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "nota_sentido": "Objeto novo do D2 (justifica open/close)."
+            },
+            {
+              "id": "VOC_0060",
+              "en": "window",
+              "pt": "janela",
+              "tema": "objeto",
+              "frases": {
+                "afe": {
+                  "en": "She closes the window.",
+                  "pt": "Ela fecha a janela."
+                },
+                "neg": {
+                  "en": "She does not close the window.",
+                  "pt": "Ela não fecha a janela."
+                },
+                "perg": {
+                  "en": "Does she close the window?",
+                  "pt": "Ela fecha a janela?"
+                }
+              },
+              "pron": "uíndou",
+              "tags_gram": [
+                "substantivo",
+                "objeto"
+              ],
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "nota_sentido": "Objeto novo do D2 (justifica open/close). Contraste vivo: 'They close the window' (do) × 'She closes the window' (does)."
+            },
+            {
+              "id": "VOC_0061",
+              "en": "question",
+              "pt": "pergunta",
+              "tema": "objeto",
+              "frases": {
+                "afe": {
+                  "en": "She asks a question.",
+                  "pt": "Ela faz uma pergunta."
+                },
+                "neg": {
+                  "en": "She does not ask a question.",
+                  "pt": "Ela não faz uma pergunta."
+                },
+                "perg": {
+                  "en": "Does she ask a question?",
+                  "pt": "Ela faz uma pergunta?"
+                }
+              },
+              "pron": "kuéstchen",
+              "tags_gram": [
+                "substantivo",
+                "objeto"
+              ],
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "nota_sentido": "Objeto novo do D2 (justifica ask/answer)."
+            }
+          ],
+          "rules": [
+            {
+              "rule_id": "RULE_PRESENT_SIMPLE",
+              "titulo": "Presente Simples e Auxiliares (Do/Does)",
+              "balao": "No presente, afirmativas com \"he\", \"she\" e \"it\" ganham \"-s\" no verbo, enquanto perguntas e negações usam o auxiliar: \"Does he eat?\" (Ele come?). Quando o auxiliar \"does\" estiver na frase, nunca mantenha o \"-s\" no verbo principal, evitando escrever \"Does he eats?\".",
+              "estrutura": "Afirm.: Sujeito + verbo(+s p/ he/she/it). Neg.: + do/does + not + verbo base. Perg.: Do/Does + sujeito + verbo base?",
+              "exemplo": {
+                "en": "Does he eat?",
+                "pt": "Ele come?"
+              },
+              "erro_comum": "Manter o '-s' com 'does' ('Does he eats?') ou esquecê-lo na afirmativa ('He eat').",
+              "pagina_fonte": "1,2,4,5,6,8",
+              "frase_ancora": "(a preencher na revisão — não verificável no PDF atual)"
+            }
+          ]
+        },
+        {
+          "licao": "2.4",
+          "titulo": "Acontecendo agora",
+          "vocab": [
+            {
+              "id": "VOC_0062",
+              "en": "wait",
+              "pt": "esperar",
+              "tema": "acao",
+              "frases": {
+                "afe": {
+                  "en": "I am waiting now.",
+                  "pt": "Eu estou esperando agora."
+                },
+                "neg": {
+                  "en": "I am not waiting now.",
+                  "pt": "Eu não estou esperando agora."
+                },
+                "perg": {
+                  "en": "Are you waiting now?",
+                  "pt": "Você está esperando agora?"
+                }
+              },
+              "pron": "uêit",
+              "tags_gram": [
+                "verbo",
+                "acao",
+                "present_continuous",
+                "enriquecimento"
+              ],
+              "rule_ref": "RULE_GERUND_ING",
+              "nota_sentido": "Contraste hábito × agora: 'You work every day' (simples) × 'I am waiting now' (contínuo)."
+            },
+            {
+              "id": "VOC_0063",
+              "en": "arrive",
+              "pt": "chegar",
+              "tema": "acao",
+              "frases": {
+                "afe": {
+                  "en": "He is arriving now.",
+                  "pt": "Ele está chegando agora."
+                },
+                "neg": {
+                  "en": "He is not arriving now.",
+                  "pt": "Ele não está chegando agora."
+                },
+                "perg": {
+                  "en": "Is he arriving now?",
+                  "pt": "Ele está chegando agora?"
+                }
+              },
+              "pron": "arráiv",
+              "tags_gram": [
+                "verbo",
+                "acao",
+                "present_continuous",
+                "enriquecimento"
+              ],
+              "rule_ref": "RULE_GERUND_ING",
+              "nota_sentido": "Ortografia -ing: arrive → arriving (cai o -e)."
+            },
+            {
+              "id": "VOC_0064",
+              "en": "clean",
+              "pt": "limpar",
+              "tema": "acao",
+              "frases": {
+                "afe": {
+                  "en": "My mother is cleaning the window now.",
+                  "pt": "Minha mãe está limpando a janela agora."
+                },
+                "neg": {
+                  "en": "My mother is not cleaning the window now.",
+                  "pt": "Minha mãe não está limpando a janela agora."
+                },
+                "perg": {
+                  "en": "Is my mother cleaning the window now?",
+                  "pt": "Minha mãe está limpando a janela agora?"
+                }
+              },
+              "pron": "clín",
+              "tags_gram": [
+                "verbo",
+                "acao",
+                "present_continuous",
+                "enriquecimento"
+              ],
+              "rule_ref": "RULE_GERUND_ING",
+              "nota_sentido": "clean é adjetivo no D1 ('limpo') e verbo no D2 ('limpar') — sentidos diferentes, não erro."
+            },
+            {
+              "id": "VOC_0065",
+              "en": "cry",
+              "pt": "chorar",
+              "tema": "acao",
+              "frases": {
+                "afe": {
+                  "en": "She is crying now.",
+                  "pt": "Ela está chorando agora."
+                },
+                "neg": {
+                  "en": "She is not crying now.",
+                  "pt": "Ela não está chorando agora."
+                },
+                "perg": {
+                  "en": "Is she crying now?",
+                  "pt": "Ela está chorando agora?"
+                }
+              },
+              "pron": "crái",
+              "tags_gram": [
+                "verbo",
+                "acao",
+                "present_continuous",
+                "enriquecimento"
+              ],
+              "rule_ref": "RULE_GERUND_ING",
+              "nota_sentido": "Ortografia -ing: cry → crying (mantém o y, não 'cri-ing')."
+            },
+            {
+              "id": "VOC_0066",
+              "en": "rest",
+              "pt": "descansar",
+              "tema": "acao",
+              "frases": {
+                "afe": {
+                  "en": "They are resting now.",
+                  "pt": "Eles estão descansando agora."
+                },
+                "neg": {
+                  "en": "They are not resting now.",
+                  "pt": "Eles não estão descansando agora."
+                },
+                "perg": {
+                  "en": "Are they resting now?",
+                  "pt": "Eles estão descansando agora?"
+                }
+              },
+              "pron": "rést",
+              "tags_gram": [
+                "verbo",
+                "acao",
+                "present_continuous",
+                "enriquecimento"
+              ],
+              "rule_ref": "RULE_GERUND_ING"
+            }
+          ],
+          "rules": [
+            {
+              "rule_id": "RULE_GERUND_ING",
+              "titulo": "Gerúndio (-ing) e Present Continuous",
+              "balao": "A terminação \"-ing\" indica uma ação contínua e vem acompanhada do verbo \"to be\": \"I am working.\" (Eu estou trabalhando.). Em verbos curtos com terminação de consoante-vogal-consoante, dobre a última letra, escrevendo \"running\" e nunca \"runing\".",
+              "estrutura": "Sujeito + to be + verbo-ing. close→closing; die→dying; run→running; begin→beginning.",
+              "exemplo": {
+                "en": "I am working.",
+                "pt": "Eu estou trabalhando."
+              },
+              "erro_comum": "Não dobrar a consoante ('runing') ou manter o -e ('closeing').",
+              "pagina_fonte": "18,19",
+              "frase_ancora": "(a preencher na revisão — não verificável no PDF atual)"
+            }
+          ]
+        }
+      ],
+      "composicoes": [
+        {
+          "id": "COMP_0012",
+          "en": "studies English",
+          "pt": "estuda inglês",
+          "base_refs": [
+            "study",
+            "English"
+          ],
+          "padrao": "verb+object",
+          "licao": "2.5",
+          "nivel_comp": 2,
+          "rule_ref": "RULE_PRESENT_SIMPLE"
+        },
+        {
+          "id": "COMP_0013",
+          "en": "opens the door",
+          "pt": "abre a porta",
+          "base_refs": [
+            "open",
+            "door"
+          ],
+          "padrao": "verb+object",
+          "licao": "2.5",
+          "nivel_comp": 2,
+          "rule_ref": "RULE_PRESENT_SIMPLE"
+        },
+        {
+          "id": "COMP_0014",
+          "en": "needs water",
+          "pt": "precisa de água",
+          "base_refs": [
+            "need",
+            "water"
+          ],
+          "padrao": "verb+object",
+          "licao": "2.5",
+          "nivel_comp": 2,
+          "rule_ref": "RULE_PRESENT_SIMPLE"
+        },
+        {
+          "id": "COMP_0015",
+          "en": "The teacher works every day.",
+          "pt": "O professor trabalha todos os dias.",
+          "base_refs": [
+            "teacher",
+            "work"
+          ],
+          "padrao": "noun+verb",
+          "licao": "2.5",
+          "nivel_comp": 3,
+          "rule_ref": "RULE_PRESENT_SIMPLE"
+        },
+        {
+          "id": "COMP_0016",
+          "en": "My brother studies English.",
+          "pt": "Meu irmão estuda inglês.",
+          "base_refs": [
+            "brother",
+            "study",
+            "English"
+          ],
+          "padrao": "noun+verb+object",
+          "licao": "2.5",
+          "nivel_comp": 3,
+          "rule_ref": "RULE_PRESENT_SIMPLE"
+        },
+        {
+          "id": "COMP_0017",
+          "en": "The doctor helps the man.",
+          "pt": "O médico ajuda o homem.",
+          "base_refs": [
+            "doctor",
+            "help",
+            "man"
+          ],
+          "padrao": "noun+verb+object",
+          "licao": "2.5",
+          "nivel_comp": 3,
+          "rule_ref": "RULE_PRESENT_SIMPLE"
+        },
+        {
+          "id": "COMP_0018",
+          "en": "The student answers the question.",
+          "pt": "O estudante responde à pergunta.",
+          "base_refs": [
+            "student",
+            "answer",
+            "question"
+          ],
+          "padrao": "noun+verb+object",
+          "licao": "2.5",
+          "nivel_comp": 3,
+          "rule_ref": "RULE_PRESENT_SIMPLE"
+        },
+        {
+          "id": "COMP_0019",
+          "en": "My sister writes a letter.",
+          "pt": "Minha irmã escreve uma carta.",
+          "base_refs": [
+            "sister",
+            "write",
+            "letter"
+          ],
+          "padrao": "noun+verb+object",
+          "licao": "2.5",
+          "nivel_comp": 3,
+          "rule_ref": "RULE_PRESENT_SIMPLE"
+        },
+        {
+          "id": "COMP_0020",
+          "en": "My mother works every day.",
+          "pt": "Minha mãe trabalha todos os dias.",
+          "base_refs": [
+            "mother",
+            "work"
+          ],
+          "padrao": "noun+verb",
+          "licao": "2.5",
+          "nivel_comp": 3,
+          "rule_ref": "RULE_PRESENT_SIMPLE"
+        },
+        {
+          "id": "COMP_0021",
+          "en": "My mother is working now.",
+          "pt": "Minha mãe está trabalhando agora.",
+          "base_refs": [
+            "mother",
+            "work"
+          ],
+          "padrao": "noun+be+verbing",
+          "licao": "2.5",
+          "nivel_comp": 3,
+          "rule_ref": "RULE_GERUND_ING"
+        },
+        {
+          "id": "COMP_0022",
+          "en": "The student is waiting now.",
+          "pt": "O estudante está esperando agora.",
+          "base_refs": [
+            "student",
+            "wait"
+          ],
+          "padrao": "noun+be+verbing",
+          "licao": "2.5",
+          "nivel_comp": 3,
+          "rule_ref": "RULE_GERUND_ING"
+        }
+      ],
+      "checkpoint": {
+        "min_acerto": 0.8,
+        "fonte": "todas as licoes do degrau 2"
+      }
     }
   ],
   "verbs": [

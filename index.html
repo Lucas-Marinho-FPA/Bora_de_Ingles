@@ -1049,6 +1049,23 @@ async function init(force){
 
   WORDS = words;
   topHome();
+
+  /* ATALHO DE TESTE: abrir com ?degrau=N começa direto no Degrau N, marcando
+     em MEMÓRIA (sem gravar na nuvem) todos os níveis anteriores como concluídos.
+     Assim o motor guiado pula naturalmente para o degrau escolhido, sem gambiarra.
+     (só pra desenvolvimento — remova ?degrau e ?chefe antes do lançamento.) */
+  try{
+    const md=(location.search||'').match(/degrau=(\d+)/);
+    if(md && window.BoraCloud && session){
+      const alvo=parseInt(md[1]);
+      const anteriores=[...new Set(WORDS.map(w=>w.level))]
+        .filter(lv=>parseFloat(lv) < alvo);   /* ex.: alvo=2 -> marca '1' e '1.5' */
+      session.completed_levels=session.completed_levels||[];
+      anteriores.forEach(lv=>{ if(!session.completed_levels.includes(String(lv)))
+        session.completed_levels.push(String(lv)); });
+    }
+  }catch(e){ console.error('atalho degrau:', e); }
+
   document.getElementById('home').classList.remove('hidden');
   renderGuidedInfo();
   /* ATALHO DE TESTE: abrir com ?chefe=1 na URL dispara o chefe do degrau na hora.
