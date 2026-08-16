@@ -1090,6 +1090,7 @@ function mvMasteredWords(){
 async function computeGuidedState(){
   if(!window.BoraCloud) return {done:true};
   const p = window.BoraCloud.getProgress();
+  console.log('[computeGuided] completed:', JSON.stringify([...p.completed]), '| níveis existentes:', JSON.stringify(levelsAsc()));
   for(const lv of levelsAsc()){
     if(p.completed.has(String(lv))) continue;
     const lw = wordsOfLevel(lv).filter(w => mvCompEligible(w, p)); /* trava composição sem base dominada */
@@ -2042,18 +2043,20 @@ async function enterApp(){
      (só desenvolvimento — remova ?degrau e ?chefe antes do lançamento.) */
   try{
     const md=(location.search||'').match(/degrau=(\d+)/);
+    console.log('[atalho degrau] URL search:', location.search, '| match:', md);
     if(md && session){
       const alvo=parseInt(md[1]);
       session.completed_levels=session.completed_levels||[];
-      /* níveis abaixo do alvo: '1','1.5' para alvo=2, etc. Sem depender de WORDS
-         (que vive no outro script): gera 1, 1.5, 2, 2.5 … até o alvo. */
       for(let n=1; n<alvo; n++){
         [String(n), n+'.5'].forEach(lv=>{
           if(!session.completed_levels.includes(lv)) session.completed_levels.push(lv);
         });
       }
+      console.log('[atalho degrau] alvo:', alvo, '| completed_levels agora:', JSON.stringify(session.completed_levels));
+    } else {
+      console.log('[atalho degrau] NÃO aplicou. md:', !!md, '| session:', !!session);
     }
-  }catch(e){ console.error('atalho degrau:', e); }
+  }catch(e){ console.error('[atalho degrau] ERRO:', e); }
 
   renderProfileBar(); $('profileBar').classList.remove('hidden');
   if(typeof window.startApp==='function') window.startApp(session.apelido_lower);
