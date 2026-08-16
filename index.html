@@ -633,6 +633,14 @@
   .restudy .rs-hint{font-size:.8rem;opacity:.6;margin-top:4px;font-weight:400}
   /* nota de pontuação (acerto que ensina) */
   .punctnote{background:rgba(80,170,255,.12);border-color:rgba(80,170,255,.35)}
+  .sensenote{background:rgba(255,190,60,.12);border-color:rgba(255,190,60,.35)}
+  .prep-body.inject{color:var(--brand,#ff8a00);opacity:.95;font-weight:500}
+  .pron-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:999px;
+    padding:2px 8px;margin-top:6px;cursor:pointer;font-size:.95rem;color:inherit}
+  .pron-btn:active{transform:scale(.94)}
+  .pron-bubble{display:none;margin-top:6px;padding:6px 10px;border-radius:10px;
+    background:rgba(10,30,60,.95);border:1px solid rgba(255,255,255,.16);font-style:italic;opacity:.9}
+  .pron-bubble.show{display:inline-block;animation:revealIn .2s ease both}
   /* ritual de preparação — tela limpa, SEM palavras atrás */
   .prep-screen{display:flex;align-items:center;justify-content:center;min-height:56vh;padding:var(--sp-16)}
   .prep-card{max-width:460px;text-align:center;
@@ -892,7 +900,7 @@ function flattenData(data){
         if(F.perg&&F.perg.en) examples.push({label:'Pergunta',   en:F.perg.en, pt:F.perg.pt||''});
         const rule = v.rule_ref ? ruleById[v.rule_ref] : null;
         out.push({ level:String(deg.degrau), en:v.en, pt:v.pt, pron:v.pron||'',
-                   examples, explain: rule?(rule.balao||''):'' });
+                   examples, explain: rule?(rule.balao||''):'', nota:v.nota_sentido||'' });
       }
     }
     /* 2) composições — nível = degrau.5 (entram DEPOIS das palavras soltas) */
@@ -1246,6 +1254,31 @@ function mvPrepMsg(dom){
   for(const b of PREP_BANDS){ if(dom>=b.min) band=b; }
   return band.msgs[Math.floor(Math.random()*band.msgs.length)];
 }
+
+/* IMERSÃO GRADUAL: injeta, de leve, uma palavra em inglês que o usuário JÁ domina.
+   Só usa palavras dominadas (nunca confunde), e não aparece toda vez. */
+function mvInjectLine(){
+  const mast = new Set(mvMasteredWords().map(w=>keyOf(w)));
+  const opts = [
+    {need:'ready', txt:'Você já tá <b>ready</b> pra essa. 😉'},
+    {need:'busy',  txt:'Mesmo num dia <b>busy</b>, um lote rende.'},
+    {need:'tired', txt:'Mesmo <b>tired</b>, dez palavras é rapidinho.'},
+    {need:'happy', txt:'Bora ficar <b>happy</b> com mais um lote. 😄'},
+    {need:'friend',txt:'Bora, <b>friend</b> — no seu tempo.'},
+  ].filter(o=>mast.has(o.need));
+  if(!opts.length || Math.random()>0.45) return '';   /* nem sempre */
+  return '<div class="prep-body inject">'+opts[Math.floor(Math.random()*opts.length)].txt+'</div>';
+}
+
+/* PRONÚNCIA PROGRESSIVA: até o Degrau 2, a fala aparece abaixo da palavra.
+   Do Degrau 3 em diante, vira um ícone ao lado do áudio que revela um balãozinho. */
+function mvPronHtml(w){
+  if(!w.pron) return '';
+  const deg = parseInt(w.level)||1;
+  if(deg<=2) return '<div class="pronq">'+esc(w.pron)+'</div>';
+  return '<button class="pron-btn" type="button" onclick="this.nextElementSibling.classList.toggle(\'show\')" title="como falar">🗣️</button>'+
+         '<span class="pron-bubble">'+esc(w.pron)+'</span>';
+}
 const MODES = ['enpt','pten','type'];
 const MODE_INTRO = {
   enpt:{n:1, t:'Reconhecer', d:'Inglês → Português'},
@@ -1307,6 +1340,7 @@ function mvExpose(){
     ? '<div class="prep-kicker">'+sub(c.k)+'</div>'+
       '<div class="prep-title">'+sub(c.t)+'</div>'+
       '<div class="prep-body">'+sub(c.b)+'</div>'+
+      mvInjectLine()+
       '<div class="prep-body">Respira. Quando estiver pronto(a), o tempo começa ao apertar.</div>'
     : '<div class="prep-kicker">Primeiro desafio 🎯</div>'+
       '<div class="prep-title">'+esc(oi)+', o foco é <b>gravar</b>.</div>'+
@@ -1388,7 +1422,7 @@ function mvRender(){
     const showKey= gStage==='enpt'?'en':'pt';
     const ansKey = gStage==='enpt'?'pt':'en';
     topQuestion(STAGE_LABEL[gStage], gLevel);
-    body.innerHTML='<div class="prompt"><div class="wordrow"><span class="word">'+esc(w[showKey])+'</span>'+(gStage==='enpt'?'<button class="speak-sm" title="Ouvir">🔊</button>':'')+'</div>'+((gStage==='enpt'&&w.pron)?'<div class="pronq">'+esc(w.pron)+'</div>':'')+'</div><div class="options"></div>';
+    body.innerHTML='<div class="prompt"><div class="wordrow"><span class="word">'+esc(w[showKey])+'</span>'+(gStage==='enpt'?'<button class="speak-sm" title="Ouvir">🔊</button>':'')+'</div>'+(gStage==='enpt'?mvPronHtml(w):'')+'</div><div class="options"></div>';
     if(gStage==='enpt'){ const sb=body.querySelector('.speak-sm'); if(sb) sb.onclick=()=>speak(w.en); }
     const opts=mvDistractors(w, ansKey, 3);
     const box=body.querySelector('.options'); box.dataset.answer=w[ansKey];
@@ -1436,6 +1470,8 @@ function mvResolve(correct, w, ansKey, info){
     rc.innerHTML='📌 <b>'+esc(w.en)+'</b> = '+esc(w.pt)+(w.pron?' · <i>'+esc(w.pron)+'</i>':'')+'<div class="rs-hint">Ela volta no fim da fila.</div>';
     host.appendChild(rc); }
   const ex=buildExamples(w); if(ex) host.appendChild(ex);
+  if(w.nota){ const nt=document.createElement('div'); nt.className='correction sensenote';
+    nt.innerHTML='💡 '+esc(w.nota); host.appendChild(nt); }
   if(correct){ mvQueue.shift(); mvDone++; window.BoraCloud.markMastered(gStage, keyOf(w), gLevel); }
   else{ const cur=mvQueue.shift(); mvQueue.push(cur); }
   document.getElementById('qBar').style.width=(mvTotal?mvDone/mvTotal*100:0)+'%';

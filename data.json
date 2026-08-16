@@ -704,7 +704,8 @@
               "tags_gram": [
                 "adjetivo_estado"
               ],
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "nota_sentido": "“busy” = ocupado (pessoa: I am busy) ou movimentado (lugar: a busy restaurant)."
             },
             {
               "id": "VOC_0027",
@@ -729,7 +730,8 @@
               "tags_gram": [
                 "adjetivo_estado"
               ],
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "nota_sentido": "“cold” = frio (lugar/coisa), com frio (pessoa) ou um resfriado (I have a cold)."
             },
             {
               "id": "VOC_0028",
@@ -754,7 +756,8 @@
               "tags_gram": [
                 "adjetivo_estado"
               ],
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "nota_sentido": "“hot” = quente (lugar/coisa) ou com calor (pessoa: I am hot)."
             },
             {
               "id": "VOC_0029",
