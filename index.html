@@ -1171,6 +1171,81 @@ function revisaoDaRodada(){
 /* Segundos da tela de exposição por degrau. Generoso no começo (memorizar sem
    pressa), aperta conforme avança (fluência). AJUSTE AQUI se quiser. */
 const EXPO_SEG = {1:20, 2:16, 3:12, 4:9, 5:7, 6:5};
+
+/* Banco de mensagens da chapa de preparação (lote 2+).
+   Faixas por nº de palavras dominadas (nos 3 modos). O motor pega a faixa mais
+   alta cujo 'min' <= dominadas, e sorteia dentro dela. Tom coach; as faixas
+   altas reconhecem vocabulário/disciplina — não prometem "fluência". {nome} = apelido. */
+const PREP_BANDS = [
+ { min:10, msgs:[
+   {k:'Primeira barreira vencida 🎯', t:'{nome}, o mais difícil você já fez.', b:'Sair do zero é o que trava a maioria. Você passou disso — agora é manter o passo.'},
+   {k:'Destravando o motor ⚙️', t:'Bom te ver de volta, {nome}.', b:'As primeiras conexões já estão se formando na sua cabeça. Bora somar mais um punhado.'},
+   {k:'Ganhando confiança ✨', t:'{nome}, já dá pra sentir a diferença.', b:'Cada palavra que fica é uma trava a menos no seu inglês. Vamos pra próxima.'},
+   {k:'Foco no processo 🧠', t:'Sem pressa, {nome}.', b:'A repetição certa faz o cérebro guardar de verdade. É isso que você tá fazendo agora.'},
+   {k:'Pegou a dinâmica 🚀', t:'{nome}, agora você sabe como funciona.', b:'Entendido o ritmo, o resto flui bem mais fácil. Bora nessas próximas.'},
+   {k:'Passo a passo 👣', t:'Constância vence a pressa, {nome}.', b:'Ninguém aprende tudo num dia. Basta absorver bem estas próximas palavras.'},
+   {k:'Presença conta 👊', t:'Aparecer já é meia vitória, {nome}.', b:'Você decidiu praticar e tá aqui. Vamos virar essa intenção em palavra dominada.'},
+   {k:'Começo firme 🧱', t:'{nome}, você tá construindo direito.', b:'São estas primeiras palavras que seguram tudo que vem depois. Vamos a elas.'},
+   {k:'Olho vivo 👁️', t:'{nome}, começa a fazer sentido, né?', b:'Aos poucos o cérebro para de traduzir e reconhece direto. Continua nesse passo.'},
+   {k:'Mais uma rodada 🌱', t:'{nome}, bora fixar mais um pouco.', b:'Você já provou que consegue aprender e reter. Vamos deixar isso mais familiar.'},
+ ]},
+ { min:50, msgs:[
+   {k:'Entrou no fluxo ⚡', t:'{nome}, isso já não é sorte.', b:'Cinquenta palavras dominadas é método e dedicação. Bora expandir.'},
+   {k:'Reflexo chegando 🎯', t:'{nome}, seu tempo de resposta caiu.', b:'Reconhecer e escrever tá virando reflexo. Mantém o padrão nesta rodada.'},
+   {k:'Virou rotina 🗓️', t:'Já pegou o hábito, né {nome}?', b:'Quando a prática entra no automático da disciplina, a evolução vem sozinha.'},
+   {k:'Energia no lugar certo 💡', t:'{nome}, seu cérebro já sabe o caminho.', b:'Você não perde mais tempo com o formato. Toda a atenção vai pro vocabulário.'},
+   {k:'Ficando leve 🏎️', t:'Tá mais fácil que no começo, {nome}.', b:'O que parecia confuso já flui sem tanto esforço. Bora pro próximo lote.'},
+   {k:'Saiu da largada 🧗', t:'{nome}, você deixou o início pra trás.', b:'Agora o jogo é sustentar a precisão enquanto o vocabulário cresce. Confio em você.'},
+   {k:'Trabalho quieto 🛠️', t:'{nome}, o progresso silencioso rende.', b:'Você vem praticando sem alarde, e já aparece na velocidade da resposta.'},
+   {k:'Do jeito certo 🧭', t:'{nome}, você não tá pulando etapa.', b:'Fixar nos três modos dá trabalho, mas o que entra assim não sai mais. Próxima.'},
+   {k:'Peças encaixando 🔗', t:'{nome}, o quebra-cabeça tá montando.', b:'Você reconhece padrões de som e escrita bem mais rápido agora. Bora seguir.'},
+   {k:'Boa sequência 🔥', t:'{nome}, o embalo tá bom.', b:'Não é uma rodada isolada — é essa continuidade que constrói. Mais uma.'},
+ ]},
+ { min:100, msgs:[
+   {k:'Passou de cem 💯', t:'{nome}, já tem uma boa bagagem de palavras.', b:'Com esse volume, o inglês começa a deixar de ser um muro. Bora seguir.'},
+   {k:'Menos hesitação 🌊', t:'{nome}, você trava bem menos agora.', b:'As palavras respondem quase na hora. Mantém a pegada.'},
+   {k:'Disciplina comprovada 🛡️', t:'Muita gente para antes daqui, {nome}.', b:'Chegar nessa marca é compromisso de verdade. Bora rodar mais uma.'},
+   {k:'Vocabulário vivo 📚', t:'{nome}, você já reconhece bastante coisa.', b:'Agora cada rodada acrescenta precisão ao que você já sabe. Vamos.'},
+   {k:'Treino de quem sabe 🥋', t:'{nome}, você treina com foco.', b:'A concentração vem fácil porque o processo já é seu. Mais dez na conta.'},
+   {k:'Som e grafia juntos 🎧', t:'{nome}, ouvir e escrever já conectam.', b:'A fase de hesitar na hora de escrever ficou pra trás. Segue firme.'},
+   {k:'Palavra puxa palavra 🔓', t:'{nome}, o vocabulário começa a se sustentar.', b:'Quanto mais você sabe, mais fácil encaixar o que é novo. Próximo lote.'},
+   {k:'Direto ao ponto 🦅', t:'Mais dez pra conta, {nome}.', b:'Sem enrolação — você já sabe exatamente o que fazer aqui.'},
+ ]},
+ { min:200, msgs:[
+   {k:'Bagagem pesada 🦾', t:'{nome}, você juntou um vocabulário grande.', b:'Duzentas palavras dominadas nos três modos é disciplina de ferro. Bora lapidar mais.'},
+   {k:'Virou natural 🏛️', t:'{nome}, memorizar já é rápido pra você.', b:'O esforço do começo virou hábito. Vamos aproveitar isso.'},
+   {k:'Régua mais alta 📐', t:'{nome}, dá pra cobrar mais de você agora.', b:'Você tem palavra suficiente pra ir além do confortável. Vamos.'},
+   {k:'Olha o tamanho da lista 🔭', t:'{nome}, lá no início parecia muito.', b:'Hoje é só mais uma etapa do que você vem construindo. Segue.'},
+   {k:'Reflexo afinado 🐅', t:'{nome}, a resposta sai rápida.', b:'O tempo de processamento caiu — isso é fixação de longo prazo de verdade.'},
+   {k:'Não depende de vontade 💎', t:'{nome}, você criou um hábito firme.', b:'Não é motivação, é rotina. Bora somar mais uma camada.'},
+   {k:'Constância que rende 🌟', t:'{nome}, esse volume não veio à toa.', b:'Tem consistência por trás de cada palavra dominada. Mantém.'},
+   {k:'Abrindo espaço ♟️', t:'{nome}, hora de ampliar o território.', b:'Mais um lote pra enriquecer o que você já domina bem. Vamos.'},
+ ]},
+ { min:400, msgs:[
+   {k:'Muita estrada 🏔️', t:'{nome}, respeito pela sua jornada.', b:'Pouca gente tem disciplina de ir tão longe e sustentar esse nível. Bora continuar.'},
+   {k:'Terreno conhecido 🧭', t:'{nome}, você já domina o processo.', b:'Aqui quase nada é novidade na dinâmica. O trabalho é seguir somando palavra.'},
+   {k:'Vocabulário grande 🗿', t:'{nome}, sua lista já fala por si.', b:'Cada palavra nova entra numa estrutura enorme. Isso acelera tudo.'},
+   {k:'Mais exigente 📐', t:'{nome}, dá pra apertar a precisão agora.', b:'Com esse tanto de palavra, o foco vira caprichar nos detalhes. Vamos.'},
+   {k:'Conquistado no suor 🛠️', t:'{nome}, isso foi construído na prática.', b:'Você mostrou consistência por muito tempo. Mais uma mantém isso vivo.'},
+   {k:'Sem atalho 🧭', t:'{nome}, sua marca é a constância.', b:'Você chegou aqui acumulando domínio, não só rodadas. Segue no mesmo nível.'},
+   {k:'Longe do começo 🚀', t:'{nome}, faz tempo que você passou do básico.', b:'Agora é continuar ampliando um vocabulário que já aguenta bastante coisa.'},
+   {k:'Mantém a régua 🎯', t:'{nome}, você sabe o que é consistência.', b:'Trata cada rodada com atenção — é assim que um vocabulário grande fica melhor.'},
+ ]},
+ { min:800, msgs:[
+   {k:'Outro patamar 👑', t:'{nome}, seu vocabulário é de quem tem muita estrada.', b:'Oitocentas palavras dominadas nos três modos te colocam entre os mais dedicados.'},
+   {k:'Construído no tempo 💎', t:'{nome}, isso é a soma de muitas sessões.', b:'Não foi uma rodada que trouxe você aqui. Foi consistência. Bora continuar.'},
+   {k:'Régua bem alta 📐', t:'{nome}, dá pra ir bem além do confortável.', b:'Você tem palavra de sobra pra buscar precisão e alcance. Vamos.'},
+   {k:'Resposta no reflexo 🧠', t:'{nome}, a palavra certa vem quase sem pensar.', b:'A hesitação deu lugar à certeza rápida. Mais dez pra somar.'},
+   {k:'Disciplina rara 🏆', t:'{nome}, chegar aqui é pra poucos.', b:'O volume de foco e repetição que você colocou aqui é o que faz a diferença.'},
+   {k:'Lapidando 💠', t:'{nome}, agora é trabalho de quem já tem estrada.', b:'Nada pra reconstruir — é seguir ampliando e mantendo o que conquistou.'},
+   {k:'Sem teto 🌌', t:'{nome}, seu crescimento não tem limite.', b:'Você domina o método. Agora é explorar todo o vocabulário que quiser.'},
+ ]},
+];
+function mvPrepMsg(dom){
+  let band=PREP_BANDS[0];
+  for(const b of PREP_BANDS){ if(dom>=b.min) band=b; }
+  return band.msgs[Math.floor(Math.random()*band.msgs.length)];
+}
 const MODES = ['enpt','pten','type'];
 const MODE_INTRO = {
   enpt:{n:1, t:'Reconhecer', d:'Inglês → Português'},
@@ -1218,20 +1293,10 @@ function mvExpose(){
   const oi = nome ? nome : 'Vamos lá';
   const p0 = window.BoraCloud.getProgress();
   const jaComecou = p0.enpt.size>0 || p0.pten.size>0 || p0.type.size>0;  /* não é a 1ª vez */
+  const dom = WORDS.filter(w=>domAll(p0, keyOf(w))).length;              /* palavras dominadas */
   const BTN = 'Bora de Inglês! ›';   /* a marca na boca do usuário a cada rodada */
-
-  /* continuidade (lote 2+): reconhece desempenho + evolução, variando */
-  const contin = [
-    {k:'Bora de novo 🔥', t:esc(oi)+', mandou bem!',
-     b:'Seu vocabulário tá crescendo. Agora mais um punhado pra <b>gravar</b> — respira, no seu tempo.'},
-    {k:'Próxima rodada 💪', t:'Muito bom, '+esc(oi)+'!',
-     b:'Cada rodada dessas te deixa mais fluente. Mesma ideia: grave as palavras com <b>calma</b>.'},
-    {k:'Seguindo forte 🚀', t:esc(oi)+', tá voando!',
-     b:'Seu inglês tá ganhando corpo. Grave estas próximas — <b>sem pressa</b>, no seu ritmo.'},
-    {k:'Mais um passo ✨', t:'Boa, '+esc(oi)+'!',
-     b:'Mais vocabulário novo no bolso. Bora gravar as próximas — respira e <b>vá no seu tempo</b>.'},
-  ];
-  const c = contin[Math.floor(Math.random()*contin.length)];
+  const sub = s => (s||'').replace(/\{nome\}/g, esc(oi));               /* injeta o apelido */
+  const c = mvPrepMsg(dom);          /* mensagem de continuidade pela faixa de progresso */
 
   const prep = isComp
     ? '<div class="prep-kicker">Etapa nova 🧩</div>'+
@@ -1239,10 +1304,10 @@ function mvExpose(){
       '<div class="prep-body">Você já domina estas palavras sozinhas. Aqui elas aparecem <b>combinadas</b> — em duplas e frases curtas. É assim que o inglês vira frase de verdade.</div>'+
       '<div class="prep-body">Leia com calma. Quando entender, aperte '+BTN.replace(' ›','')+'.</div>'
     : jaComecou
-    ? '<div class="prep-kicker">'+c.k+'</div>'+
-      '<div class="prep-title">'+c.t+'</div>'+
-      '<div class="prep-body">'+c.b+'</div>'+
-      '<div class="prep-body">Quando estiver pronto(a), o tempo começa ao apertar.</div>'
+    ? '<div class="prep-kicker">'+sub(c.k)+'</div>'+
+      '<div class="prep-title">'+sub(c.t)+'</div>'+
+      '<div class="prep-body">'+sub(c.b)+'</div>'+
+      '<div class="prep-body">Respira. Quando estiver pronto(a), o tempo começa ao apertar.</div>'
     : '<div class="prep-kicker">Primeiro desafio 🎯</div>'+
       '<div class="prep-title">'+esc(oi)+', o foco é <b>gravar</b>.</div>'+
       '<div class="prep-body">Antes de responder, o desafio é <b>atenção e memória</b>. Você terá <b>'+secs+' segundos</b> para gravar '+gLoteAll.length+' palavra'+(gLoteAll.length>1?'s':'')+' — toque em cada uma para ouvir.</div>'+
