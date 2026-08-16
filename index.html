@@ -1511,12 +1511,12 @@ const CP_INTRO = [
   {k:'Você está pronto 🎯',    t:'{nome}, o degrau foi todo construído por você.', b:'Aqui você digita cada resposta em inglês — o vocabulário já está na ponta dos dedos. Confia no seu preparo.'},
   {k:'Seu momento chegou ⚡',  t:'{nome}, você treinou pra este momento.', b:'A prova pede que você produza o inglês, não só reconheça uma resposta. Mostra o que sabe.'},
   {k:'Direto da memória 🧠',   t:'Sua base é sólida, {nome}.', b:'Hora de escrever direto da memória. Quem treinou com consistência não precisa de atalho.'},
-  {k:'De frente pro chefe',    t:'{nome}, você fez o trabalho. Agora, mostra.', b:'Chegou a hora de produzir o inglês sem depender de opções. Escreve de cabeça e deixa o treino falar por você.'},
-  {k:'Agora é com você',       t:'{nome}, tudo que você praticou te trouxe aqui.', b:'Você vai produzir o inglês por conta própria — e é assim que o domínio aparece de verdade.'},
+  {k:'De frente pro chefe',    t:'{nome}, você fez o trabalho. Agora, se prove.', b:'Chegou a hora de produzir o inglês sem depender de opções. Deixa o treino falar por você.'},
+  {k:'Agora é com você',       t:'{nome}, tudo que você praticou te trouxe aqui.', b:'Você vai produzir o inglês por conta própria — e saberá que o método já funcionou.'},
 ];
 function cpIntroMsg(){ return CP_INTRO[Math.floor(Math.random()*CP_INTRO.length)]; }
 const PLAY_SVG = ' <svg class="play-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5v14l12-7z"/></svg>';
-let cpDeg=0, cpQueue=[], cpTotal=0, cpRight=0, cpWrong=[], cpFase='';
+let cpDeg=0, cpQueue=[], cpTotal=0, cpRight=0, cpWrong=[], cpFase='', cpPending=[];
 
 function cpDegrauDe(w){ return parseInt(w.level)||1; }
 function degrausComConteudo(){ return [...new Set(WORDS.map(cpDegrauDe))].sort((a,b)=>a-b); }
@@ -1559,44 +1559,51 @@ function startCheckpoint(deg){
     '<button class="btn-primary" id="cpGo">Encarar o chefe'+PLAY_SVG+'</button></div></div>';
   document.getElementById('cpGo').onclick=cpBegin;
 }
-function cpBegin(){
-  const p=window.BoraCloud.getProgress();
-  let pool = WORDS.filter(w=>cpDegrauDe(w)===cpDeg && mvCompEligible(w,p));
-  pool = shuffle(pool).slice(0, Math.min(CP_N, pool.length));
+function cpRunRound(pool, fase){
+  cpFase=fase;
   cpQueue = pool.map(w=>({w, mode:cpPickMode()}));
-  cpTotal = cpQueue.length; cpRight=0; cpWrong=[]; cpFase='prova';
+  cpTotal = cpQueue.length; cpRight=0; cpWrong=[];
   cpRender();
 }
+function cpBegin(){
+  const p=window.BoraCloud.getProgress();
+  const pool = shuffle(WORDS.filter(w=>cpDegrauDe(w)===cpDeg && mvCompEligible(w,p))).slice(0, CP_N);
+  cpRunRound(pool, 'prova');
+}
 function cpStartRevanche(){
-  cpFase='revanche';
-  cpQueue = shuffle(cpWrong.slice()).map(w=>({w, mode:cpPickMode()}));
+  const p=window.BoraCloud.getProgress();
+  const missed = cpWrong.slice();
+  const missedKeys = new Set(missed.map(keyOf));
+  /* reforço: aleatórias do degrau (fora as que erraram) até completar CP_N */
+  const resto = WORDS.filter(w=>cpDegrauDe(w)===cpDeg && mvCompEligible(w,p) && !missedKeys.has(keyOf(w)));
+  const fill = shuffle(resto).slice(0, Math.max(0, CP_N - missed.length));
+  cpPending = shuffle([...missed, ...fill]);
+  const nMiss=missed.length, nFill=fill.length;
+  const parte = nFill>0
+    ? 'as <b>'+nMiss+' que você passou perto</b> + <b>'+nFill+' de reforço</b> entre as que você já domina'
+    : 'as <b>'+nMiss+' palavra'+(nMiss>1?'s':'')+' que você passou perto</b>';
   document.getElementById('qExamples').innerHTML=''; document.getElementById('qNext').innerHTML='';
   document.getElementById('qBar').style.width='0%';
   document.getElementById('qCount').textContent='Revanche';
   document.getElementById('qScore').textContent='Revanche';
-  const n=cpQueue.length;
+  document.getElementById('qStreak').textContent='';
   document.getElementById('qQuestion').innerHTML=
     '<div class="prep-screen"><div class="prep-card">'+
     '<div class="prep-kicker">Revanche 🔁</div>'+
     '<div class="prep-title">Passou perto!</div>'+
-    '<div class="prep-body">Vamos fechar só o que faltou: <b>'+n+' palavra'+(n>1?'s':'')+'</b>, com questões novas. Acerte todas pra concluir o degrau.</div>'+
+    '<div class="prep-body">Bora fechar com <b>chave de ouro</b>: '+parte+'. O desafio é a prova da sua dedicação e esforço, confie em si e vença essa etapa. Bora de Inglês!</div>'+
+    '<div class="prep-body cp-facts"><b>'+cpPending.length+' questões</b>, questões novas. Precisa de <b>80%</b> de novo pra concluir o degrau.</div>'+
     '<button class="btn-primary" id="cpRevGo">Bora'+PLAY_SVG+'</button></div></div>';
-  document.getElementById('cpRevGo').onclick=cpRender;
+  document.getElementById('cpRevGo').onclick=()=>cpRunRound(cpPending,'revanche');
 }
 function cpRender(){
   if(!cpQueue.length){ return cpFinish(); }
   const it=cpQueue[0], w=it.w, mode=it.mode; gCurrent=w; window.scrollTo(0,0);
   document.getElementById('qExamples').innerHTML=''; document.getElementById('qNext').innerHTML='';
-  if(cpFase==='prova'){
-    const feito=cpTotal-cpQueue.length;
-    document.getElementById('qBar').style.width=(cpTotal?feito/cpTotal*100:0)+'%';
-    document.getElementById('qCount').textContent='Questão '+(feito+1)+' de '+cpTotal;
-    document.getElementById('qScore').textContent='Chefe';
-  } else {
-    document.getElementById('qBar').style.width='0%';
-    document.getElementById('qCount').textContent='Revanche · faltam '+cpQueue.length;
-    document.getElementById('qScore').textContent='Revanche';
-  }
+  const feito=cpTotal-cpQueue.length;
+  document.getElementById('qBar').style.width=(cpTotal?feito/cpTotal*100:0)+'%';
+  document.getElementById('qCount').textContent='Questão '+(feito+1)+' de '+cpTotal;
+  document.getElementById('qScore').textContent=(cpFase==='revanche'?'Revanche':'Chefe');
   document.getElementById('qStreak').textContent='';
   const body=document.getElementById('qQuestion'); body.innerHTML='';
   if(mode==='enpt' || mode==='pten'){
@@ -1626,20 +1633,16 @@ function cpResolve(correct){
   const it=cpQueue.shift();
   const ansKey = it.mode==='enpt'?'pt':'en';
   topAnswer(correct, correct?null:it.w[ansKey]);
-  if(cpFase==='prova'){ if(correct) cpRight++; else cpWrong.push(it.w); }
-  else if(!correct){ it.mode=cpPickMode(); cpQueue.push(it); }   /* revanche: erra -> volta com questão nova */
+  if(correct) cpRight++; else cpWrong.push(it.w);
   const nx=document.getElementById('qNext');
   nx.innerHTML='<button class="next-btn" id="cpNext">Próxima ›</button>';
   document.getElementById('cpNext').onclick=cpRender;
   window.scrollTo({top:0, behavior:'smooth'});
 }
 function cpFinish(){
-  if(cpFase==='prova'){
-    const score = cpTotal ? cpRight/cpTotal : 0;
-    if(score >= CP_PASS) return cpPass(score);
-    return cpStartRevanche();
-  }
-  return cpPass(null); /* fim da revanche = corrigiu tudo */
+  const score = cpTotal ? cpRight/cpTotal : 1;
+  if(score >= CP_PASS) return cpPass(score);
+  return cpStartRevanche();   /* falhou -> revanche (erradas + reforço), 80% de novo */
 }
 function cpPass(score){
   if(window.BoraCloud) window.BoraCloud.passCheckpoint(cpDeg);
