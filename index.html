@@ -889,11 +889,19 @@ function rowsToWords(rows){
    Passo 1 da migração: level = degrau, mantendo o motor guiado intacto.
    A estrutura de lição/checkpoint fica preservada no data.json para o passo 2. */
 function flattenData(data){
-  const ruleById={}, ptByEn={};
+  /* IDENTIDADE = VOC_ID (não mais 'en'). Migração en->id: o flatten passa v.id/c.id
+     ao objeto do motor, e resolve base_refs (que na planilha vêm por 'en', legível
+     para humanos) para os VOC_IDs correspondentes — buscando a palavra NO MESMO
+     DEGRAU da composição, o que elimina a ambiguidade das colisões 'en' D1xD2
+     (dentro de um degrau, 'en' ainda é único). */
+  const ruleById={}, ptByEn={}, idByDegEn={};
   for(const deg of (data.degraus||[]))
     for(const lic of (deg.licoes||[])){
       for(const r of (lic.rules||[])) ruleById[r.rule_id]=r;      /* mapa global de cartas */
-      for(const v of (lic.vocab||[])) ptByEn[(v.en||'').toLowerCase()]=v.pt;  /* palavra->tradução */
+      for(const v of (lic.vocab||[])){
+        ptByEn[(v.en||'').toLowerCase()]=v.pt;                    /* palavra->tradução (exibição) */
+        idByDegEn[deg.degrau+'|'+(v.en||'').toLowerCase().trim()]=v.id;  /* (degrau,en)->VOC_ID */
+      }
     }
   const out=[];
   for(const deg of (data.degraus||[])){
@@ -905,22 +913,28 @@ function flattenData(data){
         if(F.neg&&F.neg.en)   examples.push({label:'Negativa',   en:F.neg.en,  pt:F.neg.pt||''});
         if(F.perg&&F.perg.en) examples.push({label:'Pergunta',   en:F.perg.en, pt:F.perg.pt||''});
         const rule = v.rule_ref ? ruleById[v.rule_ref] : null;
-        out.push({ level:String(deg.degrau), en:v.en, pt:v.pt, pron:v.pron||'',
+        out.push({ id:v.id, level:String(deg.degrau), en:v.en, pt:v.pt, pron:v.pron||'',
                    examples, explain: rule?(rule.balao||''):'', nota:v.nota_sentido||'' });
       }
     }
-    /* 2) composições — nível = degrau.5 (entram DEPOIS das palavras soltas) */
+    /* 2) composições — nível = degrau.5 (entram DEPOIS das palavras soltas).
+       base_refs resolvido en->VOC_ID no MESMO degrau da composição. */
     for(const c of (deg.composicoes||[])){
-      const examples=(c.base_refs||[]).map(w=>({label:'Peça', en:w, pt:ptByEn[(w||'').toLowerCase()]||''}));
+      const refsEn=(c.base_refs||[]).map(x=>String(x).toLowerCase().trim());
+      const refsId=refsEn.map(en=>{ const k=idByDegEn[deg.degrau+'|'+en];
+        if(!k) console.error('base_ref não resolvido para VOC_ID:', c.id, en, '(degrau '+deg.degrau+')');
+        return k || en; });  /* mantém en só para não quebrar render; erro fica visível no console */
+      const examples=refsEn.map(w=>({label:'Peça', en:w, pt:ptByEn[w]||''}));
       const rule = c.rule_ref ? ruleById[c.rule_ref] : null;
-      out.push({ level:String(deg.degrau)+'.5', en:c.en, pt:c.pt, pron:c.pron||'',
+      out.push({ id:c.id, level:String(deg.degrau)+'.5', en:c.en, pt:c.pt, pron:c.pron||'',
                  examples, explain: rule?(rule.balao||''):'',
-                 base_refs:(c.base_refs||[]).map(x=>String(x).toLowerCase().trim()) });
+                 base_refs:refsId });
     }
   }
   return out;
 }
 async function loadWords(){
+  if(window.__BORA_DATA__){ try{ const wi=flattenData(window.__BORA_DATA__); if(wi&&wi.length) return {words:wi, source:'inline'}; }catch(e){ console.error('dados embutidos falharam', e); } }
   try{
     const res = await fetch(DATA_URL+'?_t='+Date.now(), {cache:'no-store'});
     if(!res.ok) throw new Error('http '+res.status);
@@ -1061,7 +1075,12 @@ const STAGE_LABEL = { enpt:'Qual a tradução?', pten:'Como se escreve em inglê
 const STAGE_SHORT = { enpt:'EN→PT', pten:'PT→EN', type:'Escrita' };
 let gStage='enpt', gLevel='', gLoteWords=[], gCurrent=null;
 
-function keyOf(w){ return (w.en||'').toLowerCase().trim(); }
+/* IDENTIDADE OFICIAL = VOC_ID, exclusivamente. 'en' é conteúdo, nunca identidade.
+   Sem fallback: um item sem id é erro de dados e deve ser acusado, não mascarado. */
+function keyOf(w){
+  if(!w || !w.id){ console.error('keyOf: item sem VOC_ID (identidade ausente):', w); throw new Error('Vocabulário sem VOC_ID — identidade ausente'); }
+  return w.id;
+}
 function levelsAsc(){
   return [...new Set(WORDS.map(w=>w.level))].sort((a,b)=>{
     const na=parseFloat(a), nb=parseFloat(b);
@@ -1078,7 +1097,9 @@ function domAll(p,k){ return p.enpt.has(k)&&p.pten.has(k)&&p.type.has(k); }
    foram dominadas nos 3 modos por ESTE usuário. Palavra solta é sempre elegível. */
 function mvCompEligible(w, p){
   if(!w.base_refs || !w.base_refs.length) return true;
-  return w.base_refs.every(b => domAll(p, String(b).toLowerCase().trim()));
+  /* base_refs já vêm como VOC_ID (resolvidos no flatten). Compara direto — sem
+     lowercase, que corromperia o ID. */
+  return w.base_refs.every(b => domAll(p, b));
 }
 /* palavras (soltas) que o usuário domina de fato — base para injetar inglês já sabido */
 function mvMasteredWords(){
@@ -1090,7 +1111,6 @@ function mvMasteredWords(){
 async function computeGuidedState(){
   if(!window.BoraCloud) return {done:true};
   const p = window.BoraCloud.getProgress();
-  console.log('[computeGuided] completed:', JSON.stringify([...p.completed]), '| níveis existentes:', JSON.stringify(levelsAsc()));
   for(const lv of levelsAsc()){
     if(p.completed.has(String(lv))) continue;
     const lw = wordsOfLevel(lv).filter(w => mvCompEligible(w, p)); /* trava composição sem base dominada */
@@ -1831,6 +1851,752 @@ document.getElementById('startBtn').onclick=startGuided;
 
 window.startApp = function(){ return init(); };
 </script>
+<script>
+/* DADOS EMBUTIDOS — Missão 1.1 (Pessoas e família). Permite abrir o arquivo
+   direto (sem servidor) e jogar offline. Online continua podendo usar data.json. */
+window.__BORA_DATA__ = {
+  "version": "1.1-slice",
+  "degraus": [
+    {
+      "degrau": 1,
+      "nome": "Nomear + Ser",
+      "licoes": [
+        {
+          "licao": "1.1",
+          "titulo": "Pessoas e família",
+          "vocab": [
+            {
+              "id": "VOC_0003",
+              "en": "mother",
+              "pt": "mãe",
+              "tema": "Pessoas e família",
+              "frases": {
+                "afe": {
+                  "en": "My mother is a teacher.",
+                  "pt": "Minha mãe é professora."
+                },
+                "neg": {
+                  "en": "She is not my mother.",
+                  "pt": "Ela não é minha mãe."
+                },
+                "perg": {
+                  "en": "Is your mother at work?",
+                  "pt": "Sua mãe está no trabalho?"
+                }
+              },
+              "pron": "mâdâr",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0004",
+              "en": "father",
+              "pt": "pai",
+              "tema": "Pessoas e família",
+              "frases": {
+                "afe": {
+                  "en": "My father is very tall.",
+                  "pt": "Meu pai é muito alto."
+                },
+                "neg": {
+                  "en": "My father is not old.",
+                  "pt": "Meu pai não é velho."
+                },
+                "perg": {
+                  "en": "Is he your father?",
+                  "pt": "Ele é seu pai?"
+                }
+              },
+              "pron": "fádâr",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0001",
+              "en": "brother",
+              "pt": "irmão",
+              "tema": "Pessoas e família",
+              "frases": {
+                "afe": {
+                  "en": "This is my brother.",
+                  "pt": "Este é meu irmão."
+                },
+                "neg": {
+                  "en": "He is not my brother.",
+                  "pt": "Ele não é meu irmão."
+                },
+                "perg": {
+                  "en": "Is he your brother?",
+                  "pt": "Ele é seu irmão?"
+                }
+              },
+              "pron": "brâdâr",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0002",
+              "en": "sister",
+              "pt": "irmã",
+              "tema": "Pessoas e família",
+              "frases": {
+                "afe": {
+                  "en": "My sister is very smart.",
+                  "pt": "Minha irmã é muito inteligente."
+                },
+                "neg": {
+                  "en": "My sister is not at home.",
+                  "pt": "Minha irmã não está em casa."
+                },
+                "perg": {
+                  "en": "Is she your sister?",
+                  "pt": "Ela é sua irmã?"
+                }
+              },
+              "pron": "sistâr",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0005",
+              "en": "son",
+              "pt": "filho",
+              "tema": "Pessoas e família",
+              "frases": {
+                "afe": {
+                  "en": "He is my son.",
+                  "pt": "Ele é meu filho."
+                },
+                "neg": {
+                  "en": "This is not my son.",
+                  "pt": "Este não é meu filho."
+                },
+                "perg": {
+                  "en": "Is he your son?",
+                  "pt": "Ele é seu filho?"
+                }
+              },
+              "pron": "sân",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0006",
+              "en": "daughter",
+              "pt": "filha",
+              "tema": "Pessoas e família",
+              "frases": {
+                "afe": {
+                  "en": "She is my daughter.",
+                  "pt": "Ela é minha filha."
+                },
+                "neg": {
+                  "en": "She is not my daughter.",
+                  "pt": "Ela não é minha filha."
+                },
+                "perg": {
+                  "en": "Is your daughter happy?",
+                  "pt": "Sua filha está feliz?"
+                }
+              },
+              "pron": "dótâr",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0067",
+              "en": "child",
+              "pt": "criança / filho",
+              "tema": "Pessoas e família",
+              "frases": {
+                "afe": {
+                  "en": "This is my child.",
+                  "pt": "Esta é minha criança."
+                },
+                "neg": {
+                  "en": "This is not my child.",
+                  "pt": "Esta não é minha criança."
+                },
+                "perg": {
+                  "en": "Is this your child?",
+                  "pt": "Esta é sua criança?"
+                }
+              },
+              "pron": "tcháild",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0068",
+              "en": "children",
+              "pt": "filhos / crianças",
+              "tema": "Pessoas e família",
+              "frases": {
+                "afe": {
+                  "en": "They are my children.",
+                  "pt": "Eles são meus filhos."
+                },
+                "neg": {
+                  "en": "They are not my children.",
+                  "pt": "Eles não são meus filhos."
+                },
+                "perg": {
+                  "en": "Are they your children?",
+                  "pt": "Eles são seus filhos?"
+                }
+              },
+              "pron": "tchíldrân",
+              "tags_gram": [
+                "substantivo",
+                "pessoa",
+                "plural"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0070",
+              "en": "husband",
+              "pt": "marido",
+              "tema": "Pessoas e família",
+              "frases": {
+                "afe": {
+                  "en": "He is my husband.",
+                  "pt": "Ele é meu marido."
+                },
+                "neg": {
+                  "en": "He is not my husband.",
+                  "pt": "Ele não é meu marido."
+                },
+                "perg": {
+                  "en": "Is he your husband?",
+                  "pt": "Ele é seu marido?"
+                }
+              },
+              "pron": "râzbând",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0071",
+              "en": "wife",
+              "pt": "esposa",
+              "tema": "Pessoas e família",
+              "frases": {
+                "afe": {
+                  "en": "She is my wife.",
+                  "pt": "Ela é minha esposa."
+                },
+                "neg": {
+                  "en": "She is not my wife.",
+                  "pt": "Ela não é minha esposa."
+                },
+                "perg": {
+                  "en": "Is she your wife?",
+                  "pt": "Ela é sua esposa?"
+                }
+              },
+              "pron": "uáif",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0072",
+              "en": "parents",
+              "pt": "pais",
+              "tema": "Pessoas e família",
+              "frases": {
+                "afe": {
+                  "en": "They are my parents.",
+                  "pt": "Eles são meus pais."
+                },
+                "neg": {
+                  "en": "They are not my parents.",
+                  "pt": "Eles não são meus pais."
+                },
+                "perg": {
+                  "en": "Are they your parents?",
+                  "pt": "Eles são seus pais?"
+                }
+              },
+              "pron": "pérânts",
+              "tags_gram": [
+                "substantivo",
+                "pessoa",
+                "plural"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0069",
+              "en": "grandparents",
+              "pt": "avós",
+              "tema": "Pessoas e família",
+              "frases": {
+                "afe": {
+                  "en": "They are my grandparents.",
+                  "pt": "Eles são meus avós."
+                },
+                "neg": {
+                  "en": "They are not my grandparents.",
+                  "pt": "Eles não são meus avós."
+                },
+                "perg": {
+                  "en": "Are they your grandparents?",
+                  "pt": "Eles são seus avós?"
+                }
+              },
+              "pron": "grãnpérânts",
+              "tags_gram": [
+                "substantivo",
+                "pessoa",
+                "plural"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0007",
+              "en": "grandfather",
+              "pt": "avô",
+              "tema": "Pessoas e família",
+              "frases": {
+                "afe": {
+                  "en": "My grandfather is very old.",
+                  "pt": "Meu avô é muito velho."
+                },
+                "neg": {
+                  "en": "He is not my grandfather.",
+                  "pt": "Ele não é meu avô."
+                },
+                "perg": {
+                  "en": "Is he your grandfather?",
+                  "pt": "Ele é seu avô?"
+                }
+              },
+              "pron": "grãnfádâr",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0008",
+              "en": "grandmother",
+              "pt": "avó",
+              "tema": "Pessoas e família",
+              "frases": {
+                "afe": {
+                  "en": "My grandmother is at home.",
+                  "pt": "Minha avó está em casa."
+                },
+                "neg": {
+                  "en": "My grandmother is not here.",
+                  "pt": "Minha avó não está aqui."
+                },
+                "perg": {
+                  "en": "Is she your grandmother?",
+                  "pt": "Ela é sua avó?"
+                }
+              },
+              "pron": "grãnmâdâr",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0009",
+              "en": "uncle",
+              "pt": "tio",
+              "tema": "Pessoas e família",
+              "frases": {
+                "afe": {
+                  "en": "He is my uncle.",
+                  "pt": "Ele é meu tio."
+                },
+                "neg": {
+                  "en": "He is not my uncle.",
+                  "pt": "Ele não é meu tio."
+                },
+                "perg": {
+                  "en": "Is he your uncle?",
+                  "pt": "Ele é seu tio?"
+                }
+              },
+              "pron": "ânkôl",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0010",
+              "en": "aunt",
+              "pt": "tia",
+              "tema": "Pessoas e família",
+              "frases": {
+                "afe": {
+                  "en": "My aunt is a doctor.",
+                  "pt": "Minha tia é médica."
+                },
+                "neg": {
+                  "en": "She is not my aunt.",
+                  "pt": "Ela não é minha tia."
+                },
+                "perg": {
+                  "en": "Is your aunt here?",
+                  "pt": "Sua tia está aqui?"
+                }
+              },
+              "pron": "ént",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0011",
+              "en": "cousin",
+              "pt": "primo / prima",
+              "tema": "Pessoas e família",
+              "frases": {
+                "afe": {
+                  "en": "He is my cousin.",
+                  "pt": "Ele é meu primo."
+                },
+                "neg": {
+                  "en": "She is not my cousin.",
+                  "pt": "Ela não é minha prima."
+                },
+                "perg": {
+                  "en": "Are they your cousins?",
+                  "pt": "Eles são seus primos?"
+                }
+              },
+              "pron": "kâzân",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0073",
+              "en": "family",
+              "pt": "família",
+              "tema": "Pessoas e família",
+              "frases": {
+                "afe": {
+                  "en": "This is my family.",
+                  "pt": "Esta é minha família."
+                },
+                "neg": {
+                  "en": "This is not my family.",
+                  "pt": "Esta não é minha família."
+                },
+                "perg": {
+                  "en": "Is this your family?",
+                  "pt": "Esta é sua família?"
+                }
+              },
+              "pron": "fémâli",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0012",
+              "en": "friend",
+              "pt": "amigo / amiga",
+              "tema": "Pessoas e família",
+              "frases": {
+                "afe": {
+                  "en": "She is my friend.",
+                  "pt": "Ela é minha amiga."
+                },
+                "neg": {
+                  "en": "He is not my friend.",
+                  "pt": "Ele não é meu amigo."
+                },
+                "perg": {
+                  "en": "Are you my friend?",
+                  "pt": "Você é meu amigo?"
+                }
+              },
+              "pron": "frend",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0074",
+              "en": "boy",
+              "pt": "menino",
+              "tema": "Pessoas e família",
+              "frases": {
+                "afe": {
+                  "en": "He is a boy.",
+                  "pt": "Ele é um menino."
+                },
+                "neg": {
+                  "en": "He is not a boy.",
+                  "pt": "Ele não é um menino."
+                },
+                "perg": {
+                  "en": "Is he a boy?",
+                  "pt": "Ele é um menino?"
+                }
+              },
+              "pron": "bói",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0075",
+              "en": "girl",
+              "pt": "menina",
+              "tema": "Pessoas e família",
+              "frases": {
+                "afe": {
+                  "en": "She is a girl.",
+                  "pt": "Ela é uma menina."
+                },
+                "neg": {
+                  "en": "She is not a girl.",
+                  "pt": "Ela não é uma menina."
+                },
+                "perg": {
+                  "en": "Is she a girl?",
+                  "pt": "Ela é uma menina?"
+                }
+              },
+              "pron": "gârl",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0018",
+              "en": "man",
+              "pt": "homem",
+              "tema": "Pessoas e família",
+              "frases": {
+                "afe": {
+                  "en": "He is a tall man.",
+                  "pt": "Ele é um homem alto."
+                },
+                "neg": {
+                  "en": "He is not a young man.",
+                  "pt": "Ele não é um homem jovem."
+                },
+                "perg": {
+                  "en": "Is he a strong man?",
+                  "pt": "Ele é um homem forte?"
+                }
+              },
+              "pron": "men",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0019",
+              "en": "woman",
+              "pt": "mulher",
+              "tema": "Pessoas e família",
+              "frases": {
+                "afe": {
+                  "en": "She is a smart woman.",
+                  "pt": "Ela é uma mulher inteligente."
+                },
+                "neg": {
+                  "en": "She is not an old woman.",
+                  "pt": "Ela não é uma mulher velha."
+                },
+                "perg": {
+                  "en": "Is she a happy woman?",
+                  "pt": "Ela é uma mulher feliz?"
+                }
+              },
+              "pron": "úmân",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0017",
+              "en": "person",
+              "pt": "pessoa",
+              "tema": "Pessoas e família",
+              "frases": {
+                "afe": {
+                  "en": "She is a good person.",
+                  "pt": "Ela é uma boa pessoa."
+                },
+                "neg": {
+                  "en": "He is not a bad person.",
+                  "pt": "Ele não é uma pessoa má."
+                },
+                "perg": {
+                  "en": "Is she a nice person?",
+                  "pt": "Ela é uma pessoa legal?"
+                }
+              },
+              "pron": "pârsân",
+              "tags_gram": [
+                "substantivo",
+                "pessoa"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            },
+            {
+              "id": "VOC_0020",
+              "en": "name",
+              "pt": "nome",
+              "tema": "Pessoas e família",
+              "frases": {
+                "afe": {
+                  "en": "My name is Lucas.",
+                  "pt": "Meu nome é Lucas."
+                },
+                "neg": {
+                  "en": "My name is not John.",
+                  "pt": "Meu nome não é John."
+                },
+                "perg": {
+                  "en": "What is your name?",
+                  "pt": "Qual é o seu nome?"
+                }
+              },
+              "pron": "neim",
+              "tags_gram": [
+                "substantivo"
+              ],
+              "rule_ref": "RULE_TOBE_PRESENT"
+            }
+          ],
+          "rules": [
+            {
+              "rule_id": "RULE_TOBE_PRESENT",
+              "titulo": "Verbo To Be no Presente",
+              "balao": "O verbo \"to be\" inverte de lugar com o sujeito para fazer perguntas e recebe \"not\" para negar: \"Are you at home?\" (Você está em casa?). Nunca use \"do\" ou \"does\" com ele, evitando o erro comum de falar \"Do you are at home?\".",
+              "estrutura": "Afirm.: Sujeito + am/is/are + compl. | Neg.: + not | Perg.: Am/Is/Are + sujeito?",
+              "exemplo": {
+                "en": "Are you at home?",
+                "pt": "Você está em casa?"
+              },
+              "erro_comum": "Usar 'do/does' com o to be (dizer 'Do you are at home?').",
+              "pagina_fonte": "15,16,17",
+              "frase_ancora": "(a preencher na revisão — não verificável no PDF atual)"
+            }
+          ]
+        }
+      ],
+      "composicoes": [
+        {
+          "id": "COMP_0042",
+          "en": "My mother is a woman.",
+          "pt": "Minha mãe é uma mulher.",
+          "base_refs": [
+            "mother",
+            "woman"
+          ],
+          "padrao": "noun+be+noun",
+          "licao": "1.1",
+          "nivel_comp": 3,
+          "rule_ref": "RULE_TOBE_PRESENT"
+        },
+        {
+          "id": "COMP_0043",
+          "en": "My father is a man.",
+          "pt": "Meu pai é um homem.",
+          "base_refs": [
+            "father",
+            "man"
+          ],
+          "padrao": "noun+be+noun",
+          "licao": "1.1",
+          "nivel_comp": 3,
+          "rule_ref": "RULE_TOBE_PRESENT"
+        },
+        {
+          "id": "COMP_0044",
+          "en": "My brother is my friend.",
+          "pt": "Meu irmão é meu amigo.",
+          "base_refs": [
+            "brother",
+            "friend"
+          ],
+          "padrao": "noun+be+noun",
+          "licao": "1.1",
+          "nivel_comp": 3,
+          "rule_ref": "RULE_TOBE_PRESENT"
+        },
+        {
+          "id": "COMP_0045",
+          "en": "This is my family.",
+          "pt": "Esta é minha família.",
+          "base_refs": [
+            "family"
+          ],
+          "padrao": "this+be+noun",
+          "licao": "1.1",
+          "nivel_comp": 2,
+          "rule_ref": "RULE_TOBE_PRESENT"
+        }
+      ],
+      "checkpoint": {
+        "min_acerto": 0.8,
+        "fonte": "Missão 1.1 — Pessoas e família"
+      }
+    }
+  ],
+  "verbs": []
+};
+</script>
 <script type="module">
 /* ============================================================================
    ADD-ON FIREBASE — perfil (apelido+PIN), 12 avatares, ranking e XP.
@@ -1841,10 +2607,21 @@ window.startApp = function(){ return init(); };
      • mostra o ranking por XP,
      • chama window.startApp(apelido) para iniciar o jogo depois do login.
 ============================================================================ */
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, getDocs, query, orderBy, limit, serverTimestamp, increment, arrayUnion }
-  from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+/* Imports do Firebase agora são DINÂMICOS (carregados dentro do boot). Assim,
+   se o Firebase não estiver acessível (offline / arquivo aberto direto), o
+   módulo ainda avalia por completo — a UI e o modo local funcionam. */
+let initializeApp, getAuth, signInAnonymously, getFirestore, doc, getDoc, setDoc,
+    updateDoc, collection, getDocs, query, orderBy, limit, serverTimestamp,
+    increment, arrayUnion;
+async function loadFirebase(){
+  const a=await import("https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js");
+  const b=await import("https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js");
+  const c=await import("https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js");
+  initializeApp=a.initializeApp; getAuth=b.getAuth; signInAnonymously=b.signInAnonymously;
+  getFirestore=c.getFirestore; doc=c.doc; getDoc=c.getDoc; setDoc=c.setDoc; updateDoc=c.updateDoc;
+  collection=c.collection; getDocs=c.getDocs; query=c.query; orderBy=c.orderBy; limit=c.limit;
+  serverTimestamp=c.serverTimestamp; increment=c.increment; arrayUnion=c.arrayUnion;
+}
 
 const firebaseConfig = {
   apiKey:            "AIzaSyCl4kn_tkmIqXRmXQME_KTAZPXPRV8zGLI",
@@ -1895,10 +2672,13 @@ const AV_FIT={
 function avatarSVG(id){ const a=ANIMAL_BY_ID[id]; const nm=(a?id:'harpia'); const nome=(a?a.nome:'Avatar').replace(/"/g,''); const f=AV_FIT[nm]||{z:.82,y:-.03}; const st='--az:'+(f.z||.82)+';--ax:'+(f.x||0)+';--ay:'+(f.y||0)+';'; return '<img class="av-img" style="'+st+'" src="avatars/avatars/'+nm+'.png" onerror="if(!this.dataset.s){this.dataset.s=1;this.src=\'avatars/'+nm+'.png\'}else if(this.dataset.s==\'1\'){this.dataset.s=2;this.src=\''+nm+'.png\'}" alt="'+nome+'" loading="lazy">'; }
 
 /* ---------- estado ---------- */
-let db=null, auth=null, ready=false, session=null;
+let db=null, auth=null, ready=false, session=null, LOCAL_MODE=false;
 /* versão do modelo de progresso. Ao subir, zera o progresso/XP antigos
    (era do CSV) uma vez por usuário — o "reset permitido" da metodologia nova. */
-const PROG_VER = 2;
+/* PROG_VER 3: migração de identidade en->VOC_ID. O progresso antigo estava
+   indexado por 'en' e é DELIBERADAMENTE invalidado — testers recomeçam limpo.
+   Nenhuma migração histórica (decisão do PO). */
+const PROG_VER = 3;
 const SRS_DIAS = [1,3,7,16,35,60];  /* escada de intervalos (dias) do SRS */
 async function migrateProgressIfNeeded(){
   if(!session || session.prog_ver === PROG_VER) return;
@@ -1912,6 +2692,36 @@ async function migrateProgressIfNeeded(){
 let draft={nick:'',avatar:null};
 let pinMode='set', pinBuf='', pinFirst='', loginNick='';
 const $=id=>document.getElementById(id);
+
+/* ---- MODO LOCAL (fallback quando o Firebase não está acessível: abrir o
+   arquivo direto / sem rede). Só ativa se o Firebase falhar. O progresso vive
+   na sessão em memória e é espelhado no localStorage. O caminho online
+   (Firestore) permanece idêntico. ---- */
+function persistLocal(){ try{ if(session) localStorage.setItem('bora_local_profile', JSON.stringify(session)); }catch(e){} }
+function enableLocalMode(){
+  LOCAL_MODE=true; ready=true; db=null;
+  /* fallbacks para os helpers do Firestore usados na MONTAGEM dos patches
+     (fora do try/catch). No modo local o patch é descartado, então basta não
+     quebrar. As escritas reais (updateDoc/getDoc/...) já estão em try/catch. */
+  if(typeof arrayUnion!=='function')     arrayUnion=(...a)=>a;
+  if(typeof increment!=='function')      increment=(n)=>n||0;
+  if(typeof serverTimestamp!=='function')serverTimestamp=()=>new Date().toISOString();
+  try{ window.addEventListener('beforeunload', persistLocal); }catch(e){}
+  try{ setInterval(persistLocal, 1500); }catch(e){}
+}
+function createProfileLocal(pin){
+  const key=safeKey(draft.nick);
+  if(key.length<2){ toastMsg('Apelido inválido.'); obShow('ob-nick'); $('ob-keypad').classList.remove('ob-busy'); return; }
+  session={ nick:draft.nick, apelido_lower:key, avatar:draft.avatar, pin_hash:'local', owner_uid:'local',
+            xp:0, streak:1, last_active:todayStr(), ap_learned:[], m_enpt:[], m_pten:[], m_type:[],
+            completed_levels:[], checkpoints:[], srs:[], prog_ver:PROG_VER };
+  persistLocal(); localStorage.setItem('bora_session',key); enterApp();
+}
+function doLoginLocal(nickRaw,pin){
+  try{ const raw=localStorage.getItem('bora_local_profile'); if(raw){ const u=JSON.parse(raw);
+      if(safeKey(nickRaw)===u.apelido_lower){ session=u; enterApp(); return; } } }catch(e){}
+  pinErr('Perfil local não encontrado. Crie um novo.');
+}
 
 /* ---------- helpers ---------- */
 function escapeHtml(s){ return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
@@ -1970,6 +2780,7 @@ function pinDone(){
 
 /* ---------- criar / login ---------- */
 async function createProfile(pin){
+  if(LOCAL_MODE){ return createProfileLocal(pin); }
   if(!ready){ toastMsg('Conectando… tente de novo.'); $('ob-keypad').classList.remove('ob-busy'); return; }
   const key=safeKey(draft.nick);
   if(key.length<2){ toastMsg('Apelido inválido.'); obShow('ob-nick'); $('ob-keypad').classList.remove('ob-busy'); return; }
@@ -1988,6 +2799,7 @@ function startLogin(){
   btn.onclick=()=>{ const raw=$('ob-nickInput').value.trim(); if(raw.length<2){ toastMsg('Digite seu apelido.'); return; } loginNick=raw; pinMode='login'; pinBuf=''; setDots(0); $('ob-pinTitle').textContent='Digite seu PIN'; $('ob-pinSub').textContent='Bem-vindo de volta!'; $('ob-pinMsg').textContent=''; $('ob-pinMsg').className='ob-msg'; obShow('ob-pin'); };
 }
 async function doLogin(nickRaw,pin){
+  if(LOCAL_MODE){ return doLoginLocal(nickRaw,pin); }
   const key=safeKey(nickRaw);
   try{
     const snap=await getDoc(doc(db,'usuarios',key));
@@ -2036,28 +2848,6 @@ async function enterApp(){
   document.body.classList.remove('welcome-mode');
   $('onboard').classList.add('hidden'); $('rankScreen').classList.add('hidden');
   await migrateProgressIfNeeded();          /* limpa progresso da era antiga, uma vez */
-
-  /* ATALHO DE TESTE: abrir com ?degrau=N começa direto no Degrau N, marcando em
-     MEMÓRIA (sem gravar na nuvem) os níveis anteriores como concluídos. Fica aqui,
-     no módulo (onde 'session' existe), DEPOIS do migrate para não ser zerado.
-     (só desenvolvimento — remova ?degrau e ?chefe antes do lançamento.) */
-  try{
-    const md=(location.search||'').match(/degrau=(\d+)/);
-    console.log('[atalho degrau] URL search:', location.search, '| match:', md);
-    if(md && session){
-      const alvo=parseInt(md[1]);
-      session.completed_levels=session.completed_levels||[];
-      for(let n=1; n<alvo; n++){
-        [String(n), n+'.5'].forEach(lv=>{
-          if(!session.completed_levels.includes(lv)) session.completed_levels.push(lv);
-        });
-      }
-      console.log('[atalho degrau] alvo:', alvo, '| completed_levels agora:', JSON.stringify(session.completed_levels));
-    } else {
-      console.log('[atalho degrau] NÃO aplicou. md:', !!md, '| session:', !!session);
-    }
-  }catch(e){ console.error('[atalho degrau] ERRO:', e); }
-
   renderProfileBar(); $('profileBar').classList.remove('hidden');
   if(typeof window.startApp==='function') window.startApp(session.apelido_lower);
 }
@@ -2204,9 +2994,14 @@ hideGameCards();
 
 (async function boot(){
   try{
+    await loadFirebase();
     const app=initializeApp(firebaseConfig); auth=getAuth(app); db=getFirestore(app);
     await signInAnonymously(auth); ready=true;
-  }catch(e){ console.error(e); toastMsg('Não deu pra conectar ao servidor.'); obShow('ob-welcome'); return; }
+  }catch(e){ console.error('Firebase indisponível — modo local ativado.', e); enableLocalMode(); }
+  if(LOCAL_MODE){
+    try{ const raw=localStorage.getItem('bora_local_profile'); if(raw){ session=JSON.parse(raw); enterApp(); return; } }catch(e){ console.error(e); }
+    obShow('ob-welcome'); return;
+  }
   const saved=localStorage.getItem('bora_session');
   if(saved){
     try{ const snap=await getDoc(doc(db,'usuarios',saved)); if(snap.exists()){ session=snap.data(); await updateStreak(saved,session); enterApp(); return; } }catch(e){ console.error(e); }
