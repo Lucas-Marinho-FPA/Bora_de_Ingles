@@ -822,7 +822,7 @@ function topQuestion(tag, level){
   const a=document.getElementById('avTop'); a.classList.remove('hidden'); a.src=AV_COVER;
   const s=document.getElementById('reaction');
   s.className='qtag';
-  s.innerHTML = tag + (level!==''?' <span class="lvltag">Nv '+level+'</span>':'');
+  s.innerHTML = tag + (level!==''?' <span class="lvltag">'+esc(/^\d+c\d+/.test(String(level))?nivelLabel(level):('Nv '+level))+'</span>':'');
 }
 function topAnswer(correct, answerText){
   setTopState('answer');
@@ -925,7 +925,7 @@ function flattenData(data){
         const rule = v.rule_ref ? ruleById[v.rule_ref] : null;
         /* D1 V2: a progressão do Degrau 1 é organizada pela coluna `ciclo` (1-9),
            não mais pela lição antiga. Demais degraus seguem por `degrau`. */
-        const vlevel = (deg.degrau===1 && v.ciclo ? String(v.ciclo) : String(deg.degrau));
+        const vlevel = (deg.degrau===1 && v.ciclo ? ('1c'+v.ciclo) : String(deg.degrau));
         LEVEL_TITLES[vlevel] = (deg.degrau===1 && v.ciclo)
           ? (CICLO_NOMES[v.ciclo] || LEVEL_TITLES[vlevel] || ('Ciclo '+v.ciclo))
           : (lic.titulo || LEVEL_TITLES[vlevel]);
@@ -944,7 +944,7 @@ function flattenData(data){
       const examples=refsEn.map(w=>({label:'Peça', en:w, pt:ptByEn[w]||''}));
       const rule = c.rule_ref ? ruleById[c.rule_ref] : null;
       /* D1 V2: junções entram DEPOIS das soltas do MESMO ciclo (nível `<ciclo>j`). */
-      const clevel = (deg.degrau===1 && c.ciclo ? String(c.ciclo)+'j'
+      const clevel = (deg.degrau===1 && c.ciclo ? ('1c'+c.ciclo+'j')
                       : (deg.degrau===1 ? String(c.licao)+'j' : String(deg.degrau)+'.5'));
       LEVEL_TITLES[clevel] = ((deg.degrau===1 && c.ciclo)
                       ? (CICLO_NOMES[c.ciclo] || ('Ciclo '+c.ciclo))
@@ -1123,10 +1123,15 @@ function keyOf(w){
   return w.id;
 }
 function lvlKey(s){
-  s=String(s); const j=s.endsWith('j')?1:0; const core=j?s.slice(0,-1):s;
+  s=String(s);
+  const mc=s.match(/^(\d+)c(\d+)(j?)$/);   /* D1 V2: "1c<ciclo>" (+j) — ordena por ciclo dentro do degrau */
+  if(mc){ return parseInt(mc[1])*1000 + parseInt(mc[2])*2 + (mc[3]?1:0); }
+  const j=s.endsWith('j')?1:0; const core=j?s.slice(0,-1):s;
   const p=core.split('.'); const d=parseInt(p[0])||0; const m=p.length>1?(parseInt(p[1])||0):0;
   return d*1000 + m*2 + j;   /* palavras (par) antes das junções (ímpar) da mesma missão */
 }
+/* D1 V2: rótulo amigável do nível. "1c3"->"Ciclo 3", "1c3j"->"Ciclo 3 · junções". */
+function nivelLabel(lv){ lv=String(lv); const m=lv.match(/^(\d+)c(\d+)(j?)$/); return m ? ('Ciclo '+m[2]+(m[3]?' · junções':'')) : lv; }
 function levelsAsc(){
   return [...new Set(WORDS.map(w=>w.level))].sort((a,b)=>lvlKey(a)-lvlKey(b));
 }
@@ -1207,8 +1212,10 @@ async function renderGuidedInfo(){
     return p.enpt.has(k)&&p.pten.has(k)&&p.type.has(k); }).length;
   const caps=st.loteAll.map((w,i)=>'<i class="'+(i<dom?'on':'')+'"></i>').join('');
   const nome=LEVEL_TITLES[String(st.level)]||LEVEL_NAMES[String(st.level)];
+  const _isCiclo=/^\d+c\d+/.test(String(st.level));
+  const _lvlTxt=_isCiclo ? nivelLabel(st.level) : ('Nível '+st.level);
   const nivel = st.level==='' ? 'Sem nível'
-              : 'Nível <i>'+st.level+'</i>'+(nome?' · '+nome:'');
+              : (_isCiclo ? '<i>'+esc(nivelLabel(st.level))+'</i>' : 'Nível <i>'+st.level+'</i>')+(nome?' · '+nome:'');
 
   /* POR QUE CONTINUAR HOJE ------------------------------------------ */
   /* Proximo marco. Usa exatamente os valores que closeHalf() paga:
@@ -1402,7 +1409,7 @@ function mvExpose(){
   document.getElementById('qNext').innerHTML='';
   document.getElementById('qBar').style.width='0%';
   document.getElementById('qScore').textContent='Preparar';
-  document.getElementById('qStreak').textContent=(gLevel===''?'':'Nv '+gLevel);
+  document.getElementById('qStreak').textContent=(gLevel===''?'':(/^\d+c\d+/.test(String(gLevel))?nivelLabel(gLevel):('Nv '+gLevel)));
   const isComp = String(gLevel).indexOf('.5')>=0;   /* lição de composição */
   document.getElementById('qCount').textContent = isComp ? 'Juntando as palavras' : 'Preparação';
   const secs = EXPO_SEG[parseInt(gLevel)]||14;
@@ -1472,7 +1479,7 @@ function mvStartMode(i){
   document.getElementById('qBar').style.width='0%';
   document.getElementById('qCount').textContent='Etapa '+m.n+' de 3';
   document.getElementById('qScore').textContent=STAGE_SHORT[gStage];
-  document.getElementById('qStreak').textContent=(gLevel===''?'':'Nv '+gLevel);
+  document.getElementById('qStreak').textContent=(gLevel===''?'':(/^\d+c\d+/.test(String(gLevel))?nivelLabel(gLevel):('Nv '+gLevel)));
   document.getElementById('qQuestion').innerHTML=
     '<div class="mode-intro"><div class="mi-step">Etapa '+m.n+' de 3</div>'+
     '<div class="mi-title">'+m.t+'</div><div class="mi-sub">'+m.d+' · '+mvTotal+' palavra'+(mvTotal>1?'s':'')+'</div>'+
@@ -1501,7 +1508,7 @@ function mvRender(){
   document.getElementById('qBar').style.width=(mvTotal?mvDone/mvTotal*100:0)+'%';
   document.getElementById('qCount').textContent=mvDone+' / '+mvTotal+' nesta etapa';
   document.getElementById('qScore').textContent=STAGE_SHORT[gStage];
-  document.getElementById('qStreak').textContent=(gLevel===''?'':'Nv '+gLevel);
+  document.getElementById('qStreak').textContent=(gLevel===''?'':(/^\d+c\d+/.test(String(gLevel))?nivelLabel(gLevel):('Nv '+gLevel)));
   const body=document.getElementById('qQuestion'); body.innerHTML='';
   if(gStage==='enpt' || gStage==='pten'){
     const showKey= gStage==='enpt'?'en':'pt';
