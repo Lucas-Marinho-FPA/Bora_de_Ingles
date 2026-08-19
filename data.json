@@ -29,7 +29,8 @@
                 }
               },
               "pron": "mâdâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0004",
@@ -51,7 +52,8 @@
                 }
               },
               "pron": "fádâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0001",
@@ -73,7 +75,8 @@
                 }
               },
               "pron": "brâdâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0002",
@@ -95,7 +98,8 @@
                 }
               },
               "pron": "sistâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0005",
@@ -117,7 +121,8 @@
                 }
               },
               "pron": "sân",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0006",
@@ -139,7 +144,8 @@
                 }
               },
               "pron": "dótâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0067",
@@ -161,7 +167,8 @@
                 }
               },
               "pron": "tcháild",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0068",
@@ -183,7 +190,8 @@
                 }
               },
               "pron": "tchíldrân",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0070",
@@ -205,7 +213,8 @@
                 }
               },
               "pron": "râzbând",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0071",
@@ -227,7 +236,8 @@
                 }
               },
               "pron": "uáif",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0072",
@@ -249,7 +259,8 @@
                 }
               },
               "pron": "pérânts",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0069",
@@ -271,7 +282,8 @@
                 }
               },
               "pron": "grãnpérânts",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0007",
@@ -293,7 +305,8 @@
                 }
               },
               "pron": "grãnfádâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0008",
@@ -315,7 +328,8 @@
                 }
               },
               "pron": "grãnmâdâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0009",
@@ -337,7 +351,8 @@
                 }
               },
               "pron": "ânkôl",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0010",
@@ -359,7 +374,8 @@
                 }
               },
               "pron": "ént",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0011",
@@ -381,7 +397,8 @@
                 }
               },
               "pron": "kâzân",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0073",
@@ -403,7 +420,8 @@
                 }
               },
               "pron": "fémâli",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0012",
@@ -425,7 +443,8 @@
                 }
               },
               "pron": "frend",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0018",
@@ -447,7 +466,8 @@
                 }
               },
               "pron": "men",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0019",
@@ -469,7 +489,8 @@
                 }
               },
               "pron": "úmân",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0074",
@@ -491,7 +512,8 @@
                 }
               },
               "pron": "bói",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0075",
@@ -513,7 +535,8 @@
                 }
               },
               "pron": "gârl",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0017",
@@ -535,7 +558,8 @@
                 }
               },
               "pron": "pârsân",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0020",
@@ -557,7 +581,8 @@
                 }
               },
               "pron": "neim",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             }
           ],
           "rules": []
@@ -586,7 +611,8 @@
                 }
               },
               "pron": "títcher",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0015",
@@ -608,7 +634,8 @@
                 }
               },
               "pron": "dáktâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0076",
@@ -630,7 +657,8 @@
                 }
               },
               "pron": "nârs",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0013",
@@ -652,7 +680,8 @@
                 }
               },
               "pron": "stúdent",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0077",
@@ -674,7 +703,8 @@
                 }
               },
               "pron": "uârker",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0078",
@@ -696,7 +726,8 @@
                 }
               },
               "pron": "bós",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0079",
@@ -718,7 +749,8 @@
                 }
               },
               "pron": "lóier",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0016",
@@ -740,7 +772,8 @@
                 }
               },
               "pron": "endjiníâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0080",
@@ -762,7 +795,8 @@
                 }
               },
               "pron": "pâlís ófisâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0081",
@@ -784,7 +818,8 @@
                 }
               },
               "pron": "fáiârfáitâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0082",
@@ -806,7 +841,8 @@
                 }
               },
               "pron": "dráivâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0083",
@@ -828,7 +864,8 @@
                 }
               },
               "pron": "kúk",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0084",
@@ -850,7 +887,8 @@
                 }
               },
               "pron": "uêitâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0085",
@@ -872,7 +910,8 @@
                 }
               },
               "pron": "uêitrâs",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0086",
@@ -894,7 +933,8 @@
                 }
               },
               "pron": "déntist",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0087",
@@ -916,7 +956,8 @@
                 }
               },
               "pron": "fármâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0088",
@@ -938,7 +979,8 @@
                 }
               },
               "pron": "ártist",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0089",
@@ -960,7 +1002,8 @@
                 }
               },
               "pron": "sínguer",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0090",
@@ -982,7 +1025,8 @@
                 }
               },
               "pron": "éktâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0091",
@@ -1004,7 +1048,8 @@
                 }
               },
               "pron": "éktrâs",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0092",
@@ -1026,7 +1071,8 @@
                 }
               },
               "pron": "ráitâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0093",
@@ -1048,7 +1094,8 @@
                 }
               },
               "pron": "djób",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             }
           ],
           "rules": [
@@ -1092,7 +1139,8 @@
               },
               "pron": "mái",
               "rule_ref": "RULE_TOBE_PRESENT",
-              "micro": "my = meu/minha. Mostra que algo é seu: my mother."
+              "micro": "my = meu/minha. Mostra que algo é seu: my mother.",
+              "ciclo": 1
             },
             {
               "id": "VOC_0273",
@@ -1115,7 +1163,8 @@
               },
               "pron": "iór",
               "rule_ref": "RULE_TOBE_PRESENT",
-              "micro": "your = seu/sua: your teacher."
+              "micro": "your = seu/sua: your teacher.",
+              "ciclo": 1
             },
             {
               "id": "VOC_0274",
@@ -1138,7 +1187,8 @@
               },
               "pron": "dís",
               "rule_ref": "RULE_TOBE_PRESENT",
-              "micro": "this = este/esta. Aponta ou apresenta: This is my father."
+              "micro": "this = este/esta. Aponta ou apresenta: This is my father.",
+              "ciclo": 1
             },
             {
               "id": "VOC_0275",
@@ -1161,7 +1211,8 @@
               },
               "pron": "íz",
               "rule_ref": "RULE_TOBE_PRESENT",
-              "micro": "is = é. Diz o que alguém é: She is a teacher."
+              "micro": "is = é. Diz o que alguém é: She is a teacher.",
+              "ciclo": 1
             },
             {
               "id": "VOC_0276",
@@ -1184,7 +1235,8 @@
               },
               "pron": "ár",
               "rule_ref": "RULE_TOBE_PRESENT",
-              "micro": "are = são/estão (plural): They are my parents."
+              "micro": "are = são/estão (plural): They are my parents.",
+              "ciclo": 1
             },
             {
               "id": "VOC_0277",
@@ -1207,7 +1259,8 @@
               },
               "pron": "ei",
               "rule_ref": "RULE_TOBE_PRESENT",
-              "micro": "a = um/uma, antes de som de consoante: a teacher, a doctor."
+              "micro": "a = um/uma, antes de som de consoante: a teacher, a doctor.",
+              "ciclo": 1
             },
             {
               "id": "VOC_0278",
@@ -1230,7 +1283,8 @@
               },
               "pron": "ãn",
               "rule_ref": "RULE_TOBE_PRESENT",
-              "micro": "an = um/uma antes de som de vogal: an artist, an engineer."
+              "micro": "an = um/uma antes de som de vogal: an artist, an engineer.",
+              "ciclo": 1
             },
             {
               "id": "VOC_0279",
@@ -1253,7 +1307,8 @@
               },
               "pron": "dâ",
               "rule_ref": "RULE_TOBE_PRESENT",
-              "micro": "the = o/a/os/as, para algo específico: the doctor."
+              "micro": "the = o/a/os/as, para algo específico: the doctor.",
+              "ciclo": 1
             }
           ],
           "rules": [
@@ -1316,7 +1371,8 @@
                 }
               },
               "pron": "gúd",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0269",
@@ -1338,7 +1394,8 @@
                 }
               },
               "pron": "béd",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0122",
@@ -1360,7 +1417,8 @@
                 }
               },
               "pron": "bíg",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0123",
@@ -1382,7 +1440,8 @@
                 }
               },
               "pron": "smól",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             }
           ],
           "rules": []
@@ -1411,7 +1470,8 @@
                 }
               },
               "pron": "biútifol",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0128",
@@ -1433,7 +1493,8 @@
                 }
               },
               "pron": "príti",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0129",
@@ -1455,7 +1516,8 @@
                 }
               },
               "pron": "âgli",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0125",
@@ -1477,7 +1539,8 @@
                 }
               },
               "pron": "iâng",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0124",
@@ -1499,7 +1562,8 @@
                 }
               },
               "pron": "ôuld",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0130",
@@ -1521,7 +1585,8 @@
                 }
               },
               "pron": "stróng",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0131",
@@ -1543,7 +1608,8 @@
                 }
               },
               "pron": "thín",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0132",
@@ -1565,7 +1631,8 @@
                 }
               },
               "pron": "fét",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             }
           ],
           "rules": []
@@ -1595,7 +1662,8 @@
               },
               "pron": "ríz",
               "rule_ref": "RULE_TOBE_PRESENT",
-              "micro": "his = dele: his father = o pai dele."
+              "micro": "his = dele: his father = o pai dele.",
+              "ciclo": 3
             },
             {
               "id": "VOC_0281",
@@ -1618,7 +1686,8 @@
               },
               "pron": "rârr",
               "rule_ref": "RULE_TOBE_PRESENT",
-              "micro": "her = dela: her mother = a mãe dela."
+              "micro": "her = dela: her mother = a mãe dela.",
+              "ciclo": 3
             },
             {
               "id": "VOC_0282",
@@ -1641,7 +1710,8 @@
               },
               "pron": "áuar",
               "rule_ref": "RULE_TOBE_PRESENT",
-              "micro": "our = nosso/nossa: our teacher."
+              "micro": "our = nosso/nossa: our teacher.",
+              "ciclo": 3
             }
           ],
           "rules": []
@@ -1670,7 +1740,8 @@
                 }
               },
               "pron": "répi",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0025",
@@ -1692,7 +1763,8 @@
                 }
               },
               "pron": "séd",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0216",
@@ -1714,7 +1786,8 @@
                 }
               },
               "pron": "éngri",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0217",
@@ -1736,7 +1809,8 @@
                 }
               },
               "pron": "lâv",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0218",
@@ -1758,7 +1832,8 @@
                 }
               },
               "pron": "rêit",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0219",
@@ -1780,7 +1855,8 @@
                 }
               },
               "pron": "fíâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0220",
@@ -1802,7 +1878,8 @@
                 }
               },
               "pron": "afrêid",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0021",
@@ -1824,7 +1901,8 @@
                 }
               },
               "pron": "táiârd",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0022",
@@ -1846,7 +1924,8 @@
                 }
               },
               "pron": "rângri",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0023",
@@ -1868,7 +1947,8 @@
                 }
               },
               "pron": "thârsti",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0221",
@@ -1890,7 +1970,8 @@
                 }
               },
               "pron": "eksáited",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0222",
@@ -1912,7 +1993,8 @@
                 }
               },
               "pron": "uârid",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0223",
@@ -1934,7 +2016,8 @@
                 }
               },
               "pron": "skérd",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0224",
@@ -1956,7 +2039,8 @@
                 }
               },
               "pron": "âpsét",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0225",
@@ -1978,7 +2062,8 @@
                 }
               },
               "pron": "práud",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0226",
@@ -2000,7 +2085,8 @@
                 }
               },
               "pron": "lôunli",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0026",
@@ -2022,7 +2108,8 @@
                 }
               },
               "pron": "bízi",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0227",
@@ -2044,7 +2131,8 @@
                 }
               },
               "pron": "âlôun",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0228",
@@ -2066,7 +2154,8 @@
                 }
               },
               "pron": "lêizi",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0229",
@@ -2088,7 +2177,8 @@
                 }
               },
               "pron": "gléd",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0027",
@@ -2110,7 +2200,8 @@
                 }
               },
               "pron": "kôuld",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0028",
@@ -2132,7 +2223,8 @@
                 }
               },
               "pron": "rát",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0029",
@@ -2154,7 +2246,8 @@
                 }
               },
               "pron": "sik",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0030",
@@ -2176,7 +2269,8 @@
                 }
               },
               "pron": "rédi",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             }
           ],
           "rules": []
@@ -2205,7 +2299,8 @@
                 }
               },
               "pron": "roum",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0094",
@@ -2227,7 +2322,8 @@
                 }
               },
               "pron": "ráus",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0095",
@@ -2249,7 +2345,8 @@
                 }
               },
               "pron": "apártment",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0096",
@@ -2271,7 +2368,8 @@
                 }
               },
               "pron": "bédrum",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0097",
@@ -2293,7 +2391,8 @@
                 }
               },
               "pron": "béthrum",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0098",
@@ -2315,7 +2414,8 @@
                 }
               },
               "pron": "kítchen",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0099",
@@ -2337,7 +2437,8 @@
                 }
               },
               "pron": "lívin rum",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0100",
@@ -2359,7 +2460,8 @@
                 }
               },
               "pron": "rum",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0101",
@@ -2381,7 +2483,8 @@
                 }
               },
               "pron": "béd",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0102",
@@ -2403,7 +2506,8 @@
                 }
               },
               "pron": "dór",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0103",
@@ -2425,7 +2529,8 @@
                 }
               },
               "pron": "uíndou",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0104",
@@ -2447,7 +2552,8 @@
                 }
               },
               "pron": "têibol",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0105",
@@ -2469,7 +2575,8 @@
                 }
               },
               "pron": "tchér",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0106",
@@ -2491,7 +2598,8 @@
                 }
               },
               "pron": "flór",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0107",
@@ -2513,7 +2621,8 @@
                 }
               },
               "pron": "uól",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0108",
@@ -2535,7 +2644,8 @@
                 }
               },
               "pron": "blénket",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0109",
@@ -2557,7 +2667,8 @@
                 }
               },
               "pron": "kí",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0110",
@@ -2579,7 +2690,8 @@
                 }
               },
               "pron": "sínk",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0111",
@@ -2601,7 +2713,8 @@
                 }
               },
               "pron": "réd",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0112",
@@ -2623,7 +2736,8 @@
                 }
               },
               "pron": "blú",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0113",
@@ -2645,7 +2759,8 @@
                 }
               },
               "pron": "grín",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0114",
@@ -2667,7 +2782,8 @@
                 }
               },
               "pron": "iélou",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0115",
@@ -2689,7 +2805,8 @@
                 }
               },
               "pron": "blék",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0116",
@@ -2711,7 +2828,8 @@
                 }
               },
               "pron": "uáit",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0117",
@@ -2733,7 +2851,8 @@
                 }
               },
               "pron": "bráun",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0118",
@@ -2755,7 +2874,8 @@
                 }
               },
               "pron": "grêi",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0119",
@@ -2777,7 +2897,8 @@
                 }
               },
               "pron": "pínk",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0120",
@@ -2799,7 +2920,8 @@
                 }
               },
               "pron": "órãndj",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0121",
@@ -2821,7 +2943,8 @@
                 }
               },
               "pron": "pârpol",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0126",
@@ -2843,7 +2966,8 @@
                 }
               },
               "pron": "niú",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             }
           ],
           "rules": []
@@ -2872,7 +2996,8 @@
                 }
               },
               "pron": "uótâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0136",
@@ -2894,7 +3019,8 @@
                 }
               },
               "pron": "kófi",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0137",
@@ -2916,7 +3042,8 @@
                 }
               },
               "pron": "mílk",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0138",
@@ -2938,7 +3065,8 @@
                 }
               },
               "pron": "bréd",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0139",
@@ -2960,7 +3088,8 @@
                 }
               },
               "pron": "ráis",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0140",
@@ -2982,7 +3111,8 @@
                 }
               },
               "pron": "bíns",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0141",
@@ -3004,7 +3134,8 @@
                 }
               },
               "pron": "mít",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0142",
@@ -3026,7 +3157,8 @@
                 }
               },
               "pron": "fích",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0143",
@@ -3048,7 +3180,8 @@
                 }
               },
               "pron": "sálâd",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0144",
@@ -3070,7 +3203,8 @@
                 }
               },
               "pron": "fúd",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0145",
@@ -3092,7 +3226,8 @@
                 }
               },
               "pron": "frút",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0146",
@@ -3114,7 +3249,8 @@
                 }
               },
               "pron": "épol",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0147",
@@ -3136,7 +3272,8 @@
                 }
               },
               "pron": "banánâ",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0148",
@@ -3158,7 +3295,8 @@
                 }
               },
               "pron": "ég",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0149",
@@ -3180,7 +3318,8 @@
                 }
               },
               "pron": "tchís",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0150",
@@ -3202,7 +3341,8 @@
                 }
               },
               "pron": "kêik",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0151",
@@ -3224,7 +3364,8 @@
                 }
               },
               "pron": "brékfâst",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0152",
@@ -3246,7 +3387,8 @@
                 }
               },
               "pron": "lântch",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0153",
@@ -3268,7 +3410,8 @@
                 }
               },
               "pron": "dínâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             }
           ],
           "rules": []
@@ -3297,7 +3440,8 @@
                 }
               },
               "pron": "skúl",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0033",
@@ -3319,7 +3463,8 @@
                 }
               },
               "pron": "uârk",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0154",
@@ -3341,7 +3486,8 @@
                 }
               },
               "pron": "djím",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0155",
@@ -3363,7 +3509,8 @@
                 }
               },
               "pron": "párk",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0156",
@@ -3385,7 +3532,8 @@
                 }
               },
               "pron": "stór",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0157",
@@ -3407,7 +3555,8 @@
                 }
               },
               "pron": "márket",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0035",
@@ -3429,7 +3578,8 @@
                 }
               },
               "pron": "réstârant",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0038",
@@ -3451,7 +3601,8 @@
                 }
               },
               "pron": "róspital",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0158",
@@ -3473,7 +3624,8 @@
                 }
               },
               "pron": "bénk",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0159",
@@ -3495,7 +3647,8 @@
                 }
               },
               "pron": "strít",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0034",
@@ -3517,7 +3670,8 @@
                 }
               },
               "pron": "ófis",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0036",
@@ -3539,7 +3693,8 @@
                 }
               },
               "pron": "súpârmárket",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0039",
@@ -3561,7 +3716,8 @@
                 }
               },
               "pron": "routél",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0040",
@@ -3583,7 +3739,8 @@
                 }
               },
               "pron": "bítch",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             }
           ],
           "rules": []
@@ -3613,7 +3770,8 @@
               },
               "pron": "ét",
               "rule_ref": "RULE_TOBE_PRESENT",
-              "micro": "at = em um ponto/local: at work, at school."
+              "micro": "at = em um ponto/local: at work, at school.",
+              "ciclo": 4
             },
             {
               "id": "VOC_0284",
@@ -3636,7 +3794,8 @@
               },
               "pron": "ín",
               "rule_ref": "RULE_TOBE_PRESENT",
-              "micro": "in = dentro de um espaço/área: in the house, in the city."
+              "micro": "in = dentro de um espaço/área: in the house, in the city.",
+              "ciclo": 2
             },
             {
               "id": "VOC_0285",
@@ -3659,7 +3818,8 @@
               },
               "pron": "ón",
               "rule_ref": "RULE_TOBE_PRESENT",
-              "micro": "on = sobre uma superfície: on the table, on the street."
+              "micro": "on = sobre uma superfície: on the table, on the street.",
+              "ciclo": 2
             },
             {
               "id": "VOC_0160",
@@ -3681,7 +3841,8 @@
                 }
               },
               "pron": "kár",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0161",
@@ -3703,7 +3864,8 @@
                 }
               },
               "pron": "bâs",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0162",
@@ -3725,7 +3887,8 @@
                 }
               },
               "pron": "trêin",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0163",
@@ -3747,7 +3910,8 @@
                 }
               },
               "pron": "plêin",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0164",
@@ -3769,7 +3933,9 @@
                 }
               },
               "pron": "báik",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4,
+              "aceitos": "bicycle"
             },
             {
               "id": "VOC_0165",
@@ -3791,7 +3957,9 @@
                 }
               },
               "pron": "báisikol",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4,
+              "aceitos": "bike"
             },
             {
               "id": "VOC_0166",
@@ -3813,7 +3981,8 @@
                 }
               },
               "pron": "môtârsáikol",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0167",
@@ -3835,7 +4004,8 @@
                 }
               },
               "pron": "téksi",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0168",
@@ -3857,7 +4027,8 @@
                 }
               },
               "pron": "rôud",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0169",
@@ -3879,7 +4050,8 @@
                 }
               },
               "pron": "stêichon",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0037",
@@ -3901,7 +4073,8 @@
                 }
               },
               "pron": "érport",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0170",
@@ -3923,7 +4096,8 @@
                 }
               },
               "pron": "síti",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0171",
@@ -3945,7 +4119,8 @@
                 }
               },
               "pron": "bíldin",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0172",
@@ -3967,7 +4142,8 @@
                 }
               },
               "pron": "brídj",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0133",
@@ -3989,7 +4165,8 @@
                 }
               },
               "pron": "fést",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0134",
@@ -4011,7 +4188,8 @@
                 }
               },
               "pron": "slôu",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             }
           ],
           "rules": []
@@ -4040,7 +4218,8 @@
                 }
               },
               "pron": "dêi",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0174",
@@ -4062,7 +4241,8 @@
                 }
               },
               "pron": "uík",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0175",
@@ -4084,7 +4264,8 @@
                 }
               },
               "pron": "mórnin",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0176",
@@ -4106,7 +4287,8 @@
                 }
               },
               "pron": "áftârnun",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0177",
@@ -4128,7 +4310,8 @@
                 }
               },
               "pron": "náit",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0178",
@@ -4150,7 +4333,8 @@
                 }
               },
               "pron": "tudêi",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0179",
@@ -4172,7 +4356,8 @@
                 }
               },
               "pron": "tumórou",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0180",
@@ -4194,7 +4379,8 @@
                 }
               },
               "pron": "iéstârdei",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0181",
@@ -4216,7 +4402,8 @@
                 }
               },
               "pron": "náu",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0182",
@@ -4238,7 +4425,8 @@
                 }
               },
               "pron": "táim",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0183",
@@ -4260,7 +4448,8 @@
                 }
               },
               "pron": "tunáit",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0184",
@@ -4282,7 +4471,8 @@
                 }
               },
               "pron": "mândei",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0185",
@@ -4304,7 +4494,8 @@
                 }
               },
               "pron": "tiúzdei",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0186",
@@ -4326,7 +4517,8 @@
                 }
               },
               "pron": "uénzdei",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0187",
@@ -4348,7 +4540,8 @@
                 }
               },
               "pron": "thârzdei",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0188",
@@ -4370,7 +4563,8 @@
                 }
               },
               "pron": "fráidei",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0189",
@@ -4392,7 +4586,8 @@
                 }
               },
               "pron": "sátârdei",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0190",
@@ -4414,7 +4609,8 @@
                 }
               },
               "pron": "sândei",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0191",
@@ -4436,7 +4632,8 @@
                 }
               },
               "pron": "ârli",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0192",
@@ -4458,7 +4655,8 @@
                 }
               },
               "pron": "lêit",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             }
           ],
           "rules": []
@@ -4487,7 +4685,8 @@
                 }
               },
               "pron": "stâdi",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0194",
@@ -4509,7 +4708,8 @@
                 }
               },
               "pron": "ít",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0195",
@@ -4531,7 +4731,8 @@
                 }
               },
               "pron": "drínk",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0196",
@@ -4553,7 +4754,8 @@
                 }
               },
               "pron": "slíp",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0197",
@@ -4575,7 +4777,8 @@
                 }
               },
               "pron": "uêik âp",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0198",
@@ -4597,7 +4800,8 @@
                 }
               },
               "pron": "guét âp",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0199",
@@ -4619,7 +4823,8 @@
                 }
               },
               "pron": "rân",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0200",
@@ -4641,7 +4846,8 @@
                 }
               },
               "pron": "uók",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             }
           ],
           "rules": []
@@ -4670,7 +4876,8 @@
                 }
               },
               "pron": "djâmp",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0202",
@@ -4692,7 +4899,8 @@
                 }
               },
               "pron": "sít",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0203",
@@ -4714,7 +4922,8 @@
                 }
               },
               "pron": "sténd",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0204",
@@ -4736,7 +4945,8 @@
                 }
               },
               "pron": "gôu",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0205",
@@ -4758,7 +4968,8 @@
                 }
               },
               "pron": "kâm",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0206",
@@ -4780,7 +4991,8 @@
                 }
               },
               "pron": "ôupen",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0207",
@@ -4802,7 +5014,8 @@
                 }
               },
               "pron": "klôuz",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0208",
@@ -4824,7 +5037,8 @@
                 }
               },
               "pron": "ríd",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             }
           ],
           "rules": []
@@ -4853,7 +5067,8 @@
                 }
               },
               "pron": "ráit",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0210",
@@ -4875,7 +5090,8 @@
                 }
               },
               "pron": "spík",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0211",
@@ -4897,7 +5113,8 @@
                 }
               },
               "pron": "lísen",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0212",
@@ -4919,7 +5136,8 @@
                 }
               },
               "pron": "plêi",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0213",
@@ -4941,7 +5159,8 @@
                 }
               },
               "pron": "hélp",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0214",
@@ -4963,7 +5182,8 @@
                 }
               },
               "pron": "klín",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0215",
@@ -4985,7 +5205,8 @@
                 }
               },
               "pron": "uêit",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             }
           ],
           "rules": []
@@ -5014,7 +5235,8 @@
                 }
               },
               "pron": "rú",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 6
             },
             {
               "id": "VOC_0271",
@@ -5036,7 +5258,8 @@
                 }
               },
               "pron": "uér",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 6
             }
           ],
           "rules": []
@@ -5065,7 +5288,8 @@
                 }
               },
               "pron": "bódi",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0231",
@@ -5087,7 +5311,8 @@
                 }
               },
               "pron": "réd",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0232",
@@ -5109,7 +5334,8 @@
                 }
               },
               "pron": "fêis",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0233",
@@ -5131,7 +5357,8 @@
                 }
               },
               "pron": "rér",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0234",
@@ -5153,7 +5380,8 @@
                 }
               },
               "pron": "ái",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0235",
@@ -5175,7 +5403,8 @@
                 }
               },
               "pron": "áis",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0236",
@@ -5197,7 +5426,8 @@
                 }
               },
               "pron": "nôuz",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0237",
@@ -5219,7 +5449,8 @@
                 }
               },
               "pron": "máuth",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0238",
@@ -5241,7 +5472,8 @@
                 }
               },
               "pron": "rénd",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0239",
@@ -5263,7 +5495,8 @@
                 }
               },
               "pron": "árm",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0240",
@@ -5285,7 +5518,8 @@
                 }
               },
               "pron": "lég",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0241",
@@ -5307,7 +5541,8 @@
                 }
               },
               "pron": "túth",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0242",
@@ -5329,7 +5564,8 @@
                 }
               },
               "pron": "títh",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0243",
@@ -5351,7 +5587,8 @@
                 }
               },
               "pron": "sôup",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0244",
@@ -5373,7 +5610,8 @@
                 }
               },
               "pron": "túthbrâch",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0245",
@@ -5395,7 +5633,8 @@
                 }
               },
               "pron": "túthpêist",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0246",
@@ -5417,7 +5656,8 @@
                 }
               },
               "pron": "táuel",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0247",
@@ -5439,7 +5679,8 @@
                 }
               },
               "pron": "cháuâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0248",
@@ -5461,7 +5702,8 @@
                 }
               },
               "pron": "búk",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 8
             },
             {
               "id": "VOC_0249",
@@ -5483,7 +5725,8 @@
                 }
               },
               "pron": "nôutbuk",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 8
             },
             {
               "id": "VOC_0250",
@@ -5505,7 +5748,8 @@
                 }
               },
               "pron": "kompiútâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 8
             },
             {
               "id": "VOC_0251",
@@ -5527,7 +5771,8 @@
                 }
               },
               "pron": "klés",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 8
             },
             {
               "id": "VOC_0252",
@@ -5549,7 +5794,8 @@
                 }
               },
               "pron": "bíznes",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 8
             },
             {
               "id": "VOC_0253",
@@ -5571,7 +5817,8 @@
                 }
               },
               "pron": "miúzik",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 9
             },
             {
               "id": "VOC_0254",
@@ -5593,7 +5840,8 @@
                 }
               },
               "pron": "sóng",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 9
             },
             {
               "id": "VOC_0255",
@@ -5615,7 +5863,8 @@
                 }
               },
               "pron": "guêim",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 9
             },
             {
               "id": "VOC_0256",
@@ -5637,7 +5886,8 @@
                 }
               },
               "pron": "fôun",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 9
             },
             {
               "id": "VOC_0257",
@@ -5659,7 +5909,8 @@
                 }
               },
               "pron": "bég",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 9
             },
             {
               "id": "VOC_0258",
@@ -5681,7 +5932,8 @@
                 }
               },
               "pron": "uólet",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 9
             },
             {
               "id": "VOC_0259",
@@ -5703,7 +5955,8 @@
                 }
               },
               "pron": "uótch",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 9
             },
             {
               "id": "VOC_0260",
@@ -5725,7 +5978,8 @@
                 }
               },
               "pron": "bótol",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 9
             },
             {
               "id": "VOC_0261",
@@ -5747,7 +6001,8 @@
                 }
               },
               "pron": "glés",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 9
             },
             {
               "id": "VOC_0262",
@@ -5769,7 +6024,8 @@
                 }
               },
               "pron": "kâp",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 9
             },
             {
               "id": "VOC_0263",
@@ -5791,7 +6047,8 @@
                 }
               },
               "pron": "klôuz",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 9
             },
             {
               "id": "VOC_0264",
@@ -5813,7 +6070,8 @@
                 }
               },
               "pron": "chârt",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 9
             },
             {
               "id": "VOC_0265",
@@ -5835,7 +6093,8 @@
                 }
               },
               "pron": "chús",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 9
             },
             {
               "id": "VOC_0266",
@@ -5857,7 +6116,8 @@
                 }
               },
               "pron": "kôut",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 9
             },
             {
               "id": "VOC_0267",
@@ -5879,7 +6139,8 @@
                 }
               },
               "pron": "skárf",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 9
             }
           ],
           "rules": []
@@ -5898,7 +6159,8 @@
           "licao": "1.3",
           "nivel_comp": 2,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "Pratique: my + pessoa. my mother = a minha mãe."
+          "micro": "Pratique: my + pessoa. my mother = a minha mãe.",
+          "ciclo": 1
         },
         {
           "id": "COMP_0501",
@@ -5912,7 +6174,8 @@
           "licao": "1.3",
           "nivel_comp": 2,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "your + pessoa. your father = o seu pai."
+          "micro": "your + pessoa. your father = o seu pai.",
+          "ciclo": 1
         },
         {
           "id": "COMP_0502",
@@ -5926,7 +6189,8 @@
           "licao": "1.3",
           "nivel_comp": 2,
           "rule_ref": "RULE_ARTICLES_AAN",
-          "micro": "a antes de som de consoante: a teacher."
+          "micro": "a antes de som de consoante: a teacher.",
+          "ciclo": 1
         },
         {
           "id": "COMP_0503",
@@ -5940,7 +6204,8 @@
           "licao": "1.3",
           "nivel_comp": 2,
           "rule_ref": "RULE_ARTICLES_AAN",
-          "micro": "an antes de som de vogal: an artist, an engineer."
+          "micro": "an antes de som de vogal: an artist, an engineer.",
+          "ciclo": 1
         },
         {
           "id": "COMP_0504",
@@ -5955,7 +6220,8 @@
           "licao": "1.3",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "this apresenta; is = é. This is my mother."
+          "micro": "this apresenta; is = é. This is my mother.",
+          "ciclo": 1
         },
         {
           "id": "COMP_0510",
@@ -5972,7 +6238,8 @@
           "licao": "1.4",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "Junte as peças: my + mother + is + a + teacher."
+          "micro": "Junte as peças: my + mother + is + a + teacher.",
+          "ciclo": 1
         },
         {
           "id": "COMP_0511",
@@ -5989,7 +6256,8 @@
           "licao": "1.4",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "is = é."
+          "micro": "is = é.",
+          "ciclo": 1
         },
         {
           "id": "COMP_0512",
@@ -6006,7 +6274,8 @@
           "licao": "1.4",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "Monte você: my + pessoa + is + a + profissão."
+          "micro": "Monte você: my + pessoa + is + a + profissão.",
+          "ciclo": 1
         },
         {
           "id": "COMP_0513",
@@ -6023,7 +6292,8 @@
           "licao": "1.4",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "is = é."
+          "micro": "is = é.",
+          "ciclo": 1
         },
         {
           "id": "COMP_0514",
@@ -6037,7 +6307,8 @@
           "licao": "1.4",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "Foco na afirmativa: She is a doctor."
+          "micro": "Foco na afirmativa: She is a doctor.",
+          "ciclo": 1
         },
         {
           "id": "COMP_0520",
@@ -6051,7 +6322,8 @@
           "licao": "1.5",
           "nivel_comp": 2,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "good describes doctor — o adjetivo vem antes do substantivo."
+          "micro": "good describes doctor — o adjetivo vem antes do substantivo.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0521",
@@ -6066,7 +6338,8 @@
           "licao": "1.5",
           "nivel_comp": 3,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "In English, adjectives come before nouns: a good doctor."
+          "micro": "In English, adjectives come before nouns: a good doctor.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0522",
@@ -6080,7 +6353,8 @@
           "licao": "1.5",
           "nivel_comp": 2,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "bad = ruim/mau."
+          "micro": "bad = ruim/mau.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0523",
@@ -6094,7 +6368,8 @@
           "licao": "1.5",
           "nivel_comp": 2,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "big describes family."
+          "micro": "big describes family.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0524",
@@ -6108,7 +6383,8 @@
           "licao": "1.5",
           "nivel_comp": 2,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "small describes family."
+          "micro": "small describes family.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0530",
@@ -6122,7 +6398,8 @@
           "licao": "1.6",
           "nivel_comp": 2,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "pretty describes woman. Adjectives come before nouns."
+          "micro": "pretty describes woman. Adjectives come before nouns.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0531",
@@ -6137,7 +6414,8 @@
           "licao": "1.6",
           "nivel_comp": 3,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "pretty describes woman."
+          "micro": "pretty describes woman.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0532",
@@ -6151,7 +6429,8 @@
           "licao": "1.6",
           "nivel_comp": 2,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "young describes man."
+          "micro": "young describes man.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0533",
@@ -6166,7 +6445,8 @@
           "licao": "1.6",
           "nivel_comp": 3,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "strong describes man."
+          "micro": "strong describes man.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0534",
@@ -6180,7 +6460,8 @@
           "licao": "1.6",
           "nivel_comp": 2,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "old describes teacher."
+          "micro": "old describes teacher.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0540",
@@ -6194,7 +6475,8 @@
           "licao": "1.7",
           "nivel_comp": 2,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "his = dele. his father."
+          "micro": "his = dele. his father.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0541",
@@ -6208,7 +6490,8 @@
           "licao": "1.7",
           "nivel_comp": 2,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "her = dela. her mother."
+          "micro": "her = dela. her mother.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0542",
@@ -6222,7 +6505,8 @@
           "licao": "1.7",
           "nivel_comp": 2,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "our = nosso/nossa."
+          "micro": "our = nosso/nossa.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0543",
@@ -6239,7 +6523,8 @@
           "licao": "1.7",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "his sister = a irmã dele."
+          "micro": "his sister = a irmã dele.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0544",
@@ -6256,7 +6541,8 @@
           "licao": "1.7",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "her brother = o irmão dela."
+          "micro": "her brother = o irmão dela.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0550",
@@ -6271,7 +6557,8 @@
           "licao": "1.8",
           "nivel_comp": 3,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "Combine: posse + adjetivo + pessoa."
+          "micro": "Combine: posse + adjetivo + pessoa.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0551",
@@ -6286,7 +6573,8 @@
           "licao": "1.8",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "junta posse + profissão."
+          "micro": "junta posse + profissão.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0552",
@@ -6302,7 +6590,8 @@
           "licao": "1.8",
           "nivel_comp": 3,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "our + descrição."
+          "micro": "our + descrição.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0553",
@@ -6317,7 +6606,8 @@
           "licao": "1.8",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "happy = feliz (estado)."
+          "micro": "happy = feliz (estado).",
+          "ciclo": 3
         },
         {
           "id": "COMP_0554",
@@ -6332,7 +6622,8 @@
           "licao": "1.8",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "tired = cansado."
+          "micro": "tired = cansado.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0560",
@@ -6347,7 +6638,8 @@
           "licao": "1.9",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "reusa this/my para falar da casa."
+          "micro": "reusa this/my para falar da casa.",
+          "ciclo": 2
         },
         {
           "id": "COMP_0561",
@@ -6362,7 +6654,8 @@
           "licao": "1.9",
           "nivel_comp": 3,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "big describes house."
+          "micro": "big describes house.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0562",
@@ -6376,7 +6669,8 @@
           "licao": "1.9",
           "nivel_comp": 2,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "red = vermelho. a red door."
+          "micro": "red = vermelho. a red door.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0563",
@@ -6391,7 +6685,8 @@
           "licao": "1.9",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "the = a/o. the kitchen."
+          "micro": "the = a/o. the kitchen.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0564",
@@ -6405,7 +6700,8 @@
           "licao": "1.9",
           "nivel_comp": 2,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "new describes table."
+          "micro": "new describes table.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0570",
@@ -6419,7 +6715,8 @@
           "licao": "1.10",
           "nivel_comp": 2,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "good bread = pão bom."
+          "micro": "good bread = pão bom.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0571",
@@ -6433,7 +6730,8 @@
           "licao": "1.10",
           "nivel_comp": 2,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "red apple = maçã vermelha."
+          "micro": "red apple = maçã vermelha.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0572",
@@ -6448,7 +6746,8 @@
           "licao": "1.10",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "coffee = café."
+          "micro": "coffee = café.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0573",
@@ -6463,7 +6762,8 @@
           "licao": "1.10",
           "nivel_comp": 3,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "food = comida."
+          "micro": "food = comida.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0574",
@@ -6477,7 +6777,8 @@
           "licao": "1.10",
           "nivel_comp": 2,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "and = e."
+          "micro": "and = e.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0580",
@@ -6490,7 +6791,8 @@
           "licao": "1.11",
           "nivel_comp": 2,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "city = cidade (chega já já)."
+          "micro": "city = cidade (chega já já).",
+          "ciclo": 3
         },
         {
           "id": "COMP_0581",
@@ -6505,7 +6807,8 @@
           "licao": "1.11",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "apresenta um lugar."
+          "micro": "apresenta um lugar.",
+          "ciclo": 4
         },
         {
           "id": "COMP_0582",
@@ -6520,7 +6823,8 @@
           "licao": "1.11",
           "nivel_comp": 3,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "the park = o parque."
+          "micro": "the park = o parque.",
+          "ciclo": 4
         },
         {
           "id": "COMP_0583",
@@ -6534,7 +6838,8 @@
           "licao": "1.11",
           "nivel_comp": 2,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "good restaurant."
+          "micro": "good restaurant.",
+          "ciclo": 4
         },
         {
           "id": "COMP_0584",
@@ -6548,7 +6853,8 @@
           "licao": "1.11",
           "nivel_comp": 2,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "my school = a minha escola."
+          "micro": "my school = a minha escola.",
+          "ciclo": 4
         },
         {
           "id": "COMP_0590",
@@ -6562,7 +6868,8 @@
           "licao": "1.12",
           "nivel_comp": 2,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "at = em um ponto. at school, at the bank."
+          "micro": "at = em um ponto. at school, at the bank.",
+          "ciclo": 4
         },
         {
           "id": "COMP_0591",
@@ -6576,7 +6883,8 @@
           "licao": "1.12",
           "nivel_comp": 2,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "in = dentro de. in the city, in the house."
+          "micro": "in = dentro de. in the city, in the house.",
+          "ciclo": 4
         },
         {
           "id": "COMP_0592",
@@ -6590,7 +6898,8 @@
           "licao": "1.12",
           "nivel_comp": 2,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "on = sobre/em. on the street, on the table."
+          "micro": "on = sobre/em. on the street, on the table.",
+          "ciclo": 4
         },
         {
           "id": "COMP_0593",
@@ -6606,7 +6915,8 @@
           "licao": "1.12",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "Agora use: is + at + lugar. at the bank = no banco."
+          "micro": "Agora use: is + at + lugar. at the bank = no banco.",
+          "ciclo": 4
         },
         {
           "id": "COMP_0594",
@@ -6622,7 +6932,8 @@
           "licao": "1.12",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "on the street = na rua."
+          "micro": "on the street = na rua.",
+          "ciclo": 4
         },
         {
           "id": "COMP_0600",
@@ -6636,7 +6947,8 @@
           "licao": "1.13",
           "nivel_comp": 2,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "day = dia."
+          "micro": "day = dia.",
+          "ciclo": 5
         },
         {
           "id": "COMP_0601",
@@ -6651,7 +6963,8 @@
           "licao": "1.13",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "today = hoje."
+          "micro": "today = hoje.",
+          "ciclo": 5
         },
         {
           "id": "COMP_0602",
@@ -6664,7 +6977,8 @@
           "licao": "1.13",
           "nivel_comp": 2,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "in the morning = de manhã."
+          "micro": "in the morning = de manhã.",
+          "ciclo": 5
         },
         {
           "id": "COMP_0603",
@@ -6681,7 +6995,8 @@
           "licao": "1.13",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "junta lugar (at work) + tempo (in the morning)."
+          "micro": "junta lugar (at work) + tempo (in the morning).",
+          "ciclo": 5
         },
         {
           "id": "COMP_0604",
@@ -6695,7 +7010,8 @@
           "licao": "1.13",
           "nivel_comp": 2,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "good day = bom dia."
+          "micro": "good day = bom dia.",
+          "ciclo": 5
         },
         {
           "id": "COMP_0610",
@@ -6709,7 +7025,8 @@
           "licao": "1.14",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "Present simple: I + verb + object. I eat bread."
+          "micro": "Present simple: I + verb + object. I eat bread.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0611",
@@ -6723,7 +7040,8 @@
           "licao": "1.14",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "drink = beber."
+          "micro": "drink = beber.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0612",
@@ -6737,7 +7055,8 @@
           "licao": "1.14",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "study = estudar."
+          "micro": "study = estudar.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0613",
@@ -6751,7 +7070,8 @@
           "licao": "1.14",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "run = correr."
+          "micro": "run = correr.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0614",
@@ -6765,7 +7085,8 @@
           "licao": "1.14",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "walk = caminhar."
+          "micro": "walk = caminhar.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0620",
@@ -6780,7 +7101,8 @@
           "licao": "1.15",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "open = abrir."
+          "micro": "open = abrir.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0621",
@@ -6795,7 +7117,8 @@
           "licao": "1.15",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "close = fechar."
+          "micro": "close = fechar.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0622",
@@ -6809,7 +7132,8 @@
           "licao": "1.15",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "read = ler."
+          "micro": "read = ler.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0623",
@@ -6823,7 +7147,8 @@
           "licao": "1.15",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "go = ir."
+          "micro": "go = ir.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0624",
@@ -6838,7 +7163,8 @@
           "licao": "1.15",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "sit = sentar; on the chair = na cadeira."
+          "micro": "sit = sentar; on the chair = na cadeira.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0630",
@@ -6853,7 +7179,8 @@
           "licao": "1.16",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "help = ajudar."
+          "micro": "help = ajudar.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0631",
@@ -6868,7 +7195,8 @@
           "licao": "1.16",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "clean = limpar."
+          "micro": "clean = limpar.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0632",
@@ -6883,7 +7211,8 @@
           "licao": "1.16",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "write = escrever."
+          "micro": "write = escrever.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0633",
@@ -6898,7 +7227,8 @@
           "licao": "1.16",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "speak = falar."
+          "micro": "speak = falar.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0634",
@@ -6913,7 +7243,8 @@
           "licao": "1.16",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "wait = esperar."
+          "micro": "wait = esperar.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0640",
@@ -6930,7 +7261,8 @@
           "licao": "1.17",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "not = não. is not = não é. Transforme a afirmativa em negativa."
+          "micro": "not = não. is not = não é. Transforme a afirmativa em negativa.",
+          "ciclo": 1
         },
         {
           "id": "COMP_0641",
@@ -6947,7 +7279,8 @@
           "licao": "1.17",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "Pergunta: inverta is para o começo — Is your father a doctor?"
+          "micro": "Pergunta: inverta is para o começo — Is your father a doctor?",
+          "ciclo": 1
         },
         {
           "id": "COMP_0642",
@@ -6961,7 +7294,8 @@
           "licao": "1.17",
           "nivel_comp": 2,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "who = quem. Who is she?"
+          "micro": "who = quem. Who is she?",
+          "ciclo": 6
         },
         {
           "id": "COMP_0643",
@@ -6977,7 +7311,8 @@
           "licao": "1.17",
           "nivel_comp": 2,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "where = onde. Where is my father?"
+          "micro": "where = onde. Where is my father?",
+          "ciclo": 6
         },
         {
           "id": "COMP_0644",
@@ -6992,7 +7327,8 @@
           "licao": "1.17",
           "nivel_comp": 2,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "is not = não é."
+          "micro": "is not = não é.",
+          "ciclo": 1
         },
         {
           "id": "COMP_0650",
@@ -7008,7 +7344,8 @@
           "licao": "1.18",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "Situação: pergunta e resposta sobre a família."
+          "micro": "Situação: pergunta e resposta sobre a família.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0651",
@@ -7024,7 +7361,8 @@
           "licao": "1.18",
           "nivel_comp": 3,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "Use o que já sabe numa situação nova."
+          "micro": "Use o que já sabe numa situação nova.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0652",
@@ -7040,7 +7378,8 @@
           "licao": "1.18",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "ação + comida + tempo."
+          "micro": "ação + comida + tempo.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0653",
@@ -7056,7 +7395,8 @@
           "licao": "1.18",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "onde alguém está."
+          "micro": "onde alguém está.",
+          "ciclo": 4
         },
         {
           "id": "COMP_0654",
@@ -7072,7 +7412,8 @@
           "licao": "1.18",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "pergunta de lugar + resposta."
+          "micro": "pergunta de lugar + resposta.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0660",
@@ -7089,7 +7430,8 @@
           "licao": "1.19",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "Produza você: diga algo verdadeiro sobre a sua família."
+          "micro": "Produza você: diga algo verdadeiro sobre a sua família.",
+          "ciclo": 1
         },
         {
           "id": "COMP_0661",
@@ -7104,7 +7446,8 @@
           "licao": "1.19",
           "nivel_comp": 3,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "Produza: my + pessoa + is + a + good/bad + profissão."
+          "micro": "Produza: my + pessoa + is + a + good/bad + profissão.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0662",
@@ -7119,7 +7462,8 @@
           "licao": "1.19",
           "nivel_comp": 3,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "Produza uma frase sobre a sua casa."
+          "micro": "Produza uma frase sobre a sua casa.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0663",
@@ -7135,7 +7479,8 @@
           "licao": "1.19",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "Produza: I + ação + objeto + tempo."
+          "micro": "Produza: I + ação + objeto + tempo.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0664",
@@ -7150,7 +7495,8 @@
           "licao": "1.19",
           "nivel_comp": 3,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "Produza a descrição de alguém."
+          "micro": "Produza a descrição de alguém.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0670",
@@ -7165,7 +7511,8 @@
           "licao": "1.20",
           "nivel_comp": 2,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "phone = celular."
+          "micro": "phone = celular.",
+          "ciclo": 9
         },
         {
           "id": "COMP_0671",
@@ -7180,7 +7527,8 @@
           "licao": "1.20",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "hair = cabelo."
+          "micro": "hair = cabelo.",
+          "ciclo": 7
         },
         {
           "id": "COMP_0672",
@@ -7194,7 +7542,8 @@
           "licao": "1.20",
           "nivel_comp": 2,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "computer = computador."
+          "micro": "computer = computador.",
+          "ciclo": 8
         },
         {
           "id": "COMP_0673",
@@ -7211,7 +7560,8 @@
           "licao": "1.20",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "shoes = sapatos (plural) → are; on the floor = no chão."
+          "micro": "shoes = sapatos (plural) → are; on the floor = no chão.",
+          "ciclo": 9
         },
         {
           "id": "COMP_0674",
@@ -7228,7 +7578,8 @@
           "licao": "1.20",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "junta posse + objeto + localização."
+          "micro": "junta posse + objeto + localização.",
+          "ciclo": 8
         }
       ],
       "checkpoint": {

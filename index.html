@@ -886,9 +886,17 @@ function rowsToWords(rows){
   }
   return out;
 }
+/* D1 V2: os 9 ciclos que organizam o Degrau 1. Rótulo mostrado no topo do nível. */
+const CICLO_NOMES = {
+  1:'Identidade, Família e Funções', 2:'Casa e Espaço Pessoal',
+  3:'Estados, Descrição e Alimentação', 4:'Cidade, Mobilidade e Localização',
+  5:'Tempo, Dias e Rotina', 6:'Ações e Dinâmica do Cotidiano',
+  7:'Corpo, Saúde e Higiene', 8:'Estudo, Trabalho e Tecnologia',
+  9:'Meu Mundo e Integração Total'
+};
 /* Adaptador: data.json (degraus→licoes→vocab/rules) -> formato plano do motor.
-   Passo 1 da migração: level = degrau, mantendo o motor guiado intacto.
-   A estrutura de lição/checkpoint fica preservada no data.json para o passo 2. */
+   D1 V2: o Degrau 1 é organizado pela coluna `ciclo` (1-9); demais degraus por `degrau`.
+   Cada palavra carrega `degrau` explícito para o checkpoint (Chefe continua por degrau). */
 function flattenData(data){
   /* IDENTIDADE = VOC_ID (não mais 'en'). Migração en->id: o flatten passa v.id/c.id
      ao objeto do motor, e resolve base_refs (que na planilha vêm por 'en', legível
@@ -915,9 +923,14 @@ function flattenData(data){
         if(F.neg&&F.neg.en)   examples.push({label:'Negativa',   en:F.neg.en,  pt:F.neg.pt||''});
         if(F.perg&&F.perg.en) examples.push({label:'Pergunta',   en:F.perg.en, pt:F.perg.pt||''});
         const rule = v.rule_ref ? ruleById[v.rule_ref] : null;
-        const vlevel = (deg.degrau===1 ? String(lic.licao) : String(deg.degrau));
-        LEVEL_TITLES[vlevel] = lic.titulo || LEVEL_TITLES[vlevel];
-        out.push({ id:v.id, level:vlevel, en:v.en, pt:v.pt, pron:v.pron||'',
+        /* D1 V2: a progressão do Degrau 1 é organizada pela coluna `ciclo` (1-9),
+           não mais pela lição antiga. Demais degraus seguem por `degrau`. */
+        const vlevel = (deg.degrau===1 && v.ciclo ? String(v.ciclo) : String(deg.degrau));
+        LEVEL_TITLES[vlevel] = (deg.degrau===1 && v.ciclo)
+          ? (CICLO_NOMES[v.ciclo] || LEVEL_TITLES[vlevel] || ('Ciclo '+v.ciclo))
+          : (lic.titulo || LEVEL_TITLES[vlevel]);
+        out.push({ id:v.id, degrau:deg.degrau, ciclo:(v.ciclo||null), level:vlevel,
+                   en:v.en, pt:v.pt, pron:v.pron||'', aceitos:(v.aceitos||''),
                    examples, explain: v.micro || (rule?(rule.balao||''):'') || '', nota:v.nota_sentido||'' });
       }
     }
@@ -930,9 +943,14 @@ function flattenData(data){
         return k || en; });  /* mantém en só para não quebrar render; erro fica visível no console */
       const examples=refsEn.map(w=>({label:'Peça', en:w, pt:ptByEn[w]||''}));
       const rule = c.rule_ref ? ruleById[c.rule_ref] : null;
-      const clevel = (deg.degrau===1 ? String(c.licao)+'j' : String(deg.degrau)+'.5');
-      LEVEL_TITLES[clevel] = (licTit[String(c.licao)]||'Junções')+' · junções';
-      out.push({ id:c.id, level:clevel, en:c.en, pt:c.pt, pron:c.pron||'',
+      /* D1 V2: junções entram DEPOIS das soltas do MESMO ciclo (nível `<ciclo>j`). */
+      const clevel = (deg.degrau===1 && c.ciclo ? String(c.ciclo)+'j'
+                      : (deg.degrau===1 ? String(c.licao)+'j' : String(deg.degrau)+'.5'));
+      LEVEL_TITLES[clevel] = ((deg.degrau===1 && c.ciclo)
+                      ? (CICLO_NOMES[c.ciclo] || ('Ciclo '+c.ciclo))
+                      : (licTit[String(c.licao)]||'Junções')) + ' · junções';
+      out.push({ id:c.id, degrau:deg.degrau, ciclo:(c.ciclo||null), level:clevel,
+                 en:c.en, pt:c.pt, pron:c.pron||'', aceitos:(c.aceitos||''),
                  examples, explain: c.micro || (rule?(rule.balao||''):'') || '',
                  base_refs:refsId });
     }
@@ -987,6 +1005,23 @@ function isCorrect(input, answer){
   return false;
 }
 
+/* D1 V2 — equivalências: aceita a resposta canônica (w.en) E as formas de `w.aceitos`
+   (ex.: bike/bicycle). O aluno NÃO precisa digitar "bike/bicycle". */
+function mvAnswerForms(w){
+  const forms=[String(w.en||'').trim()];
+  if(w && w.aceitos) String(w.aceitos).split(/[|,;\/]/).forEach(s=>{ s=s.trim(); if(s) forms.push(s); });
+  return forms;
+}
+function mvAcceptsAnswer(val, w){
+  const forms=mvAnswerForms(w); const low=String(val||'').trim().toLowerCase();
+  let exact=false, puncOnly=false, ok=false;
+  for(const f of forms){
+    if(low===f.toLowerCase()){ exact=true; ok=true; break; }
+    if(mvStripPunct(val)===mvStripPunct(f)){ puncOnly=true; ok=true; }
+    if(isCorrect(val, f)){ ok=true; }
+  }
+  return {ok, exact, puncOnly};
+}
 function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];} return a; }
 let SPEAK_RATE = Math.min(1.5, Math.max(0.5, parseFloat(localStorage.getItem('bora_rate')) || 0.9));
 function setRate(delta){
@@ -1319,7 +1354,7 @@ function mvInjectLine(){
    Do Degrau 3 em diante, vira um ícone ao lado do áudio que revela um balãozinho. */
 function mvPronHtml(w){
   if(!w.pron) return '';
-  const deg = parseInt(w.level)||1;
+  const deg = w.degrau || parseInt(w.level) || 1;
   if(deg<=2) return '<div class="pronq">'+esc(w.pron)+'</div>';
   return '<button class="pron-btn" type="button" onclick="this.nextElementSibling.classList.toggle(\'show\')" title="como falar">🗣️</button>'+
          '<span class="pron-bubble">'+esc(w.pron)+'</span>';
@@ -1485,9 +1520,8 @@ function mvRender(){
     const check=()=>{
       const val=inp.value;
       const alvo=w.en.trim();
-      const exact = val.trim().toLowerCase()===alvo.toLowerCase();
-      const puncOnly = !exact && mvStripPunct(val)===mvStripPunct(alvo);  /* só faltou/errou pontuação */
-      const ok = exact || puncOnly || isCorrect(val, w[ansKey]);
+      const _r = mvAcceptsAnswer(val, w);                 /* D1 V2: considera w.aceitos */
+      const exact = _r.exact, puncOnly = _r.puncOnly, ok = _r.ok;
       inp.disabled=true; const cb=document.getElementById('checkBtn'); if(cb) cb.remove();
       mvResolve(ok, w, ansKey, {
         correction: (ok && !exact && !puncOnly) ? w.en : null,   /* grafia tolerada (typo) */
@@ -1552,7 +1586,9 @@ function cpIntroMsg(){ return CP_INTRO[Math.floor(Math.random()*CP_INTRO.length)
 const PLAY_SVG = ' <svg class="play-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5v14l12-7z"/></svg>';
 let cpDeg=0, cpQueue=[], cpTotal=0, cpRight=0, cpWrong=[], cpFase='', cpPending=[];
 
-function cpDegrauDe(w){ return parseInt(w.level)||1; }
+/* D1 V2: o Chefe é por DEGRAU. Com `level` agora sendo o ciclo (1-9) no D1,
+   derivamos o degrau do campo explícito `w.degrau` (fallback = prefixo do level). */
+function cpDegrauDe(w){ return w.degrau || parseInt(w.level) || 1; }
 function degrausComConteudo(){ return [...new Set(WORDS.map(cpDegrauDe))].sort((a,b)=>a-b); }
 function degrauDominado(deg, p){
   const ws = WORDS.filter(w=>cpDegrauDe(w)===deg && mvCompEligible(w,p));
@@ -1652,7 +1688,7 @@ function cpRender(){
     topQuestion('Escreva em inglês', '');
     body.innerHTML='<div class="prompt"><div class="wordrow"><span class="word">'+esc(w.pt)+'</span></div></div><input class="type-in" id="typeIn" placeholder="digite em inglês..." autocomplete="off" autocapitalize="off"><button class="next-btn" id="checkBtn">Responder</button>';
     const inp=document.getElementById('typeIn'); if(inp) inp.focus();
-    const check=()=>{ const val=inp.value; const exact=val.trim().toLowerCase()===w.en.trim().toLowerCase(); const punc=!exact && mvStripPunct(val)===mvStripPunct(w.en); const ok=exact||punc||isCorrect(val,w.en); inp.disabled=true; const cb=document.getElementById('checkBtn'); if(cb) cb.remove(); cpResolve(ok); };
+    const check=()=>{ const val=inp.value; const ok=mvAcceptsAnswer(val,w).ok; inp.disabled=true; const cb=document.getElementById('checkBtn'); if(cb) cb.remove(); cpResolve(ok); };
     document.getElementById('checkBtn').onclick=check;
     inp.addEventListener('keydown',e=>{ if(e.key==='Enter') check(); });
   }
@@ -1744,7 +1780,7 @@ function srvRender(){
     topQuestion('Escreva em inglês','');
     body.innerHTML='<div class="prompt"><div class="wordrow"><span class="word">'+esc(w.pt)+'</span></div></div><input class="type-in" id="typeIn" placeholder="digite em inglês..." autocomplete="off" autocapitalize="off"><button class="next-btn" id="checkBtn">Responder</button>';
     const inp=document.getElementById('typeIn'); if(inp) inp.focus();
-    const check=()=>{ const val=inp.value; const exact=val.trim().toLowerCase()===w.en.trim().toLowerCase(); const punc=!exact&&mvStripPunct(val)===mvStripPunct(w.en); const ok=exact||punc||isCorrect(val,w.en); inp.disabled=true; const cb=document.getElementById('checkBtn'); if(cb) cb.remove(); srvResolve(ok); };
+    const check=()=>{ const val=inp.value; const ok=mvAcceptsAnswer(val,w).ok; inp.disabled=true; const cb=document.getElementById('checkBtn'); if(cb) cb.remove(); srvResolve(ok); };
     document.getElementById('checkBtn').onclick=check; inp.addEventListener('keydown',e=>{ if(e.key==='Enter') check(); });
   }
 }
