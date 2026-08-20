@@ -803,7 +803,7 @@
 <script>
 /* ====== FONTE DE DADOS: data.json (gerado pelo build a partir da base) ====== */
 const DATA_URL = 'data.json';
-const CACHE_KEY = 'bora_data_cache_v3';
+const CACHE_KEY = 'bora_data_cache_v4';  /* D1 V2: invalida cache antigo (v3 = dados pré-ciclo) */
 const AV_WIN="avatar_win.png";
 const AV_FAIL="avatar_fail.png";
 const AV_COVER="avatar.png";
@@ -957,20 +957,44 @@ function flattenData(data){
   }
   return out;
 }
+/* D1 V2: um data.json só é aceito se for V2 — isto é, se o Degrau 1 trouxer `ciclo`.
+   Isso impede que um arquivo antigo (sem ciclo) seja usado silenciosamente. */
+function isV2Data(data){
+  try{
+    for(const deg of (data.degraus||[])){
+      if(deg.degrau!==1) continue;
+      for(const lic of (deg.licoes||[])) for(const v of (lic.vocab||[])) if(v && v.ciclo) return true;
+      for(const c of (deg.composicoes||[])) if(c && c.ciclo) return true;
+    }
+  }catch(e){}
+  return false;
+}
 async function loadWords(){
-  if(window.__BORA_DATA__){ try{ const wi=flattenData(window.__BORA_DATA__); if(wi&&wi.length) return {words:wi, source:'inline'}; }catch(e){ console.error('dados embutidos falharam', e); } }
+  /* 1) FONTE DE VERDADE: o data.json publicado. Precisa ser V2 (ter `ciclo`). */
   try{
     const res = await fetch(DATA_URL+'?_t='+Date.now(), {cache:'no-store'});
-    if(!res.ok) throw new Error('http '+res.status);
+    if(!res.ok) throw new Error('HTTP '+res.status);
     const data = await res.json();
+    if(!isV2Data(data)) throw new Error('data.json sem `ciclo` — arquivo antigo publicado?');
     const w = flattenData(data);
     if(!w.length) throw new Error('vazio');
     try{ localStorage.setItem(CACHE_KEY, JSON.stringify(w)); }catch(e){}
+    console.info('[Bora] fonte de dados: data.json (V2) — '+w.length+' itens');
     return {words:w, source:'online'};
   }catch(e){
-    try{ const c=JSON.parse(localStorage.getItem(CACHE_KEY)); if(c&&c.length) return {words:c, source:'cache'}; }catch(e2){}
-    return {words:null, source:'fail'};
+    console.warn('[Bora] data.json não carregou/inválido:', e && e.message);
   }
+  /* 2) Fallback offline: dados embutidos no HTML — SÓ se forem V2. */
+  if(window.__BORA_DATA__ && isV2Data(window.__BORA_DATA__)){
+    try{ const wi=flattenData(window.__BORA_DATA__);
+      if(wi&&wi.length){ console.info('[Bora] fonte de dados: embed inline (V2) — '+wi.length+' itens'); return {words:wi, source:'inline'}; }
+    }catch(e){ console.error('[Bora] embed inline V2 falhou:', e); }
+  } else if(window.__BORA_DATA__){ console.warn('[Bora] embed inline IGNORADO (não é V2 / sem ciclo).'); }
+  /* 3) Último recurso: cache local v4 (só gravado a partir de um data.json V2). */
+  try{ const c=JSON.parse(localStorage.getItem(CACHE_KEY)); if(c&&c.length){ console.info('[Bora] fonte de dados: cache v4 — '+c.length+' itens'); return {words:c, source:'cache'}; } }catch(e2){}
+  /* Nada V2 disponível — NÃO usar dados antigos silenciosamente: erro explícito. */
+  console.error('[Bora] Nenhuma fonte de dados V2 disponível — exibindo tela de erro.');
+  return {words:null, source:'fail'};
 }
 
 /* ---------- matching tolerante (modo digitar) ---------- */
@@ -1933,7 +1957,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "mâdâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0004",
@@ -1955,7 +1980,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "fádâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0001",
@@ -1977,7 +2003,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "brâdâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0002",
@@ -1999,7 +2026,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "sistâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0005",
@@ -2021,7 +2049,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "sân",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0006",
@@ -2043,7 +2072,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "dótâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0067",
@@ -2065,7 +2095,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "tcháild",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0068",
@@ -2087,7 +2118,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "tchíldrân",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0070",
@@ -2109,7 +2141,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "râzbând",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0071",
@@ -2131,7 +2164,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "uáif",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0072",
@@ -2153,7 +2187,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "pérânts",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0069",
@@ -2175,7 +2210,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "grãnpérânts",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0007",
@@ -2197,7 +2233,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "grãnfádâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0008",
@@ -2219,7 +2256,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "grãnmâdâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0009",
@@ -2241,7 +2279,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "ânkôl",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0010",
@@ -2263,7 +2302,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "ént",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0011",
@@ -2285,7 +2325,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "kâzân",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0073",
@@ -2307,7 +2348,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "fémâli",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0012",
@@ -2329,7 +2371,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "frend",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0018",
@@ -2351,7 +2394,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "men",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0019",
@@ -2373,7 +2417,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "úmân",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0074",
@@ -2395,7 +2440,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "bói",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0075",
@@ -2417,7 +2463,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "gârl",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0017",
@@ -2439,7 +2486,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "pârsân",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0020",
@@ -2461,7 +2509,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "neim",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             }
           ],
           "rules": []
@@ -2490,7 +2539,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "títcher",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0015",
@@ -2512,7 +2562,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "dáktâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0076",
@@ -2534,7 +2585,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "nârs",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0013",
@@ -2556,7 +2608,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "stúdent",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0077",
@@ -2578,7 +2631,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "uârker",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0078",
@@ -2600,7 +2654,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "bós",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0079",
@@ -2622,7 +2677,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "lóier",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0016",
@@ -2644,7 +2700,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "endjiníâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0080",
@@ -2666,7 +2723,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "pâlís ófisâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0081",
@@ -2688,7 +2746,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "fáiârfáitâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0082",
@@ -2710,7 +2769,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "dráivâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0083",
@@ -2732,7 +2792,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "kúk",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0084",
@@ -2754,7 +2815,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "uêitâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0085",
@@ -2776,7 +2838,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "uêitrâs",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0086",
@@ -2798,7 +2861,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "déntist",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0087",
@@ -2820,7 +2884,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "fármâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0088",
@@ -2842,7 +2907,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "ártist",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0089",
@@ -2864,7 +2930,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "sínguer",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0090",
@@ -2886,7 +2953,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "éktâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0091",
@@ -2908,7 +2976,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "éktrâs",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0092",
@@ -2930,7 +2999,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "ráitâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             },
             {
               "id": "VOC_0093",
@@ -2952,7 +3022,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "djób",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 1
             }
           ],
           "rules": [
@@ -2996,7 +3067,8 @@ window.__BORA_DATA__ = {
               },
               "pron": "mái",
               "rule_ref": "RULE_TOBE_PRESENT",
-              "micro": "my = meu/minha. Mostra que algo é seu: my mother."
+              "micro": "my = meu/minha. Mostra que algo é seu: my mother.",
+              "ciclo": 1
             },
             {
               "id": "VOC_0273",
@@ -3019,7 +3091,8 @@ window.__BORA_DATA__ = {
               },
               "pron": "iór",
               "rule_ref": "RULE_TOBE_PRESENT",
-              "micro": "your = seu/sua: your teacher."
+              "micro": "your = seu/sua: your teacher.",
+              "ciclo": 1
             },
             {
               "id": "VOC_0274",
@@ -3042,7 +3115,8 @@ window.__BORA_DATA__ = {
               },
               "pron": "dís",
               "rule_ref": "RULE_TOBE_PRESENT",
-              "micro": "this = este/esta. Aponta ou apresenta: This is my father."
+              "micro": "this = este/esta. Aponta ou apresenta: This is my father.",
+              "ciclo": 1
             },
             {
               "id": "VOC_0275",
@@ -3065,7 +3139,8 @@ window.__BORA_DATA__ = {
               },
               "pron": "íz",
               "rule_ref": "RULE_TOBE_PRESENT",
-              "micro": "is = é. Diz o que alguém é: She is a teacher."
+              "micro": "is = é. Diz o que alguém é: She is a teacher.",
+              "ciclo": 1
             },
             {
               "id": "VOC_0276",
@@ -3088,7 +3163,8 @@ window.__BORA_DATA__ = {
               },
               "pron": "ár",
               "rule_ref": "RULE_TOBE_PRESENT",
-              "micro": "are = são/estão (plural): They are my parents."
+              "micro": "are = são/estão (plural): They are my parents.",
+              "ciclo": 1
             },
             {
               "id": "VOC_0277",
@@ -3111,7 +3187,8 @@ window.__BORA_DATA__ = {
               },
               "pron": "ei",
               "rule_ref": "RULE_TOBE_PRESENT",
-              "micro": "a = um/uma, antes de som de consoante: a teacher, a doctor."
+              "micro": "a = um/uma, antes de som de consoante: a teacher, a doctor.",
+              "ciclo": 1
             },
             {
               "id": "VOC_0278",
@@ -3134,7 +3211,8 @@ window.__BORA_DATA__ = {
               },
               "pron": "ãn",
               "rule_ref": "RULE_TOBE_PRESENT",
-              "micro": "an = um/uma antes de som de vogal: an artist, an engineer."
+              "micro": "an = um/uma antes de som de vogal: an artist, an engineer.",
+              "ciclo": 1
             },
             {
               "id": "VOC_0279",
@@ -3157,7 +3235,8 @@ window.__BORA_DATA__ = {
               },
               "pron": "dâ",
               "rule_ref": "RULE_TOBE_PRESENT",
-              "micro": "the = o/a/os/as, para algo específico: the doctor."
+              "micro": "the = o/a/os/as, para algo específico: the doctor.",
+              "ciclo": 1
             }
           ],
           "rules": [
@@ -3220,7 +3299,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "gúd",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0269",
@@ -3242,7 +3322,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "béd",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0122",
@@ -3264,7 +3345,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "bíg",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0123",
@@ -3286,7 +3368,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "smól",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             }
           ],
           "rules": []
@@ -3315,7 +3398,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "biútifol",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0128",
@@ -3337,7 +3421,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "príti",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0129",
@@ -3359,7 +3444,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "âgli",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0125",
@@ -3381,7 +3467,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "iâng",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0124",
@@ -3403,7 +3490,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "ôuld",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0130",
@@ -3425,7 +3513,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "stróng",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0131",
@@ -3447,7 +3536,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "thín",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0132",
@@ -3469,7 +3559,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "fét",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             }
           ],
           "rules": []
@@ -3499,7 +3590,8 @@ window.__BORA_DATA__ = {
               },
               "pron": "ríz",
               "rule_ref": "RULE_TOBE_PRESENT",
-              "micro": "his = dele: his father = o pai dele."
+              "micro": "his = dele: his father = o pai dele.",
+              "ciclo": 3
             },
             {
               "id": "VOC_0281",
@@ -3522,7 +3614,8 @@ window.__BORA_DATA__ = {
               },
               "pron": "rârr",
               "rule_ref": "RULE_TOBE_PRESENT",
-              "micro": "her = dela: her mother = a mãe dela."
+              "micro": "her = dela: her mother = a mãe dela.",
+              "ciclo": 3
             },
             {
               "id": "VOC_0282",
@@ -3545,7 +3638,8 @@ window.__BORA_DATA__ = {
               },
               "pron": "áuar",
               "rule_ref": "RULE_TOBE_PRESENT",
-              "micro": "our = nosso/nossa: our teacher."
+              "micro": "our = nosso/nossa: our teacher.",
+              "ciclo": 3
             }
           ],
           "rules": []
@@ -3574,7 +3668,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "répi",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0025",
@@ -3596,7 +3691,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "séd",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0216",
@@ -3618,7 +3714,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "éngri",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0217",
@@ -3640,7 +3737,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "lâv",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0218",
@@ -3662,7 +3760,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "rêit",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0219",
@@ -3684,7 +3783,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "fíâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0220",
@@ -3706,7 +3806,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "afrêid",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0021",
@@ -3728,7 +3829,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "táiârd",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0022",
@@ -3750,7 +3852,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "rângri",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0023",
@@ -3772,7 +3875,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "thârsti",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0221",
@@ -3794,7 +3898,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "eksáited",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0222",
@@ -3816,7 +3921,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "uârid",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0223",
@@ -3838,7 +3944,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "skérd",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0224",
@@ -3860,7 +3967,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "âpsét",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0225",
@@ -3882,7 +3990,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "práud",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0226",
@@ -3904,7 +4013,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "lôunli",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0026",
@@ -3926,7 +4036,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "bízi",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0227",
@@ -3948,7 +4059,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "âlôun",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0228",
@@ -3970,7 +4082,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "lêizi",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0229",
@@ -3992,7 +4105,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "gléd",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0027",
@@ -4014,7 +4128,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "kôuld",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0028",
@@ -4036,7 +4151,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "rát",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0029",
@@ -4058,7 +4174,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "sik",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0030",
@@ -4080,7 +4197,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "rédi",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             }
           ],
           "rules": []
@@ -4109,7 +4227,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "roum",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0094",
@@ -4131,7 +4250,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "ráus",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0095",
@@ -4153,7 +4273,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "apártment",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0096",
@@ -4175,7 +4296,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "bédrum",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0097",
@@ -4197,7 +4319,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "béthrum",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0098",
@@ -4219,7 +4342,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "kítchen",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0099",
@@ -4241,7 +4365,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "lívin rum",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0100",
@@ -4263,7 +4388,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "rum",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0101",
@@ -4285,7 +4411,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "béd",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0102",
@@ -4307,7 +4434,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "dór",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0103",
@@ -4329,7 +4457,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "uíndou",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0104",
@@ -4351,7 +4480,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "têibol",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0105",
@@ -4373,7 +4503,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "tchér",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0106",
@@ -4395,7 +4526,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "flór",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0107",
@@ -4417,7 +4549,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "uól",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0108",
@@ -4439,7 +4572,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "blénket",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0109",
@@ -4461,7 +4595,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "kí",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0110",
@@ -4483,7 +4618,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "sínk",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 2
             },
             {
               "id": "VOC_0111",
@@ -4505,7 +4641,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "réd",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0112",
@@ -4527,7 +4664,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "blú",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0113",
@@ -4549,7 +4687,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "grín",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0114",
@@ -4571,7 +4710,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "iélou",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0115",
@@ -4593,7 +4733,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "blék",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0116",
@@ -4615,7 +4756,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "uáit",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0117",
@@ -4637,7 +4779,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "bráun",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0118",
@@ -4659,7 +4802,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "grêi",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0119",
@@ -4681,7 +4825,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "pínk",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0120",
@@ -4703,7 +4848,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "órãndj",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0121",
@@ -4725,7 +4871,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "pârpol",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0126",
@@ -4747,7 +4894,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "niú",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             }
           ],
           "rules": []
@@ -4776,7 +4924,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "uótâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0136",
@@ -4798,7 +4947,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "kófi",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0137",
@@ -4820,7 +4970,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "mílk",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0138",
@@ -4842,7 +4993,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "bréd",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0139",
@@ -4864,7 +5016,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "ráis",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0140",
@@ -4886,7 +5039,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "bíns",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0141",
@@ -4908,7 +5062,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "mít",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0142",
@@ -4930,7 +5085,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "fích",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0143",
@@ -4952,7 +5108,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "sálâd",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0144",
@@ -4974,7 +5131,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "fúd",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0145",
@@ -4996,7 +5154,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "frút",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0146",
@@ -5018,7 +5177,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "épol",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0147",
@@ -5040,7 +5200,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "banánâ",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0148",
@@ -5062,7 +5223,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "ég",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0149",
@@ -5084,7 +5246,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "tchís",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0150",
@@ -5106,7 +5269,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "kêik",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0151",
@@ -5128,7 +5292,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "brékfâst",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0152",
@@ -5150,7 +5315,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "lântch",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             },
             {
               "id": "VOC_0153",
@@ -5172,7 +5338,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "dínâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 3
             }
           ],
           "rules": []
@@ -5201,7 +5368,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "skúl",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0033",
@@ -5223,7 +5391,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "uârk",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0154",
@@ -5245,7 +5414,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "djím",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0155",
@@ -5267,7 +5437,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "párk",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0156",
@@ -5289,7 +5460,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "stór",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0157",
@@ -5311,7 +5483,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "márket",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0035",
@@ -5333,7 +5506,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "réstârant",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0038",
@@ -5355,7 +5529,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "róspital",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0158",
@@ -5377,7 +5552,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "bénk",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0159",
@@ -5399,7 +5575,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "strít",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0034",
@@ -5421,7 +5598,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "ófis",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0036",
@@ -5443,7 +5621,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "súpârmárket",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0039",
@@ -5465,7 +5644,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "routél",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0040",
@@ -5487,7 +5667,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "bítch",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             }
           ],
           "rules": []
@@ -5517,7 +5698,8 @@ window.__BORA_DATA__ = {
               },
               "pron": "ét",
               "rule_ref": "RULE_TOBE_PRESENT",
-              "micro": "at = em um ponto/local: at work, at school."
+              "micro": "at = em um ponto/local: at work, at school.",
+              "ciclo": 4
             },
             {
               "id": "VOC_0284",
@@ -5540,7 +5722,8 @@ window.__BORA_DATA__ = {
               },
               "pron": "ín",
               "rule_ref": "RULE_TOBE_PRESENT",
-              "micro": "in = dentro de um espaço/área: in the house, in the city."
+              "micro": "in = dentro de um espaço/área: in the house, in the city.",
+              "ciclo": 2
             },
             {
               "id": "VOC_0285",
@@ -5563,7 +5746,8 @@ window.__BORA_DATA__ = {
               },
               "pron": "ón",
               "rule_ref": "RULE_TOBE_PRESENT",
-              "micro": "on = sobre uma superfície: on the table, on the street."
+              "micro": "on = sobre uma superfície: on the table, on the street.",
+              "ciclo": 2
             },
             {
               "id": "VOC_0160",
@@ -5585,7 +5769,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "kár",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0161",
@@ -5607,7 +5792,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "bâs",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0162",
@@ -5629,7 +5815,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "trêin",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0163",
@@ -5651,7 +5838,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "plêin",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0164",
@@ -5673,7 +5861,9 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "báik",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4,
+              "aceitos": "bicycle"
             },
             {
               "id": "VOC_0165",
@@ -5695,7 +5885,9 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "báisikol",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4,
+              "aceitos": "bike"
             },
             {
               "id": "VOC_0166",
@@ -5717,7 +5909,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "môtârsáikol",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0167",
@@ -5739,7 +5932,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "téksi",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0168",
@@ -5761,7 +5955,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "rôud",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0169",
@@ -5783,7 +5978,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "stêichon",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0037",
@@ -5805,7 +6001,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "érport",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0170",
@@ -5827,7 +6024,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "síti",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0171",
@@ -5849,7 +6047,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "bíldin",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0172",
@@ -5871,7 +6070,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "brídj",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 4
             },
             {
               "id": "VOC_0133",
@@ -5893,7 +6093,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "fést",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             },
             {
               "id": "VOC_0134",
@@ -5915,7 +6116,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "slôu",
-              "rule_ref": "RULE_ADJ_ORDER"
+              "rule_ref": "RULE_ADJ_ORDER",
+              "ciclo": 3
             }
           ],
           "rules": []
@@ -5944,7 +6146,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "dêi",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0174",
@@ -5966,7 +6169,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "uík",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0175",
@@ -5988,7 +6192,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "mórnin",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0176",
@@ -6010,7 +6215,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "áftârnun",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0177",
@@ -6032,7 +6238,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "náit",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0178",
@@ -6054,7 +6261,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "tudêi",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0179",
@@ -6076,7 +6284,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "tumórou",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0180",
@@ -6098,7 +6307,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "iéstârdei",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0181",
@@ -6120,7 +6330,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "náu",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0182",
@@ -6142,7 +6353,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "táim",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0183",
@@ -6164,7 +6376,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "tunáit",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0184",
@@ -6186,7 +6399,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "mândei",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0185",
@@ -6208,7 +6422,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "tiúzdei",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0186",
@@ -6230,7 +6445,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "uénzdei",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0187",
@@ -6252,7 +6468,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "thârzdei",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0188",
@@ -6274,7 +6491,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "fráidei",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0189",
@@ -6296,7 +6514,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "sátârdei",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0190",
@@ -6318,7 +6537,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "sândei",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0191",
@@ -6340,7 +6560,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "ârli",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             },
             {
               "id": "VOC_0192",
@@ -6362,7 +6583,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "lêit",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 5
             }
           ],
           "rules": []
@@ -6391,7 +6613,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "stâdi",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0194",
@@ -6413,7 +6636,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "ít",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0195",
@@ -6435,7 +6659,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "drínk",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0196",
@@ -6457,7 +6682,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "slíp",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0197",
@@ -6479,7 +6705,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "uêik âp",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0198",
@@ -6501,7 +6728,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "guét âp",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0199",
@@ -6523,7 +6751,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "rân",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0200",
@@ -6545,7 +6774,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "uók",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             }
           ],
           "rules": []
@@ -6574,7 +6804,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "djâmp",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0202",
@@ -6596,7 +6827,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "sít",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0203",
@@ -6618,7 +6850,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "sténd",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0204",
@@ -6640,7 +6873,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "gôu",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0205",
@@ -6662,7 +6896,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "kâm",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0206",
@@ -6684,7 +6919,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "ôupen",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0207",
@@ -6706,7 +6942,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "klôuz",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0208",
@@ -6728,7 +6965,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "ríd",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             }
           ],
           "rules": []
@@ -6757,7 +6995,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "ráit",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0210",
@@ -6779,7 +7018,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "spík",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0211",
@@ -6801,7 +7041,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "lísen",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0212",
@@ -6823,7 +7064,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "plêi",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0213",
@@ -6845,7 +7087,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "hélp",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0214",
@@ -6867,7 +7110,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "klín",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             },
             {
               "id": "VOC_0215",
@@ -6889,7 +7133,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "uêit",
-              "rule_ref": "RULE_PRESENT_SIMPLE"
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "ciclo": 6
             }
           ],
           "rules": []
@@ -6918,7 +7163,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "rú",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 6
             },
             {
               "id": "VOC_0271",
@@ -6940,7 +7186,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "uér",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 6
             }
           ],
           "rules": []
@@ -6969,7 +7216,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "bódi",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0231",
@@ -6991,7 +7239,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "réd",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0232",
@@ -7013,7 +7262,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "fêis",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0233",
@@ -7035,7 +7285,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "rér",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0234",
@@ -7057,7 +7308,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "ái",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0235",
@@ -7079,7 +7331,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "áis",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0236",
@@ -7101,7 +7354,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "nôuz",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0237",
@@ -7123,7 +7377,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "máuth",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0238",
@@ -7145,7 +7400,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "rénd",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0239",
@@ -7167,7 +7423,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "árm",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0240",
@@ -7189,7 +7446,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "lég",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0241",
@@ -7211,7 +7469,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "túth",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0242",
@@ -7233,7 +7492,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "títh",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0243",
@@ -7255,7 +7515,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "sôup",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0244",
@@ -7277,7 +7538,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "túthbrâch",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0245",
@@ -7299,7 +7561,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "túthpêist",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0246",
@@ -7321,7 +7584,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "táuel",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0247",
@@ -7343,7 +7607,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "cháuâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 7
             },
             {
               "id": "VOC_0248",
@@ -7365,7 +7630,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "búk",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 8
             },
             {
               "id": "VOC_0249",
@@ -7387,7 +7653,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "nôutbuk",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 8
             },
             {
               "id": "VOC_0250",
@@ -7409,7 +7676,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "kompiútâr",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 8
             },
             {
               "id": "VOC_0251",
@@ -7431,7 +7699,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "klés",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 8
             },
             {
               "id": "VOC_0252",
@@ -7453,7 +7722,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "bíznes",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 8
             },
             {
               "id": "VOC_0253",
@@ -7475,7 +7745,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "miúzik",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 9
             },
             {
               "id": "VOC_0254",
@@ -7497,7 +7768,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "sóng",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 9
             },
             {
               "id": "VOC_0255",
@@ -7519,7 +7791,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "guêim",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 9
             },
             {
               "id": "VOC_0256",
@@ -7541,7 +7814,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "fôun",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 9
             },
             {
               "id": "VOC_0257",
@@ -7563,7 +7837,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "bég",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 9
             },
             {
               "id": "VOC_0258",
@@ -7585,7 +7860,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "uólet",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 9
             },
             {
               "id": "VOC_0259",
@@ -7607,7 +7883,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "uótch",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 9
             },
             {
               "id": "VOC_0260",
@@ -7629,7 +7906,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "bótol",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 9
             },
             {
               "id": "VOC_0261",
@@ -7651,7 +7929,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "glés",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 9
             },
             {
               "id": "VOC_0262",
@@ -7673,7 +7952,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "kâp",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 9
             },
             {
               "id": "VOC_0263",
@@ -7695,7 +7975,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "klôuz",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 9
             },
             {
               "id": "VOC_0264",
@@ -7717,7 +7998,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "chârt",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 9
             },
             {
               "id": "VOC_0265",
@@ -7739,7 +8021,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "chús",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 9
             },
             {
               "id": "VOC_0266",
@@ -7761,7 +8044,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "kôut",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 9
             },
             {
               "id": "VOC_0267",
@@ -7783,7 +8067,8 @@ window.__BORA_DATA__ = {
                 }
               },
               "pron": "skárf",
-              "rule_ref": "RULE_TOBE_PRESENT"
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "ciclo": 9
             }
           ],
           "rules": []
@@ -7802,7 +8087,8 @@ window.__BORA_DATA__ = {
           "licao": "1.3",
           "nivel_comp": 2,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "Pratique: my + pessoa. my mother = a minha mãe."
+          "micro": "Pratique: my + pessoa. my mother = a minha mãe.",
+          "ciclo": 1
         },
         {
           "id": "COMP_0501",
@@ -7816,7 +8102,8 @@ window.__BORA_DATA__ = {
           "licao": "1.3",
           "nivel_comp": 2,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "your + pessoa. your father = o seu pai."
+          "micro": "your + pessoa. your father = o seu pai.",
+          "ciclo": 1
         },
         {
           "id": "COMP_0502",
@@ -7830,7 +8117,8 @@ window.__BORA_DATA__ = {
           "licao": "1.3",
           "nivel_comp": 2,
           "rule_ref": "RULE_ARTICLES_AAN",
-          "micro": "a antes de som de consoante: a teacher."
+          "micro": "a antes de som de consoante: a teacher.",
+          "ciclo": 1
         },
         {
           "id": "COMP_0503",
@@ -7844,7 +8132,8 @@ window.__BORA_DATA__ = {
           "licao": "1.3",
           "nivel_comp": 2,
           "rule_ref": "RULE_ARTICLES_AAN",
-          "micro": "an antes de som de vogal: an artist, an engineer."
+          "micro": "an antes de som de vogal: an artist, an engineer.",
+          "ciclo": 1
         },
         {
           "id": "COMP_0504",
@@ -7859,7 +8148,8 @@ window.__BORA_DATA__ = {
           "licao": "1.3",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "this apresenta; is = é. This is my mother."
+          "micro": "this apresenta; is = é. This is my mother.",
+          "ciclo": 1
         },
         {
           "id": "COMP_0510",
@@ -7876,7 +8166,8 @@ window.__BORA_DATA__ = {
           "licao": "1.4",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "Junte as peças: my + mother + is + a + teacher."
+          "micro": "Junte as peças: my + mother + is + a + teacher.",
+          "ciclo": 1
         },
         {
           "id": "COMP_0511",
@@ -7893,7 +8184,8 @@ window.__BORA_DATA__ = {
           "licao": "1.4",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "is = é."
+          "micro": "is = é.",
+          "ciclo": 1
         },
         {
           "id": "COMP_0512",
@@ -7910,7 +8202,8 @@ window.__BORA_DATA__ = {
           "licao": "1.4",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "Monte você: my + pessoa + is + a + profissão."
+          "micro": "Monte você: my + pessoa + is + a + profissão.",
+          "ciclo": 1
         },
         {
           "id": "COMP_0513",
@@ -7927,7 +8220,8 @@ window.__BORA_DATA__ = {
           "licao": "1.4",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "is = é."
+          "micro": "is = é.",
+          "ciclo": 1
         },
         {
           "id": "COMP_0514",
@@ -7941,7 +8235,8 @@ window.__BORA_DATA__ = {
           "licao": "1.4",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "Foco na afirmativa: She is a doctor."
+          "micro": "Foco na afirmativa: She is a doctor.",
+          "ciclo": 1
         },
         {
           "id": "COMP_0520",
@@ -7955,7 +8250,8 @@ window.__BORA_DATA__ = {
           "licao": "1.5",
           "nivel_comp": 2,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "good describes doctor — o adjetivo vem antes do substantivo."
+          "micro": "good describes doctor — o adjetivo vem antes do substantivo.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0521",
@@ -7970,7 +8266,8 @@ window.__BORA_DATA__ = {
           "licao": "1.5",
           "nivel_comp": 3,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "In English, adjectives come before nouns: a good doctor."
+          "micro": "In English, adjectives come before nouns: a good doctor.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0522",
@@ -7984,7 +8281,8 @@ window.__BORA_DATA__ = {
           "licao": "1.5",
           "nivel_comp": 2,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "bad = ruim/mau."
+          "micro": "bad = ruim/mau.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0523",
@@ -7998,7 +8296,8 @@ window.__BORA_DATA__ = {
           "licao": "1.5",
           "nivel_comp": 2,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "big describes family."
+          "micro": "big describes family.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0524",
@@ -8012,7 +8311,8 @@ window.__BORA_DATA__ = {
           "licao": "1.5",
           "nivel_comp": 2,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "small describes family."
+          "micro": "small describes family.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0530",
@@ -8026,7 +8326,8 @@ window.__BORA_DATA__ = {
           "licao": "1.6",
           "nivel_comp": 2,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "pretty describes woman. Adjectives come before nouns."
+          "micro": "pretty describes woman. Adjectives come before nouns.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0531",
@@ -8041,7 +8342,8 @@ window.__BORA_DATA__ = {
           "licao": "1.6",
           "nivel_comp": 3,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "pretty describes woman."
+          "micro": "pretty describes woman.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0532",
@@ -8055,7 +8357,8 @@ window.__BORA_DATA__ = {
           "licao": "1.6",
           "nivel_comp": 2,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "young describes man."
+          "micro": "young describes man.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0533",
@@ -8070,7 +8373,8 @@ window.__BORA_DATA__ = {
           "licao": "1.6",
           "nivel_comp": 3,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "strong describes man."
+          "micro": "strong describes man.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0534",
@@ -8084,7 +8388,8 @@ window.__BORA_DATA__ = {
           "licao": "1.6",
           "nivel_comp": 2,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "old describes teacher."
+          "micro": "old describes teacher.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0540",
@@ -8098,7 +8403,8 @@ window.__BORA_DATA__ = {
           "licao": "1.7",
           "nivel_comp": 2,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "his = dele. his father."
+          "micro": "his = dele. his father.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0541",
@@ -8112,7 +8418,8 @@ window.__BORA_DATA__ = {
           "licao": "1.7",
           "nivel_comp": 2,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "her = dela. her mother."
+          "micro": "her = dela. her mother.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0542",
@@ -8126,7 +8433,8 @@ window.__BORA_DATA__ = {
           "licao": "1.7",
           "nivel_comp": 2,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "our = nosso/nossa."
+          "micro": "our = nosso/nossa.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0543",
@@ -8143,7 +8451,8 @@ window.__BORA_DATA__ = {
           "licao": "1.7",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "his sister = a irmã dele."
+          "micro": "his sister = a irmã dele.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0544",
@@ -8160,7 +8469,8 @@ window.__BORA_DATA__ = {
           "licao": "1.7",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "her brother = o irmão dela."
+          "micro": "her brother = o irmão dela.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0550",
@@ -8175,7 +8485,8 @@ window.__BORA_DATA__ = {
           "licao": "1.8",
           "nivel_comp": 3,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "Combine: posse + adjetivo + pessoa."
+          "micro": "Combine: posse + adjetivo + pessoa.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0551",
@@ -8190,7 +8501,8 @@ window.__BORA_DATA__ = {
           "licao": "1.8",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "junta posse + profissão."
+          "micro": "junta posse + profissão.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0552",
@@ -8206,7 +8518,8 @@ window.__BORA_DATA__ = {
           "licao": "1.8",
           "nivel_comp": 3,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "our + descrição."
+          "micro": "our + descrição.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0553",
@@ -8221,7 +8534,8 @@ window.__BORA_DATA__ = {
           "licao": "1.8",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "happy = feliz (estado)."
+          "micro": "happy = feliz (estado).",
+          "ciclo": 3
         },
         {
           "id": "COMP_0554",
@@ -8236,7 +8550,8 @@ window.__BORA_DATA__ = {
           "licao": "1.8",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "tired = cansado."
+          "micro": "tired = cansado.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0560",
@@ -8251,7 +8566,8 @@ window.__BORA_DATA__ = {
           "licao": "1.9",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "reusa this/my para falar da casa."
+          "micro": "reusa this/my para falar da casa.",
+          "ciclo": 2
         },
         {
           "id": "COMP_0561",
@@ -8266,7 +8582,8 @@ window.__BORA_DATA__ = {
           "licao": "1.9",
           "nivel_comp": 3,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "big describes house."
+          "micro": "big describes house.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0562",
@@ -8280,7 +8597,8 @@ window.__BORA_DATA__ = {
           "licao": "1.9",
           "nivel_comp": 2,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "red = vermelho. a red door."
+          "micro": "red = vermelho. a red door.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0563",
@@ -8295,7 +8613,8 @@ window.__BORA_DATA__ = {
           "licao": "1.9",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "the = a/o. the kitchen."
+          "micro": "the = a/o. the kitchen.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0564",
@@ -8309,7 +8628,8 @@ window.__BORA_DATA__ = {
           "licao": "1.9",
           "nivel_comp": 2,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "new describes table."
+          "micro": "new describes table.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0570",
@@ -8323,7 +8643,8 @@ window.__BORA_DATA__ = {
           "licao": "1.10",
           "nivel_comp": 2,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "good bread = pão bom."
+          "micro": "good bread = pão bom.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0571",
@@ -8337,7 +8658,8 @@ window.__BORA_DATA__ = {
           "licao": "1.10",
           "nivel_comp": 2,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "red apple = maçã vermelha."
+          "micro": "red apple = maçã vermelha.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0572",
@@ -8352,7 +8674,8 @@ window.__BORA_DATA__ = {
           "licao": "1.10",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "coffee = café."
+          "micro": "coffee = café.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0573",
@@ -8367,7 +8690,8 @@ window.__BORA_DATA__ = {
           "licao": "1.10",
           "nivel_comp": 3,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "food = comida."
+          "micro": "food = comida.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0574",
@@ -8381,7 +8705,8 @@ window.__BORA_DATA__ = {
           "licao": "1.10",
           "nivel_comp": 2,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "and = e."
+          "micro": "and = e.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0580",
@@ -8394,7 +8719,8 @@ window.__BORA_DATA__ = {
           "licao": "1.11",
           "nivel_comp": 2,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "city = cidade (chega já já)."
+          "micro": "city = cidade (chega já já).",
+          "ciclo": 3
         },
         {
           "id": "COMP_0581",
@@ -8409,7 +8735,8 @@ window.__BORA_DATA__ = {
           "licao": "1.11",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "apresenta um lugar."
+          "micro": "apresenta um lugar.",
+          "ciclo": 4
         },
         {
           "id": "COMP_0582",
@@ -8424,7 +8751,8 @@ window.__BORA_DATA__ = {
           "licao": "1.11",
           "nivel_comp": 3,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "the park = o parque."
+          "micro": "the park = o parque.",
+          "ciclo": 4
         },
         {
           "id": "COMP_0583",
@@ -8438,7 +8766,8 @@ window.__BORA_DATA__ = {
           "licao": "1.11",
           "nivel_comp": 2,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "good restaurant."
+          "micro": "good restaurant.",
+          "ciclo": 4
         },
         {
           "id": "COMP_0584",
@@ -8452,7 +8781,8 @@ window.__BORA_DATA__ = {
           "licao": "1.11",
           "nivel_comp": 2,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "my school = a minha escola."
+          "micro": "my school = a minha escola.",
+          "ciclo": 4
         },
         {
           "id": "COMP_0590",
@@ -8466,7 +8796,8 @@ window.__BORA_DATA__ = {
           "licao": "1.12",
           "nivel_comp": 2,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "at = em um ponto. at school, at the bank."
+          "micro": "at = em um ponto. at school, at the bank.",
+          "ciclo": 4
         },
         {
           "id": "COMP_0591",
@@ -8480,7 +8811,8 @@ window.__BORA_DATA__ = {
           "licao": "1.12",
           "nivel_comp": 2,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "in = dentro de. in the city, in the house."
+          "micro": "in = dentro de. in the city, in the house.",
+          "ciclo": 4
         },
         {
           "id": "COMP_0592",
@@ -8494,7 +8826,8 @@ window.__BORA_DATA__ = {
           "licao": "1.12",
           "nivel_comp": 2,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "on = sobre/em. on the street, on the table."
+          "micro": "on = sobre/em. on the street, on the table.",
+          "ciclo": 4
         },
         {
           "id": "COMP_0593",
@@ -8510,7 +8843,8 @@ window.__BORA_DATA__ = {
           "licao": "1.12",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "Agora use: is + at + lugar. at the bank = no banco."
+          "micro": "Agora use: is + at + lugar. at the bank = no banco.",
+          "ciclo": 4
         },
         {
           "id": "COMP_0594",
@@ -8526,7 +8860,8 @@ window.__BORA_DATA__ = {
           "licao": "1.12",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "on the street = na rua."
+          "micro": "on the street = na rua.",
+          "ciclo": 4
         },
         {
           "id": "COMP_0600",
@@ -8540,7 +8875,8 @@ window.__BORA_DATA__ = {
           "licao": "1.13",
           "nivel_comp": 2,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "day = dia."
+          "micro": "day = dia.",
+          "ciclo": 5
         },
         {
           "id": "COMP_0601",
@@ -8555,7 +8891,8 @@ window.__BORA_DATA__ = {
           "licao": "1.13",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "today = hoje."
+          "micro": "today = hoje.",
+          "ciclo": 5
         },
         {
           "id": "COMP_0602",
@@ -8568,7 +8905,8 @@ window.__BORA_DATA__ = {
           "licao": "1.13",
           "nivel_comp": 2,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "in the morning = de manhã."
+          "micro": "in the morning = de manhã.",
+          "ciclo": 5
         },
         {
           "id": "COMP_0603",
@@ -8585,7 +8923,8 @@ window.__BORA_DATA__ = {
           "licao": "1.13",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "junta lugar (at work) + tempo (in the morning)."
+          "micro": "junta lugar (at work) + tempo (in the morning).",
+          "ciclo": 5
         },
         {
           "id": "COMP_0604",
@@ -8599,7 +8938,8 @@ window.__BORA_DATA__ = {
           "licao": "1.13",
           "nivel_comp": 2,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "good day = bom dia."
+          "micro": "good day = bom dia.",
+          "ciclo": 5
         },
         {
           "id": "COMP_0610",
@@ -8613,7 +8953,8 @@ window.__BORA_DATA__ = {
           "licao": "1.14",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "Present simple: I + verb + object. I eat bread."
+          "micro": "Present simple: I + verb + object. I eat bread.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0611",
@@ -8627,7 +8968,8 @@ window.__BORA_DATA__ = {
           "licao": "1.14",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "drink = beber."
+          "micro": "drink = beber.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0612",
@@ -8641,7 +8983,8 @@ window.__BORA_DATA__ = {
           "licao": "1.14",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "study = estudar."
+          "micro": "study = estudar.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0613",
@@ -8655,7 +8998,8 @@ window.__BORA_DATA__ = {
           "licao": "1.14",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "run = correr."
+          "micro": "run = correr.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0614",
@@ -8669,7 +9013,8 @@ window.__BORA_DATA__ = {
           "licao": "1.14",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "walk = caminhar."
+          "micro": "walk = caminhar.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0620",
@@ -8684,7 +9029,8 @@ window.__BORA_DATA__ = {
           "licao": "1.15",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "open = abrir."
+          "micro": "open = abrir.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0621",
@@ -8699,7 +9045,8 @@ window.__BORA_DATA__ = {
           "licao": "1.15",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "close = fechar."
+          "micro": "close = fechar.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0622",
@@ -8713,7 +9060,8 @@ window.__BORA_DATA__ = {
           "licao": "1.15",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "read = ler."
+          "micro": "read = ler.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0623",
@@ -8727,7 +9075,8 @@ window.__BORA_DATA__ = {
           "licao": "1.15",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "go = ir."
+          "micro": "go = ir.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0624",
@@ -8742,7 +9091,8 @@ window.__BORA_DATA__ = {
           "licao": "1.15",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "sit = sentar; on the chair = na cadeira."
+          "micro": "sit = sentar; on the chair = na cadeira.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0630",
@@ -8757,7 +9107,8 @@ window.__BORA_DATA__ = {
           "licao": "1.16",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "help = ajudar."
+          "micro": "help = ajudar.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0631",
@@ -8772,7 +9123,8 @@ window.__BORA_DATA__ = {
           "licao": "1.16",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "clean = limpar."
+          "micro": "clean = limpar.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0632",
@@ -8787,7 +9139,8 @@ window.__BORA_DATA__ = {
           "licao": "1.16",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "write = escrever."
+          "micro": "write = escrever.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0633",
@@ -8802,7 +9155,8 @@ window.__BORA_DATA__ = {
           "licao": "1.16",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "speak = falar."
+          "micro": "speak = falar.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0634",
@@ -8817,7 +9171,8 @@ window.__BORA_DATA__ = {
           "licao": "1.16",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "wait = esperar."
+          "micro": "wait = esperar.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0640",
@@ -8834,7 +9189,8 @@ window.__BORA_DATA__ = {
           "licao": "1.17",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "not = não. is not = não é. Transforme a afirmativa em negativa."
+          "micro": "not = não. is not = não é. Transforme a afirmativa em negativa.",
+          "ciclo": 1
         },
         {
           "id": "COMP_0641",
@@ -8851,7 +9207,8 @@ window.__BORA_DATA__ = {
           "licao": "1.17",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "Pergunta: inverta is para o começo — Is your father a doctor?"
+          "micro": "Pergunta: inverta is para o começo — Is your father a doctor?",
+          "ciclo": 1
         },
         {
           "id": "COMP_0642",
@@ -8865,7 +9222,8 @@ window.__BORA_DATA__ = {
           "licao": "1.17",
           "nivel_comp": 2,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "who = quem. Who is she?"
+          "micro": "who = quem. Who is she?",
+          "ciclo": 6
         },
         {
           "id": "COMP_0643",
@@ -8881,7 +9239,8 @@ window.__BORA_DATA__ = {
           "licao": "1.17",
           "nivel_comp": 2,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "where = onde. Where is my father?"
+          "micro": "where = onde. Where is my father?",
+          "ciclo": 6
         },
         {
           "id": "COMP_0644",
@@ -8896,7 +9255,8 @@ window.__BORA_DATA__ = {
           "licao": "1.17",
           "nivel_comp": 2,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "is not = não é."
+          "micro": "is not = não é.",
+          "ciclo": 1
         },
         {
           "id": "COMP_0650",
@@ -8912,7 +9272,8 @@ window.__BORA_DATA__ = {
           "licao": "1.18",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "Situação: pergunta e resposta sobre a família."
+          "micro": "Situação: pergunta e resposta sobre a família.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0651",
@@ -8928,7 +9289,8 @@ window.__BORA_DATA__ = {
           "licao": "1.18",
           "nivel_comp": 3,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "Use o que já sabe numa situação nova."
+          "micro": "Use o que já sabe numa situação nova.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0652",
@@ -8944,7 +9306,8 @@ window.__BORA_DATA__ = {
           "licao": "1.18",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "ação + comida + tempo."
+          "micro": "ação + comida + tempo.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0653",
@@ -8960,7 +9323,8 @@ window.__BORA_DATA__ = {
           "licao": "1.18",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "onde alguém está."
+          "micro": "onde alguém está.",
+          "ciclo": 4
         },
         {
           "id": "COMP_0654",
@@ -8976,7 +9340,8 @@ window.__BORA_DATA__ = {
           "licao": "1.18",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "pergunta de lugar + resposta."
+          "micro": "pergunta de lugar + resposta.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0660",
@@ -8993,7 +9358,8 @@ window.__BORA_DATA__ = {
           "licao": "1.19",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "Produza você: diga algo verdadeiro sobre a sua família."
+          "micro": "Produza você: diga algo verdadeiro sobre a sua família.",
+          "ciclo": 1
         },
         {
           "id": "COMP_0661",
@@ -9008,7 +9374,8 @@ window.__BORA_DATA__ = {
           "licao": "1.19",
           "nivel_comp": 3,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "Produza: my + pessoa + is + a + good/bad + profissão."
+          "micro": "Produza: my + pessoa + is + a + good/bad + profissão.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0662",
@@ -9023,7 +9390,8 @@ window.__BORA_DATA__ = {
           "licao": "1.19",
           "nivel_comp": 3,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "Produza uma frase sobre a sua casa."
+          "micro": "Produza uma frase sobre a sua casa.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0663",
@@ -9039,7 +9407,8 @@ window.__BORA_DATA__ = {
           "licao": "1.19",
           "nivel_comp": 3,
           "rule_ref": "RULE_PRESENT_SIMPLE",
-          "micro": "Produza: I + ação + objeto + tempo."
+          "micro": "Produza: I + ação + objeto + tempo.",
+          "ciclo": 6
         },
         {
           "id": "COMP_0664",
@@ -9054,7 +9423,8 @@ window.__BORA_DATA__ = {
           "licao": "1.19",
           "nivel_comp": 3,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "Produza a descrição de alguém."
+          "micro": "Produza a descrição de alguém.",
+          "ciclo": 3
         },
         {
           "id": "COMP_0670",
@@ -9069,7 +9439,8 @@ window.__BORA_DATA__ = {
           "licao": "1.20",
           "nivel_comp": 2,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "phone = celular."
+          "micro": "phone = celular.",
+          "ciclo": 9
         },
         {
           "id": "COMP_0671",
@@ -9084,7 +9455,8 @@ window.__BORA_DATA__ = {
           "licao": "1.20",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "hair = cabelo."
+          "micro": "hair = cabelo.",
+          "ciclo": 7
         },
         {
           "id": "COMP_0672",
@@ -9098,7 +9470,8 @@ window.__BORA_DATA__ = {
           "licao": "1.20",
           "nivel_comp": 2,
           "rule_ref": "RULE_ADJ_ORDER",
-          "micro": "computer = computador."
+          "micro": "computer = computador.",
+          "ciclo": 8
         },
         {
           "id": "COMP_0673",
@@ -9115,7 +9488,8 @@ window.__BORA_DATA__ = {
           "licao": "1.20",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "shoes = sapatos (plural) → are; on the floor = no chão."
+          "micro": "shoes = sapatos (plural) → are; on the floor = no chão.",
+          "ciclo": 9
         },
         {
           "id": "COMP_0674",
@@ -9132,7 +9506,8 @@ window.__BORA_DATA__ = {
           "licao": "1.20",
           "nivel_comp": 3,
           "rule_ref": "RULE_TOBE_PRESENT",
-          "micro": "junta posse + objeto + localização."
+          "micro": "junta posse + objeto + localização.",
+          "ciclo": 8
         }
       ],
       "checkpoint": {
