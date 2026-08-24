@@ -1309,6 +1309,78 @@
               "rule_ref": "RULE_TOBE_PRESENT",
               "micro": "the = o/a/os/as, para algo específico: the doctor.",
               "ciclo": 1
+            },
+            {
+              "id": "VOC_0286",
+              "en": "I",
+              "pt": "eu",
+              "tema": "Ferramentas da língua",
+              "frases": {
+                "afe": {
+                  "en": "I am a teacher.",
+                  "pt": "Eu sou professor(a)."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "ái",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "I = eu. Sempre maiúsculo, em qualquer parte da frase.",
+              "ciclo": 1
+            },
+            {
+              "id": "VOC_0287",
+              "en": "am",
+              "pt": "sou / estou",
+              "tema": "Ferramentas da língua",
+              "frases": {
+                "afe": {
+                  "en": "I am your friend.",
+                  "pt": "Eu sou seu(sua) amigo(a)."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "âm",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "am = sou/estou. Só se usa depois de I: I am.",
+              "ciclo": 1
+            },
+            {
+              "id": "VOC_0288",
+              "en": "you",
+              "pt": "você / tu",
+              "tema": "Ferramentas da língua",
+              "frases": {
+                "afe": {
+                  "en": "You are a doctor.",
+                  "pt": "Você é médico(a)."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "iú",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "you = você/tu. Usa o mesmo are de we/they: you are.",
+              "ciclo": 1
             }
           ],
           "rules": [
@@ -6141,6 +6213,846 @@
               "pron": "skárf",
               "rule_ref": "RULE_TOBE_PRESENT",
               "ciclo": 9
+            },
+            {
+              "id": "VOC_0289",
+              "en": "one",
+              "pt": "um",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "I am number one.",
+                  "pt": "Eu sou o número um."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "uán",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "one = um.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0290",
+              "en": "two",
+              "pt": "dois",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "I am two years old.",
+                  "pt": "Eu tenho dois anos."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "tú",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "two = dois.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0291",
+              "en": "three",
+              "pt": "três",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "I am three years old.",
+                  "pt": "Eu tenho três anos."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "fri",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "three = três.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0292",
+              "en": "four",
+              "pt": "quatro",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "I am four years old.",
+                  "pt": "Eu tenho quatro anos."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "fór",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "four = quatro.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0293",
+              "en": "five",
+              "pt": "cinco",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "I am five years old.",
+                  "pt": "Eu tenho cinco anos."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "fáiv",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "five = cinco.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0294",
+              "en": "six",
+              "pt": "seis",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "I am six years old.",
+                  "pt": "Eu tenho seis anos."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "síks",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "six = seis.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0295",
+              "en": "seven",
+              "pt": "sete",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "I am seven years old.",
+                  "pt": "Eu tenho sete anos."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "sévn",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "seven = sete.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0296",
+              "en": "eight",
+              "pt": "oito",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "I am eight years old.",
+                  "pt": "Eu tenho oito anos."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "êit",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "eight = oito.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0297",
+              "en": "nine",
+              "pt": "nove",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "I am nine years old.",
+                  "pt": "Eu tenho nove anos."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "náin",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "nine = nove.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0298",
+              "en": "ten",
+              "pt": "dez",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "I am ten years old.",
+                  "pt": "Eu tenho dez anos."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "tén",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "ten = dez.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0299",
+              "en": "eleven",
+              "pt": "onze",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "I am eleven years old.",
+                  "pt": "Eu tenho onze anos."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "iléven",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "eleven = onze.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0300",
+              "en": "twelve",
+              "pt": "doze",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "I am twelve years old.",
+                  "pt": "Eu tenho doze anos."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "tuélv",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "twelve = doze.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0301",
+              "en": "thirteen",
+              "pt": "treze",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "I am thirteen years old.",
+                  "pt": "Eu tenho treze anos."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "tertín",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "thirteen = treze.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0302",
+              "en": "fourteen",
+              "pt": "quatorze",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "I am fourteen years old.",
+                  "pt": "Eu tenho quatorze anos."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "fortín",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "fourteen = quatorze.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0303",
+              "en": "fifteen",
+              "pt": "quinze",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "I am fifteen years old.",
+                  "pt": "Eu tenho quinze anos."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "fiftín",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "fifteen = quinze.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0304",
+              "en": "sixteen",
+              "pt": "dezesseis",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "I am sixteen years old.",
+                  "pt": "Eu tenho dezesseis anos."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "sikstín",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "sixteen = dezesseis.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0305",
+              "en": "seventeen",
+              "pt": "dezessete",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "I am seventeen years old.",
+                  "pt": "Eu tenho dezessete anos."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "sevntín",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "seventeen = dezessete.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0306",
+              "en": "eighteen",
+              "pt": "dezoito",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "I am eighteen years old.",
+                  "pt": "Eu tenho dezoito anos."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "eitín",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "eighteen = dezoito.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0307",
+              "en": "nineteen",
+              "pt": "dezenove",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "I am nineteen years old.",
+                  "pt": "Eu tenho dezenove anos."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "naintín",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "nineteen = dezenove.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0308",
+              "en": "twenty",
+              "pt": "vinte",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "I am twenty years old.",
+                  "pt": "Eu tenho vinte anos."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "tuéni",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "twenty = vinte.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0309",
+              "en": "thirty",
+              "pt": "trinta",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "I am thirty years old.",
+                  "pt": "Eu tenho trinta anos."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "cérti",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "thirty = trinta.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0310",
+              "en": "forty",
+              "pt": "quarenta",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "I am forty years old.",
+                  "pt": "Eu tenho quarenta anos."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "fórti",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "forty = quarenta.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0311",
+              "en": "fifty",
+              "pt": "cinquenta",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "I am fifty years old.",
+                  "pt": "Eu tenho cinquenta anos."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "fífti",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "fifty = cinquenta.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0312",
+              "en": "sixty",
+              "pt": "sessenta",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "I am sixty years old.",
+                  "pt": "Eu tenho sessenta anos."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "síksti",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "sixty = sessenta.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0313",
+              "en": "seventy",
+              "pt": "setenta",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "I am seventy years old.",
+                  "pt": "Eu tenho setenta anos."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "sévnti",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "seventy = setenta.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0314",
+              "en": "eighty",
+              "pt": "oitenta",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "I am eighty years old.",
+                  "pt": "Eu tenho oitenta anos."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "êiti",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "eighty = oitenta.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0315",
+              "en": "ninety",
+              "pt": "noventa",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "I am ninety years old.",
+                  "pt": "Eu tenho noventa anos."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "náinti",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "ninety = noventa.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0316",
+              "en": "years",
+              "pt": "anos",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "I am twenty years old.",
+                  "pt": "Eu tenho vinte anos."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "iérs",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "years = anos. Usado na idade: 20 years old.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0317",
+              "en": "live",
+              "pt": "morar / viver",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "I live in Brazil.",
+                  "pt": "Eu moro no Brasil."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "lív",
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "micro": "live = morar/viver. I live in + lugar.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0318",
+              "en": "Brazil",
+              "pt": "Brasil",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "I live in Brazil.",
+                  "pt": "Eu moro no Brasil."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "brazíu",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "Brazil = Brasil.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0319",
+              "en": "São Paulo",
+              "pt": "São Paulo",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "I live in São Paulo.",
+                  "pt": "Eu moro em São Paulo."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "São Paulo = cidade brasileira.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0320",
+              "en": "Rio de Janeiro",
+              "pt": "Rio de Janeiro",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "I live in Rio de Janeiro.",
+                  "pt": "Eu moro no Rio de Janeiro."
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "Rio de Janeiro = cidade brasileira.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0321",
+              "en": "what",
+              "pt": "o quê / qual",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "What is your name?",
+                  "pt": "Qual é o seu nome?"
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "uát",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "what = o quê/qual. Abre a pergunta: What is your name?",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0322",
+              "en": "how",
+              "pt": "como",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "How old are you?",
+                  "pt": "Que idade você tem?"
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "ráu",
+              "rule_ref": "RULE_TOBE_PRESENT",
+              "micro": "how = como. how old = que idade.",
+              "ciclo": 9
+            },
+            {
+              "id": "VOC_0323",
+              "en": "do",
+              "pt": "auxiliar de pergunta",
+              "tema": "Meu mundo",
+              "frases": {
+                "afe": {
+                  "en": "Where do you live?",
+                  "pt": "Onde você mora?"
+                },
+                "neg": {
+                  "en": null,
+                  "pt": null
+                },
+                "perg": {
+                  "en": null,
+                  "pt": null
+                }
+              },
+              "pron": "du",
+              "rule_ref": "RULE_PRESENT_SIMPLE",
+              "micro": "do = auxiliar de pergunta com verbos comuns: Where do you live?",
+              "ciclo": 9
             }
           ],
           "rules": []
@@ -7580,6 +8492,211 @@
           "rule_ref": "RULE_TOBE_PRESENT",
           "micro": "junta posse + objeto + localização.",
           "ciclo": 8
+        },
+        {
+          "id": "COMP_0675",
+          "en": "I am a student.",
+          "pt": "Eu sou estudante.",
+          "base_refs": [
+            "i",
+            "am",
+            "a",
+            "student"
+          ],
+          "padrao": "i+am+a+noun",
+          "licao": "1.3",
+          "nivel_comp": 3,
+          "rule_ref": "RULE_TOBE_PRESENT",
+          "micro": "Pratique: I am + a + profissão.",
+          "ciclo": 1
+        },
+        {
+          "id": "COMP_0676",
+          "en": "You are a teacher.",
+          "pt": "Você é professor(a).",
+          "base_refs": [
+            "you",
+            "are",
+            "a",
+            "teacher"
+          ],
+          "padrao": "you+are+a+noun",
+          "licao": "1.3",
+          "nivel_comp": 3,
+          "rule_ref": "RULE_TOBE_PRESENT",
+          "micro": "Pratique: you usa are, igual we/they.",
+          "ciclo": 1
+        },
+        {
+          "id": "COMP_0677",
+          "en": "I am your friend.",
+          "pt": "Eu sou seu(sua) amigo(a).",
+          "base_refs": [
+            "i",
+            "am",
+            "your",
+            "friend"
+          ],
+          "padrao": "i+am+your+noun",
+          "licao": "1.3",
+          "nivel_comp": 3,
+          "rule_ref": "RULE_TOBE_PRESENT",
+          "micro": "Pratique: I am + your + pessoa.",
+          "ciclo": 1
+        },
+        {
+          "id": "COMP_0678",
+          "en": "eleven years old",
+          "pt": "onze anos",
+          "base_refs": [
+            "eleven",
+            "years",
+            "old"
+          ],
+          "padrao": "number+years+old",
+          "licao": "1.20",
+          "nivel_comp": 2,
+          "rule_ref": "RULE_TOBE_PRESENT",
+          "micro": "Combine: número + years + old = idade.",
+          "ciclo": 9
+        },
+        {
+          "id": "COMP_0679",
+          "en": "twenty years old",
+          "pt": "vinte anos",
+          "base_refs": [
+            "twenty",
+            "years",
+            "old"
+          ],
+          "padrao": "number+years+old",
+          "licao": "1.20",
+          "nivel_comp": 2,
+          "rule_ref": "RULE_TOBE_PRESENT",
+          "micro": "Combine: número + years + old = idade.",
+          "ciclo": 9
+        },
+        {
+          "id": "COMP_0680",
+          "en": "I am eleven years old.",
+          "pt": "Eu tenho onze anos.",
+          "base_refs": [
+            "i",
+            "am",
+            "eleven",
+            "years",
+            "old"
+          ],
+          "padrao": "i+am+number+years+old",
+          "licao": "1.20",
+          "nivel_comp": 3,
+          "rule_ref": "RULE_TOBE_PRESENT",
+          "micro": "Frase completa de idade.",
+          "ciclo": 9
+        },
+        {
+          "id": "COMP_0681",
+          "en": "I am thirty-five years old.",
+          "pt": "Eu tenho trinta e cinco anos.",
+          "base_refs": [
+            "i",
+            "am",
+            "thirty",
+            "five",
+            "years",
+            "old"
+          ],
+          "padrao": "i+am+tens+ones+years+old",
+          "licao": "1.20",
+          "nivel_comp": 3,
+          "rule_ref": "RULE_TOBE_PRESENT",
+          "micro": "Números compostos: thirty + five = thirty-five.",
+          "ciclo": 9
+        },
+        {
+          "id": "COMP_0682",
+          "en": "I live in Brazil.",
+          "pt": "Eu moro no Brasil.",
+          "base_refs": [
+            "i",
+            "live",
+            "in",
+            "brazil"
+          ],
+          "padrao": "i+live+in+place",
+          "licao": "1.20",
+          "nivel_comp": 3,
+          "rule_ref": "RULE_TOBE_PRESENT",
+          "micro": "Frase completa de localização.",
+          "ciclo": 9
+        },
+        {
+          "id": "COMP_0683",
+          "en": "I live in São Paulo.",
+          "pt": "Eu moro em São Paulo.",
+          "base_refs": [
+            "i",
+            "live",
+            "in",
+            "são paulo"
+          ],
+          "padrao": "i+live+in+place",
+          "licao": "1.20",
+          "nivel_comp": 3,
+          "rule_ref": "RULE_TOBE_PRESENT",
+          "micro": "Frase completa de localização.",
+          "ciclo": 9
+        },
+        {
+          "id": "COMP_0684",
+          "en": "How old are you?",
+          "pt": "Que idade você tem?",
+          "base_refs": [
+            "how",
+            "old",
+            "are",
+            "you"
+          ],
+          "padrao": "how+old+are+you (pergunta)",
+          "licao": "1.20",
+          "nivel_comp": 3,
+          "rule_ref": "RULE_TOBE_PRESENT",
+          "micro": "Pergunta de idade — a resposta é I am + idade.",
+          "ciclo": 9
+        },
+        {
+          "id": "COMP_0685",
+          "en": "What is your name?",
+          "pt": "Qual é o seu nome?",
+          "base_refs": [
+            "what",
+            "is",
+            "your",
+            "name"
+          ],
+          "padrao": "what+is+your+noun (pergunta)",
+          "licao": "1.20",
+          "nivel_comp": 3,
+          "rule_ref": "RULE_TOBE_PRESENT",
+          "micro": "Pergunta de nome — a resposta é I am + nome.",
+          "ciclo": 9
+        },
+        {
+          "id": "COMP_0686",
+          "en": "Where do you live?",
+          "pt": "Onde você mora?",
+          "base_refs": [
+            "where",
+            "do",
+            "you",
+            "live"
+          ],
+          "padrao": "where+do+you+verb (pergunta)",
+          "licao": "1.20",
+          "nivel_comp": 3,
+          "rule_ref": "RULE_PRESENT_SIMPLE",
+          "micro": "Pergunta de lugar — a resposta é I live in + lugar.",
+          "ciclo": 9
         }
       ],
       "checkpoint": {
