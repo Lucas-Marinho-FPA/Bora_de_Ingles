@@ -662,15 +662,18 @@
   .reveal-in{animation:revealIn .28s ease both}
 
   /* ── COMPANION SYSTEM (Tatu-Bola) — só apresentação; assets no companion layer ── */
-  .companion-image{ background:transparent; object-fit:contain; user-select:none; -webkit-user-drag:none;
-    transition:opacity 140ms ease, transform 180ms ease; }
+  /* personagem integrado, SEM círculo: anula a borda/fundo do avatar antigo */
+  .companion-image{ background:transparent!important; object-fit:contain!important;
+    border:none!important; border-radius:0!important; box-shadow:none!important;
+    user-select:none; -webkit-user-drag:none; transition:opacity 140ms ease, transform 180ms ease; }
   #avTop[data-mode="thinking"]{ transform:translateY(-2px); }
   #avTop[data-mode="correct"]{ transform:scale(1.03); }
   #avTop[data-mode="celebrate"],#avTop[data-mode="levelup"]{ transform:scale(1.05); }
-  /* imagem do companheiro injetada nas telas de card (exposição/celebração/levelup) */
-  .companion-card-img{ display:block; margin:0 auto var(--sp-12); width:min(46%,160px); height:auto;
-    object-fit:contain; background:transparent; user-select:none; -webkit-user-drag:none; }
-  .companion-card-img[data-mode="celebrate"],.companion-card-img[data-mode="levelup"]{ width:min(56%,200px); }
+  /* imagem do companheiro injetada nas telas de card (prévia/celebração/levelup) — ~18% menor */
+  .companion-card-img{ display:block; margin:0 auto var(--sp-12); width:min(38%,132px); height:auto;
+    object-fit:contain; background:transparent; border:none; border-radius:0; box-shadow:none;
+    user-select:none; -webkit-user-drag:none; }
+  .companion-card-img[data-mode="celebrate"],.companion-card-img[data-mode="levelup"]{ width:min(46%,166px); }
 </style>
 </head>
 <body>
@@ -875,6 +878,33 @@ window.setCompanion       = (mode)=>BORA_COMPANION.setMode(mode);
 window.setActiveCompanion = (id)=>BORA_COMPANION.setActiveCompanion(id);
 window.companionImg       = (mode,cls)=>BORA_COMPANION.imgHTML(mode,cls);   /* injeta nas telas de card */
 try{ BORA_COMPANION.preload(); }catch(e){}
+
+/* ═══════════════ TECLADO (desktop) ═══════════════
+   ENTER aciona o MESMO botão primário da tela (sem lógica nova, sem duplo disparo);
+   e a tela de PIN aceita dígitos do teclado físico (linha de cima E numpad) + Backspace.
+   Não interfere quando um campo de texto está focado (digitar em inglês/apelido). */
+(function(){
+  function primaryVisibleButton(){
+    /* botões de ação principal do app: primário, "Continuar/Conferir" (next-btn) e o CTA da home */
+    const btns=[...document.querySelectorAll('.btn-primary, .next-btn, #startBtn')];
+    return btns.find(b => b.offsetParent!==null && !b.disabled) || null;
+  }
+  document.addEventListener('keydown', function(e){
+    /* PIN visível: teclado físico alimenta o keypad existente (pinKey), sem nova lógica */
+    const pin=document.getElementById('ob-pin');
+    if(pin && !pin.classList.contains('hidden')){
+      if(/^[0-9]$/.test(e.key)){ e.preventDefault(); if(typeof pinKey==='function') pinKey(e.key); return; }  /* '1'..'9','0' iguais no numpad */
+      if(e.key==='Backspace'){ e.preventDefault(); if(typeof pinKey==='function') pinKey('⌫'); return; }
+      if(e.key==='Enter'){ e.preventDefault(); return; }  /* PIN confirma sozinho ao 4º dígito */
+    }
+    if(e.key!=='Enter') return;
+    const ae=document.activeElement;
+    if(ae && (ae.tagName==='INPUT' || ae.tagName==='TEXTAREA')) return;  /* deixa o input agir naturalmente */
+    if(ae && ae.tagName==='BUTTON') return;                             /* botão focado: o navegador já clica */
+    const btn=primaryVisibleButton();
+    if(btn){ e.preventDefault(); btn.click(); }
+  });
+})();
 
 /* topo dinâmico: capa+título (home), capa+pergunta (quiz), reação (resposta) */
 function setTopState(st){ const h=document.querySelector('header'); if(h) h.dataset.state=st; }
@@ -1170,7 +1200,9 @@ function buildExamples(w){
     const wrap=document.createElement('div'); wrap.className='ex-explain';
     const b=document.createElement('button'); b.type='button'; b.className='explain-btn'; b.textContent='ℹ️ Como usar';
     const p=document.createElement('div'); p.className='explain-panel hidden'; p.textContent=w.explain;
-    b.onclick=()=>{ const hid=p.classList.toggle('hidden'); b.textContent = hid?'ℹ️ Como usar':'✖ Fechar explicação'; };
+    b.onclick=()=>{ const hid=p.classList.toggle('hidden'); b.textContent = hid?'ℹ️ Como usar':'✖ Fechar explicação';
+      /* explicação pedagógica real = thinking; ao fechar, volta ao repouso */
+      try{ setCompanion(hid?'idle':'thinking'); }catch(e){} };
     wrap.appendChild(b); wrap.appendChild(p); ex.appendChild(wrap);
   }
   return ex;
@@ -1533,7 +1565,7 @@ function mvExpose(){
       '<div class="prep-body">Respira. Quando estiver pronto(a), aperte '+BTN+' — o tempo começa aí.</div>';
 
   document.getElementById('qQuestion').innerHTML=
-    '<div class="prep-screen"><div class="prep-card">'+window.companionImg('thinking')+prep+'<button class="btn-primary" id="prepOk">'+BTN+PLAY+'</button></div></div>';
+    '<div class="prep-screen"><div class="prep-card">'+window.companionImg('idle')+prep+'<button class="btn-primary" id="prepOk">'+BTN+PLAY+'</button></div></div>';
   document.getElementById('prepOk').onclick=()=> mvReveal(isComp, secs);
 }
 
@@ -10615,14 +10647,16 @@ let db=null, auth=null, ready=false, session=null, LOCAL_MODE=false;
 /* PROG_VER 3: migração de identidade en->VOC_ID. O progresso antigo estava
    indexado por 'en' e é DELIBERADAMENTE invalidado — testers recomeçam limpo.
    Nenhuma migração histórica (decisão do PO). */
-const PROG_VER = 3;
+const PROG_VER = 4;  /* V2/reset: nova fase de testes — zera a JORNADA de todos (mantém conta/apelido/PIN/perfil) */
 const SRS_DIAS = [1,3,7,16,35,60];  /* escada de intervalos (dias) do SRS */
 async function migrateProgressIfNeeded(){
   if(!session || session.prog_ver === PROG_VER) return;
-  const zerado = { xp:0, xp_hoje:0, m_enpt:[], m_pten:[], m_type:[],
-                   completed_levels:[], xp_por_nivel:{}, bonus_dia_pagos:[],
+  /* zera SÓ a jornada/progresso — NÃO toca em nick/apelido/PIN/avatar/streak/identidade */
+  const zerado = { xp:0, xp_hoje:0, m_enpt:[], m_pten:[], m_type:[], ap_learned:[],
+                   completed_levels:[], checkpoints:[], xp_por_nivel:{}, bonus_dia_pagos:[],
                    meia_lote:'', srs:[], prog_ver:PROG_VER };
   Object.assign(session, zerado);
+  if(LOCAL_MODE){ try{ persistLocal(); }catch(e){} }   /* modo local: não restaurar jornada antiga do localStorage */
   try{ await updateDoc(doc(db,'usuarios',session.apelido_lower), zerado); }
   catch(e){ console.error('reset de progresso', e); }
 }
