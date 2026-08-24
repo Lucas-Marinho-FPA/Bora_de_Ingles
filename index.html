@@ -1314,6 +1314,17 @@ function renderGreeting(){
 async function renderGuidedInfo(){
   const box=document.getElementById('guidedInfo'); if(!box) return;
   if(!window.BoraCloud){ box.innerHTML='<p class="gi-sub">Entre no seu perfil para começar.</p>'; return; }
+  /* LABORATÓRIO M1: antes de calcular o estado por ciclo (que depende de WORDS/
+     data.json), garante o primeiro contato. Mesmo padrão de early-return do
+     bloco st.done logo abaixo. */
+  if(!window.BoraCloud.getProgress().completed.has('m1')){
+    const start=document.getElementById('startBtn');
+    box.innerHTML='<p class="gi-title">Primeiro contato 👋</p>'+
+      '<p class="gi-sub">Antes de tudo, uma descoberta rápida: como se diz "eu" em inglês.</p>';
+    start.disabled=false; start.textContent='Bora começar';
+    renderGreeting();
+    return;
+  }
   const st=await computeGuidedState();
   const start=document.getElementById('startBtn');
   const _due=srsDue(window.BoraCloud.getProgress()).length;
@@ -1501,6 +1512,14 @@ let gLoteAll=[], gLote=0, mvModeIdx=0, mvQueue=[], mvDone=0, mvTotal=0, mvTimer=
 
 async function startGuided(){
   if(!window.BoraCloud){ return; }
+  /* LABORATÓRIO M1 (nova pedagogia): antes do fluxo por ciclo, garante o primeiro
+     contato ("I"). Marca conclusão em completed_levels via BoraCloud.completeLevel
+     — sem tocar no motor/BoraCloud. Próximo momento (necessidade de "I am ...")
+     entra aqui do mesmo jeito: `else if(!p.completed.has('m2')) return startM2();`
+     — ainda não implementado. */
+  if(!window.BoraCloud.getProgress().completed.has('m1')){
+    return startM1();
+  }
   const st=await computeGuidedState();
   if(st.done){
     const pend=pendingCheckpoint(window.BoraCloud.getProgress());
@@ -2008,6 +2027,123 @@ async function guidedStageDone(){
   body.innerHTML=window.companionImg('celebrate')+'<div class="result"><div class="res-emoji">'+emoji+'</div><div class="big">'+title+'</div><div class="msg">'+sub+'</div></div>'+extra+'<button class="btn-primary" id="gNextStage">Continuar ›</button><button class="btn-ghost" id="gHome2">🏠 Sair para o menu</button>';
   document.getElementById('gNextStage').onclick=startGuided;
   document.getElementById('gHome2').onclick=goHome;
+}
+
+/* ═══════════════ MOMENTO 1 — PRIMEIRO CONTATO ("I") ═══════════════
+   Laboratório da nova arquitetura pedagógica (situação humana → necessidade →
+   descoberta → prática → primeira capacidade), rodado uma única vez antes do
+   fluxo por ciclo. "I" ainda não existe como VOC_ID na base (pronomes-sujeito
+   não formalizados — ver RECONSTRUCAO_FECHAMENTOS_1F_9F §D-01), então este
+   laboratório usa conteúdo local, sem tocar em WORDS/data.json/BoraCloud.
+   Conclusão é marcada com o mecanismo já existente (completeLevel('m1') em
+   completed_levels) — não é um sistema de progresso novo.
+   Reaproveita topQuestion/topAnswer (Companion idle/correct/wrong já vem de
+   graça) e companionImg (idle na introdução, celebrate no fechamento). */
+const M1_WORD = { en:'I', pt:'eu', pron:'ái' };
+const M1_ROUNDS = [
+  { ask:'en', prompt:'I',  label:'O que significa?',             options:['eu','ele','você'], answer:'eu' },
+  { ask:'pt', prompt:'eu', label:'Como se escreve em inglês?',    options:['I','i','me'],      answer:'I'  },
+];
+let m1Right=0;
+
+function m1Chrome(){
+  document.getElementById('home').classList.add('hidden');
+  document.getElementById('quiz').classList.remove('hidden');
+  document.getElementById('topProgress').classList.remove('hidden');
+  { const pb=document.getElementById('profileBar'); if(pb) pb.classList.add('hidden'); }
+  { const gr=document.getElementById('greeting'); if(gr) gr.classList.add('hidden'); }
+}
+
+/* 1) SITUAÇÃO HUMANA + NECESSIDADE — sem gramática, sem tabela */
+function startM1(){
+  m1Right=0;
+  m1Chrome(); topHide(); window.scrollTo(0,0);
+  const nome=(window.__nick||'').trim();
+  const oi = nome ? nome : 'amiguinho';
+  document.getElementById('qExamples').innerHTML=''; document.getElementById('qNext').innerHTML='';
+  document.getElementById('qBar').style.width='0%';
+  document.getElementById('qCount').textContent='Primeiro contato';
+  document.getElementById('qScore').textContent='Início';
+  document.getElementById('qStreak').textContent='';
+  document.getElementById('qQuestion').innerHTML=
+    '<div class="prep-screen"><div class="prep-card">'+window.companionImg('idle')+
+    '<div class="prep-kicker">Primeiro contato 👋</div>'+
+    '<div class="prep-title">Iae, '+esc(oi)+'!</div>'+
+    '<div class="prep-body">Hoje a gente começa por você. Toda frase em inglês parte de alguém — e a primeira pessoa que você vai apresentar é você mesmo.</div>'+
+    '<button class="btn-primary" id="m1Go">Bora de Inglês!'+PLAY_SVG+'</button></div></div>';
+  document.getElementById('m1Go').onclick=m1Discover;
+}
+
+/* 2) DESCOBERTA — a palavra aparece, o Tatu explica a única regra que importa aqui */
+function m1Discover(){
+  topHide(); window.scrollTo(0,0);
+  document.getElementById('qQuestion').innerHTML=
+    '<div class="prep-screen"><div class="prep-card">'+window.companionImg('thinking')+
+    '<div class="prep-kicker">Sua primeira palavra</div>'+
+    '<div class="prep-title">Como você diz "eu" em inglês?</div>'+
+    '<button class="expo-card" id="m1Card" type="button"><div class="expo-en">'+esc(M1_WORD.en)+' 🔊</div>'+
+    '<div class="expo-pron">'+esc(M1_WORD.pron)+'</div><div class="expo-pt">'+esc(M1_WORD.pt)+'</div></button>'+
+    '<div class="prep-body">💡 Repara: <b>I</b> vem sempre maiúsculo — mesmo no meio da frase. É a única palavra assim.</div>'+
+    '<button class="btn-primary" id="m1Go2">Entendi, bora praticar'+PLAY_SVG+'</button></div></div>';
+  document.getElementById('m1Card').onclick=()=>speak(M1_WORD.en);
+  document.getElementById('m1Go2').onclick=()=>m1Practice(0);
+}
+
+/* 3) PRÁTICA — reconhecer + produzir, com a mesma mecânica de múltipla escolha
+   do motor guiado (topQuestion/topAnswer cuidam do Companion sozinhos). O
+   distrator "i" minúsculo na produção reforça a descoberta sem precisar mudar
+   a validação global de digitação (norm() lowercasa tudo). */
+function m1Practice(i){
+  if(i>=M1_ROUNDS.length){ return m1Celebrate(); }
+  const r=M1_ROUNDS[i];
+  document.getElementById('qExamples').innerHTML=''; document.getElementById('qNext').innerHTML='';
+  document.getElementById('qBar').style.width=Math.round(i/M1_ROUNDS.length*100)+'%';
+  document.getElementById('qCount').textContent=(i+1)+' / '+M1_ROUNDS.length;
+  document.getElementById('qScore').textContent='Praticar';
+  topQuestion(r.label, '');
+  const body=document.getElementById('qQuestion');
+  body.innerHTML='<div class="prompt"><div class="wordrow"><span class="word">'+esc(r.prompt)+'</span>'+
+    (r.ask==='en'?'<button class="speak-sm" title="Ouvir">🔊</button>':'')+'</div></div><div class="options"></div>';
+  if(r.ask==='en'){ const sb=body.querySelector('.speak-sm'); if(sb) sb.onclick=()=>speak(M1_WORD.en); }
+  const box=body.querySelector('.options'); box.dataset.answer=r.answer;
+  shuffle(r.options).forEach(o=>{ const b=document.createElement('button'); b.className='opt'; b.textContent=o;
+    b.onclick=()=>m1Choose(b, o===r.answer, box, i); box.appendChild(b); });
+}
+function m1Choose(btn, correct, box, i){
+  [...box.children].forEach(b=>b.disabled=true);
+  if(correct){ btn.classList.add('correct'); }
+  else{ btn.classList.add('wrong'); const t=box.dataset.answer; [...box.children].forEach(b=>{ if(b.textContent===t) b.classList.add('correct'); }); }
+  topAnswer(correct, correct?null:box.dataset.answer);
+  if(correct) m1Right++;
+  const host=document.getElementById('qExamples'); host.innerHTML='';
+  if(!correct){ const rc=document.createElement('div'); rc.className='correction restudy';
+    rc.innerHTML='📌 <b>I</b> = eu — sempre maiúsculo.'; host.appendChild(rc); }
+  const nx=document.getElementById('qNext');
+  nx.innerHTML='<button class="next-btn" id="m1Continue">Continuar ›</button>';
+  document.getElementById('m1Continue').onclick=()=>m1Practice(i+1);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* 4) PRIMEIRA CAPACIDADE — celebra, prepara a próxima necessidade ("I am ...")
+   só na fala, sem implementar nada do TO BE ainda. Conclusão pelo mecanismo
+   já existente (completeLevel), sem novo sistema de progresso. */
+function m1Celebrate(){
+  topHide(); window.scrollTo(0,0);
+  document.getElementById('topProgress').classList.add('hidden');
+  document.getElementById('qExamples').innerHTML=''; document.getElementById('qNext').innerHTML='';
+  document.getElementById('qBar').style.width='100%';
+  document.getElementById('qCount').textContent='Primeira capacidade';
+  document.getElementById('qScore').textContent='🎉';
+  document.getElementById('qStreak').textContent='';
+  document.getElementById('qQuestion').innerHTML=
+    window.companionImg('celebrate')+
+    '<div class="result"><div class="res-emoji">🎉</div><div class="big">Você já sabe se apresentar.</div>'+
+    '<div class="msg">"I" é como você fala de si mesmo em inglês — e agora é seu. A seguir: contar algo sobre você.</div></div>'+
+    '<button class="btn-primary" id="m1Done">Continuar ›</button>';
+  document.getElementById('m1Done').onclick=async ()=>{
+    if(window.BoraCloud) await window.BoraCloud.completeLevel('m1');
+    goHome();
+  };
 }
 
 /* CTA principal -> caminho guiado */
@@ -10647,7 +10783,7 @@ let db=null, auth=null, ready=false, session=null, LOCAL_MODE=false;
 /* PROG_VER 3: migração de identidade en->VOC_ID. O progresso antigo estava
    indexado por 'en' e é DELIBERADAMENTE invalidado — testers recomeçam limpo.
    Nenhuma migração histórica (decisão do PO). */
-const PROG_VER = 4;  /* V2/reset: nova fase de testes — zera a JORNADA de todos (mantém conta/apelido/PIN/perfil) */
+const PROG_VER = 5;  /* Laboratório M1 (nova pedagogia): zera a JORNADA de todos pra testar do zero (mantém conta/apelido/PIN/perfil) */
 const SRS_DIAS = [1,3,7,16,35,60];  /* escada de intervalos (dias) do SRS */
 async function migrateProgressIfNeeded(){
   if(!session || session.prog_ver === PROG_VER) return;
