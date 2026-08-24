@@ -660,6 +660,17 @@
   /* reveal suave das palavras após o OK */
   @keyframes revealIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
   .reveal-in{animation:revealIn .28s ease both}
+
+  /* ── COMPANION SYSTEM (Tatu-Bola) — só apresentação; assets no companion layer ── */
+  .companion-image{ background:transparent; object-fit:contain; user-select:none; -webkit-user-drag:none;
+    transition:opacity 140ms ease, transform 180ms ease; }
+  #avTop[data-mode="thinking"]{ transform:translateY(-2px); }
+  #avTop[data-mode="correct"]{ transform:scale(1.03); }
+  #avTop[data-mode="celebrate"],#avTop[data-mode="levelup"]{ transform:scale(1.05); }
+  /* imagem do companheiro injetada nas telas de card (exposição/celebração/levelup) */
+  .companion-card-img{ display:block; margin:0 auto var(--sp-12); width:min(46%,160px); height:auto;
+    object-fit:contain; background:transparent; user-select:none; -webkit-user-drag:none; }
+  .companion-card-img[data-mode="celebrate"],.companion-card-img[data-mode="levelup"]{ width:min(56%,200px); }
 </style>
 </head>
 <body>
@@ -671,7 +682,7 @@
       <div id="brandHome">
         <div class="brand-badge"><img src="icon-b.png" alt="Bora de Inglês"></div>
       </div>
-      <img class="avatar hidden" id="avTop" src="avatar.png" alt="Lucas">
+      <img class="avatar companion-image hidden" id="avTop" src="ASSETS/CHARACTERS/TATU/IDLE.png" alt="Tatu-Bola" data-mode="idle">
       <div id="reaction" class="reaction hidden" aria-live="polite"></div>
     </div>
   </header>
@@ -807,6 +818,64 @@ const CACHE_KEY = 'bora_data_cache_v4';  /* D1 V2: invalida cache antigo (v3 = d
 const AV_WIN="avatar_win.png";
 const AV_FAIL="avatar_fail.png";
 const AV_COVER="avatar.png";
+
+/* ═══════════════ COMPANION SYSTEM v1 — Tatu-Bola ═══════════════
+   O app pede ESTADOS pedagógicos; só esta camada conhece os arquivos.
+   6 estados: idle | thinking | correct | wrong | celebrate | levelup.
+   Trocar de companheiro (futuro) = setActiveCompanion('outro') sem mexer nos estados. */
+const BORA_COMPANION = {
+  active: 'tatu',
+  targetId: 'avTop',                 /* o avatar do fluxo de aprendizagem */
+  /* CONVENÇÃO DE ASSETS DO PROJETO (confirmada no repo): caminho RELATIVO
+     (sem "/" inicial — o app é servido sob subpasta) e pastas/arquivos em CAIXA ALTA:
+        ASSETS/CHARACTERS/<COMPANHEIRO>/<ESTADO>.png
+     Case-sensitive: mantenha exatamente esta capitalização. Para trocar/adicionar
+     companheiro, só mude `dir`/`files` aqui — nada mais no app precisa saber o caminho. */
+  companions: {
+    tatu: {
+      id:'tatu', name:'Tatu-Bola',
+      dir:'ASSETS/CHARACTERS/TATU', ext:'png',
+      files:{ idle:'IDLE', thinking:'THINKING', correct:'CORRECT',
+              wrong:'WRONG', celebrate:'CELEBRATE', levelup:'LEVELUP' }
+    }
+    /* próximos: jacare:{dir:'ASSETS/CHARACTERS/JACARE',...}, bugio:{dir:'ASSETS/CHARACTERS/BUGIO',...} */
+  },
+  MODES: ['idle','thinking','correct','wrong','celebrate','levelup'],
+  currentMode: 'idle',
+  _co(){ return this.companions[this.active]; },
+  assetFor(mode){ const c=this._co(); if(!c) return '';
+    const f = c.files[mode] || c.files.idle; return c.dir+'/'+f+'.'+c.ext; },
+  /* aciona o avatar do topo (idle/correct/wrong ficam sempre visíveis no Q&A) */
+  setMode(mode){
+    if(!this.MODES.includes(mode)){ console.warn('[Companion] estado inválido:', mode); return; }
+    this.currentMode = mode;
+    const img = document.getElementById(this.targetId);
+    if(!img) return;
+    img.src = this.assetFor(mode);
+    img.dataset.mode = mode;
+    img.alt = this._co() ? this._co().name : 'Companion';
+  },
+  /* markup de <img> do estado — para telas onde o avatar do topo não aparece
+     (exposição/celebração/levelup). Só a camada conhece os caminhos. */
+  imgHTML(mode, cls){
+    this.currentMode = mode;
+    const src=this.assetFor(mode), name=this._co()?this._co().name:'Companion';
+    return '<img class="companion-card-img '+(cls||'')+'" data-mode="'+mode+'" src="'+src+'" alt="'+name+'">';
+  },
+  setActiveCompanion(id){
+    if(!this.companions[id]){ console.warn('[Companion] desconhecido:', id); return; }
+    this.active=id; this.preload(); this.setMode('idle');
+  },
+  preload(){
+    if(!this._co()) return;
+    this.MODES.forEach(m=>{ const im=new Image(); im.src=this.assetFor(m); });
+  }
+};
+window.setCompanion       = (mode)=>BORA_COMPANION.setMode(mode);
+window.setActiveCompanion = (id)=>BORA_COMPANION.setActiveCompanion(id);
+window.companionImg       = (mode,cls)=>BORA_COMPANION.imgHTML(mode,cls);   /* injeta nas telas de card */
+try{ BORA_COMPANION.preload(); }catch(e){}
+
 /* topo dinâmico: capa+título (home), capa+pergunta (quiz), reação (resposta) */
 function setTopState(st){ const h=document.querySelector('header'); if(h) h.dataset.state=st; }
 function _reset(showTitle){
@@ -819,7 +888,7 @@ function topHide(){ _reset(false); setTopState('idle'); }
 function topQuestion(tag, level){
   setTopState('question');
   document.getElementById('brandHome').classList.add('hidden');
-  const a=document.getElementById('avTop'); a.classList.remove('hidden'); a.src=AV_COVER;
+  const a=document.getElementById('avTop'); a.classList.remove('hidden'); setCompanion('idle');
   const s=document.getElementById('reaction');
   s.className='qtag';
   s.innerHTML = tag + (level!==''?' <span class="lvltag">'+esc(/^\d+c\d+/.test(String(level))?nivelLabel(level):('Nv '+level))+'</span>':'');
@@ -827,7 +896,7 @@ function topQuestion(tag, level){
 function topAnswer(correct, answerText){
   setTopState('answer');
   document.getElementById('brandHome').classList.add('hidden');
-  const a=document.getElementById('avTop'); a.classList.remove('hidden'); a.src = correct?AV_WIN:AV_FAIL;
+  const a=document.getElementById('avTop'); a.classList.remove('hidden'); setCompanion(correct?'correct':'wrong');
   const s=document.getElementById('reaction');
   s.className='reaction '+(correct?'ok':'bad');
   s.innerHTML = (correct?'Certo!':'Errado!') + (answerText?(' <span class="ans">'+esc(answerText)+'</span>'):'');
@@ -1464,7 +1533,7 @@ function mvExpose(){
       '<div class="prep-body">Respira. Quando estiver pronto(a), aperte '+BTN+' — o tempo começa aí.</div>';
 
   document.getElementById('qQuestion').innerHTML=
-    '<div class="prep-screen"><div class="prep-card">'+prep+'<button class="btn-primary" id="prepOk">'+BTN+PLAY+'</button></div></div>';
+    '<div class="prep-screen"><div class="prep-card">'+window.companionImg('thinking')+prep+'<button class="btn-primary" id="prepOk">'+BTN+PLAY+'</button></div></div>';
   document.getElementById('prepOk').onclick=()=> mvReveal(isComp, secs);
 }
 
@@ -1756,7 +1825,7 @@ function cpPass(score){
   document.getElementById('qScore').textContent='🏆';
   document.getElementById('qStreak').textContent='';
   document.getElementById('qQuestion').innerHTML=
-    '<div class="prep-screen"><div class="prep-card">'+
+    '<div class="prep-screen"><div class="prep-card">'+window.companionImg('levelup')+
     '<div class="prep-kicker">Chefe derrotado 🏆</div>'+
     '<div class="prep-title">Degrau '+cpDeg+' concluído'+(nome?', '+esc(nome):'')+'!</div>'+
     '<div class="prep-body">Você provou que domina este degrau'+pct+'. Isso é vocabulário que não vai mais embora.</div>'+
@@ -1872,7 +1941,7 @@ async function guidedStageDone(){
   topHide();
   const body=document.getElementById('qQuestion');
   if(st.done){
-    body.innerHTML='<div class="result"><div class="res-emoji">🏆</div><div class="big">Tudo dominado!</div><div class="msg">Você concluiu todas as palavras disponíveis. Adicione mais na planilha para continuar.</div></div><button class="btn-primary" id="gHome">🏠 Voltar ao menu</button>';
+    body.innerHTML=window.companionImg('celebrate')+'<div class="result"><div class="res-emoji">🏆</div><div class="big">Tudo dominado!</div><div class="msg">Você concluiu todas as palavras disponíveis. Adicione mais na planilha para continuar.</div></div><button class="btn-primary" id="gHome">🏠 Voltar ao menu</button>';
     document.getElementById('gHome').onclick=goHome; return;
   }
 
@@ -1904,7 +1973,7 @@ async function guidedStageDone(){
       (dobro?'<div class="tz-sep"></div><div class="tz-lb">E se fechar mais um grupo hoje,</div><div class="tz-more">ainda ganha +200 XP de bônus</div>':'')+
     '</div>';
   }
-  body.innerHTML='<div class="result"><div class="res-emoji">'+emoji+'</div><div class="big">'+title+'</div><div class="msg">'+sub+'</div></div>'+extra+'<button class="btn-primary" id="gNextStage">Continuar ›</button><button class="btn-ghost" id="gHome2">🏠 Sair para o menu</button>';
+  body.innerHTML=window.companionImg('celebrate')+'<div class="result"><div class="res-emoji">'+emoji+'</div><div class="big">'+title+'</div><div class="msg">'+sub+'</div></div>'+extra+'<button class="btn-primary" id="gNextStage">Continuar ›</button><button class="btn-ghost" id="gHome2">🏠 Sair para o menu</button>';
   document.getElementById('gNextStage').onclick=startGuided;
   document.getElementById('gHome2').onclick=goHome;
 }
