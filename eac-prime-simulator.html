@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover" />
+<title>EAC Prime British English — Simulador Gamificado</title>
+<style>
+  :root{
+    --bg-0:#070c1a;
+    --bg-1:#0b1329;
+    --card-bg:#141d36;
+    --card-bg-2:#1a2544;
+    --card-border:#2a3556;
+    --card-border-soft:#232d4d;
+    --primary:#3b82f6;
+    --primary-2:#60a5fa;
+    --primary-hover:#2563eb;
+    --gold:#f5c451;
+    --gold-2:#fde68a;
+    --accent:#f59e0b;
+    --success:#10b981;
+    --success-2:#6ee7b7;
+    --success-bg:rgba(16,185,129,.14);
+    --danger:#ef4444;
+    --danger-2:#fca5a5;
+    --danger-bg:rgba(239,68,68,.14);
+    --fire-1:#f59e0b;
+    --fire-2:#f97316;
+    --fire-3:#ef4444;
+    --fire-4:#a855f7;
+    --text:#f5f7fb;
+    --text-muted:#93a0bd;
+    --text-dim:#5c6788;
+    --radius-lg:18px;
+    --radius-md:12px;
+    --radius-sm:8px;
+    --focus-ring:0 0 0 3px rgba(96,165,250,.55);
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  html{-webkit-text-size-adjust:100%;}
+
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;
+    background:
+      radial-gradient(circle at 15% 0%, rgba(59,130,246,.16), transparent 45%),
+      radial-gradient(circle at 85% 15%, rgba(245,196,81,.08), transparent 40%),
+      linear-gradient(180deg, var(--bg-0), var(--bg-1) 60%);
+    background-attachment:fixed;
+    color:var(--text);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:14px 12px 40px;
+    overflow-x:hidden;
+  }
+
+  a{color:inherit;}
+  button{font-family:inherit;}
+  button:focus-visible, input:focus-visible, [tabindex]:focus-visible{
+    outline:none;
+    box-shadow:var(--focus-ring);
+  }
+
+  .wrap{width:100%;max-width:780px;display:flex;flex-direction:column;gap:12px;}
+
+  /* ============ HUD ============ */
+  .hud{
+    background:linear-gradient(160deg, var(--card-bg), var(--card-bg-2));
+    border:1px solid var(--card-border);
+    border-radius:var(--radius-lg);
+    padding:16px 18px;
+    box-shadow:0 12px 30px -14px rgba(0,0,0,.6);
+  }
+  .hud-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:10px;
+    margin-bottom:12px;
+    flex-wrap:wrap;
+  }
+  .brand h1{
+    font-size:1.05rem;
+    font-weight:800;
+    letter-spacing:.01em;
+    background:linear-gradient(90deg,#93c5fd,#f5c451);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .brand span{font-size:.72rem;color:var(--text-muted);display:block;margin-top:2px;}
+
+  .review-btn{
+    background:#0f1730;
+    border:1px solid var(--card-border);
+    color:var(--text-muted);
+    font-size:.72rem;
+    font-weight:700;
+    padding:7px 11px;
+    border-radius:999px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:5px;
+    transition:.15s;
+    min-height:32px;
+  }
+  .review-btn:hover:not(:disabled){border-color:var(--primary-2);color:var(--primary-2);}
+  .review-btn:disabled{opacity:.4;cursor:not-allowed;}
+
+  .level-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap;}
+  .level-badge{
+    flex-shrink:0;
+    background:linear-gradient(135deg,#1e2a4d,#101a35);
+    border:1px solid var(--gold);
+    color:var(--gold-2);
+    font-weight:800;
+    font-size:.72rem;
+    padding:6px 10px;
+    border-radius:10px;
+    text-align:center;
+    line-height:1.2;
+    white-space:nowrap;
+  }
+  .level-badge b{display:block;font-size:1.05rem;color:var(--gold);}
+
+  .xp-track{flex:1;min-width:140px;}
+  .xp-track-labels{
+    display:flex;justify-content:space-between;
+    font-size:.68rem;color:var(--text-muted);font-weight:700;margin-bottom:4px;
+  }
+  .xp-bar-bg{
+    height:12px;border-radius:999px;background:#0b1226;
+    border:1px solid var(--card-border-soft);overflow:hidden;position:relative;
+  }
+  .xp-bar-fill{
+    height:100%;border-radius:999px;
+    background:linear-gradient(90deg,#f59e0b,#f5c451,#fde68a);
+    width:0%;
+    transition:width .5s cubic-bezier(.22,1,.36,1);
+    position:relative;
+    box-shadow:0 0 12px rgba(245,196,81,.55);
+  }
+  .xp-bar-fill.pulse{animation:xpPulse .6s ease;}
+  @keyframes xpPulse{0%{filter:brightness(1);}45%{filter:brightness(1.7);}100%{filter:brightness(1);}}
+
+  .stats-row{display:flex;gap:8px;flex-wrap:wrap;}
+  .stat-chip{
+    flex:1;min-width:84px;
+    background:#0f1730;border:1px solid var(--card-border-soft);
+    border-radius:10px;padding:7px 10px;text-align:center;
+  }
+  .stat-chip .lbl{font-size:.63rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text-dim);font-weight:700;}
+  .stat-chip .val{font-size:1.05rem;font-weight:800;margin-top:1px;}
+  .stat-chip.streak .val{color:var(--fire-1);transition:color .25s, transform .25s;}
+  .stat-chip.streak.s-warm .val{color:var(--fire-2);}
+  .stat-chip.streak.s-hot .val{color:var(--fire-3);text-shadow:0 0 10px rgba(239,68,68,.6);}
+  .stat-chip.streak.s-blaze .val{color:var(--fire-4);text-shadow:0 0 14px rgba(168,85,247,.7);}
+  .stat-chip.streak.bump .val{animation:bump .3s ease;}
+  @keyframes bump{0%{transform:scale(1);}40%{transform:scale(1.35);}100%{transform:scale(1);}}
+  .stat-chip.pts .val{color:var(--success-2);}
+  .stat-chip.qn .val{color:var(--primary-2);font-size:.95rem;}
+
+  .session-bar-bg{height:5px;border-radius:999px;background:#0b1226;margin-top:10px;overflow:hidden;}
+  .session-bar-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--primary-2));width:0%;transition:width .4s ease;}
+
+  /* ============ CONTAINER ============ */
+  .container{
+    background:linear-gradient(160deg, var(--card-bg), var(--card-bg-2));
+    border-radius:var(--radius-lg);
+    border:1px solid var(--card-border);
+    padding:22px;
+    box-shadow:0 14px 34px -14px rgba(0,0,0,.65);
+    position:relative;
+  }
+
+  .mode-selector{
+    display:flex;gap:8px;margin-bottom:18px;
+    background:#0b1226;padding:4px;border-radius:12px;
+    border:1px solid var(--card-border-soft);
+  }
+  .mode-btn{
+    flex:1;padding:10px 8px;background:transparent;border:none;
+    color:var(--text-muted);font-weight:700;font-size:.82rem;
+    border-radius:9px;cursor:pointer;transition:.2s;min-height:40px;
+  }
+  .mode-btn.active{background:var(--primary);color:#fff;box-shadow:0 4px 14px -4px rgba(59,130,246,.6);}
+  .mode-btn:disabled{opacity:.5;cursor:not-allowed;}
+
+  .card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:8px;flex-wrap:wrap;}
+  .tag-category{
+    font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;font-weight:800;
+    background:rgba(59,130,246,.18);color:#7db4fb;padding:4px 10px;border-radius:7px;
+  }
+  .tag-difficulty{
+    font-size:.68rem;font-weight:800;color:var(--gold-2);letter-spacing:.03em;
+  }
+  .progress-text{font-size:.78rem;color:var(--text-muted);font-weight:700;}
+
+  .prompt-box{
+    background:#0b1226;padding:20px 16px;border-radius:12px;
+    border-left:4px solid var(--primary);margin-bottom:20px;
+  }
+  .prompt-label{font-size:.7rem;text-transform:uppercase;color:var(--text-muted);margin-bottom:5px;font-weight:700;letter-spacing:.04em;}
+  .prompt-text{font-size:1.28rem;font-weight:800;color:#fff;line-height:1.4;}
+
+  .input-area{margin-bottom:18px;}
+  input[type="text"]{
+    width:100%;padding:15px 16px;border-radius:12px;background:#0b1226;
+    border:2px solid var(--card-border);color:var(--text);font-size:1rem;outline:none;
+    transition:border-color .2s;
+  }
+  input[type="text"]:focus{border-color:var(--primary);}
+  input[type="text"]:disabled{opacity:.7;}
+  .hint-text{font-size:.72rem;color:var(--text-dim);margin-top:6px;}
+
+  .options-grid{display:grid;gap:10px;margin-bottom:18px;}
+  .option-btn{
+    text-align:left;padding:14px 14px;background:#0b1226;border:2px solid var(--card-border);
+    border-radius:12px;color:var(--text);font-size:.98rem;cursor:pointer;transition:.15s;
+    display:flex;align-items:center;gap:12px;min-height:52px;width:100%;
+  }
+  .option-btn:hover:not(:disabled){border-color:var(--primary);background:#132043;}
+  .option-btn:disabled{cursor:default;}
+  .option-btn .letter{
+    width:26px;height:26px;border-radius:7px;background:#1a2544;display:flex;
+    align-items:center;justify-content:center;font-weight:800;font-size:.8rem;
+    color:var(--primary-2);flex-shrink:0;
+  }
+  .option-btn.picked{border-color:var(--primary-2);}
+  .option-btn.selected-correct{border-color:var(--success)!important;background:var(--success-bg)!important;color:var(--success-2)!important;}
+  .option-btn.selected-correct .letter{background:var(--success);color:#06281c;}
+  .option-btn.selected-wrong{border-color:var(--danger)!important;background:var(--danger-bg)!important;color:var(--danger-2)!important;}
+  .option-btn.selected-wrong .letter{background:var(--danger);color:#2a0808;}
+  .option-btn.reveal-correct{border-color:var(--success)!important;}
+
+  .btn-action{
+    width:100%;padding:15px;border-radius:12px;border:none;font-size:1rem;font-weight:800;
+    cursor:pointer;background:var(--primary);color:#fff;transition:.15s;min-height:50px;
+  }
+  .btn-action:hover:not(:disabled){background:var(--primary-hover);}
+  .btn-action:disabled{opacity:.45;cursor:not-allowed;}
+  .btn-action.next-btn{background:linear-gradient(90deg,#334155,#3f4d6b);}
+  .btn-action.next-btn:hover{background:linear-gradient(90deg,#475569,#526089);}
+  .btn-action.correct-flash{animation:none;}
+
+  .explanation-box{
+    margin-top:18px;padding:16px;border-radius:12px;display:none;line-height:1.55;font-size:.92rem;
+    animation:fadeSlideIn .35s ease;
+  }
+  @keyframes fadeSlideIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+  .explanation-box.correct{background:var(--success-bg);border:1px solid var(--success);color:var(--success-2);}
+  .explanation-box.incorrect{background:var(--danger-bg);border:1px solid var(--danger);color:var(--danger-2);}
+  .explanation-box h4{font-size:1.02rem;margin-bottom:8px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+
+  .xp-gain-row{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 4px;}
+  .xp-pill{
+    font-size:.74rem;font-weight:800;padding:4px 9px;border-radius:999px;
+    background:rgba(245,196,81,.15);border:1px solid rgba(245,196,81,.5);color:var(--gold-2);
+    animation:popIn .3s ease;
+  }
+  @keyframes popIn{from{opacity:0;transform:scale(.7);}to{opacity:1;transform:scale(1);}}
+
+  .rule-box{
+    margin-top:10px;padding:12px 13px;background:rgba(0,0,0,.28);border-radius:8px;
+    font-size:.86rem;color:#cbd5e1;
+  }
+  .rule-box strong{color:#fef08a;}
+  .block-banner{
+    margin-top:12px;padding:10px 12px;border-radius:10px;
+    background:linear-gradient(90deg, rgba(245,196,81,.16), rgba(245,196,81,.05));
+    border:1px solid rgba(245,196,81,.45);font-size:.82rem;font-weight:700;color:var(--gold-2);
+    display:flex;align-items:center;gap:8px;
+  }
+
+  /* ============ TOASTS ============ */
+  #toastLayer{
+    position:fixed;top:14px;left:50%;transform:translateX(-50%);
+    display:flex;flex-direction:column;gap:8px;z-index:80;width:min(92vw,380px);
+    pointer-events:none;
+  }
+  .toast{
+    pointer-events:auto;
+    background:linear-gradient(135deg,#1a2544,#0f1730);border:1px solid var(--gold);
+    border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:10px;
+    box-shadow:0 10px 26px -8px rgba(0,0,0,.6);
+    animation:toastIn .35s ease, toastOut .35s ease 2.9s forwards;
+  }
+  .toast .icon{font-size:1.4rem;}
+  .toast .txt b{display:block;font-size:.86rem;color:var(--gold-2);}
+  .toast .txt span{font-size:.72rem;color:var(--text-muted);}
+  @keyframes toastIn{from{opacity:0;transform:translateY(-16px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes toastOut{to{opacity:0;transform:translateY(-10px);}}
+
+  /* ============ LEVEL UP OVERLAY ============ */
+  .overlay{
+    position:fixed;inset:0;background:rgba(3,6,16,.78);backdrop-filter:blur(3px);
+    display:flex;align-items:center;justify-content:center;z-index:90;
+    animation:fadeIn .25s ease;padding:20px;
+  }
+  @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+  .levelup-card{
+    background:linear-gradient(160deg,#1c2748,#0f1730);border:1px solid var(--gold);
+    border-radius:20px;padding:34px 28px;text-align:center;max-width:340px;width:100%;
+    box-shadow:0 20px 60px -14px rgba(245,196,81,.35);
+    animation:popCard .4s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden;
+  }
+  @keyframes popCard{from{opacity:0;transform:scale(.85);}to{opacity:1;transform:scale(1);}}
+  .levelup-card .big{font-size:2.6rem;margin-bottom:6px;}
+  .levelup-card h2{font-size:1.3rem;color:var(--gold);margin-bottom:4px;}
+  .levelup-card p{font-size:.9rem;color:var(--text-muted);margin-bottom:18px;}
+  .levelup-card button{
+    background:var(--primary);color:#fff;border:none;padding:12px 22px;border-radius:10px;
+    font-weight:800;cursor:pointer;min-height:44px;width:100%;
+  }
+  .confetti-piece{
+    position:absolute;top:-10px;width:8px;height:14px;opacity:.9;
+    animation:confettiFall linear forwards;
+  }
+  @keyframes confettiFall{to{transform:translateY(340px) rotate(540deg);opacity:0;}}
+
+  /* ============ RESULT SCREEN ============ */
+  .result-screen{display:none;}
+  .result-hero{text-align:center;padding:6px 4px 18px;}
+  .result-hero .eyebrow{font-size:.75rem;letter-spacing:.1em;color:var(--text-muted);font-weight:800;text-transform:uppercase;}
+  .result-hero h2{font-size:1.6rem;margin:6px 0 10px;background:linear-gradient(90deg,#93c5fd,#f5c451);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .score-big{font-size:2.4rem;font-weight:900;color:#fff;}
+  .score-pct{font-size:1rem;color:var(--text-muted);font-weight:700;margin-top:2px;}
+
+  .result-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:18px 0;}
+  .rstat{background:#0b1226;border:1px solid var(--card-border-soft);border-radius:12px;padding:12px;text-align:center;}
+  .rstat .lbl{font-size:.68rem;color:var(--text-dim);font-weight:700;text-transform:uppercase;letter-spacing:.04em;}
+  .rstat .val{font-size:1.2rem;font-weight:800;margin-top:3px;}
+
+  .section-title{font-size:.8rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;margin:20px 0 10px;}
+
+  .perf-row{margin-bottom:9px;}
+  .perf-row .perf-top{display:flex;justify-content:space-between;font-size:.82rem;font-weight:700;margin-bottom:4px;}
+  .perf-bar-bg{height:9px;border-radius:999px;background:#0b1226;overflow:hidden;border:1px solid var(--card-border-soft);}
+  .perf-bar-fill{height:100%;border-radius:999px;transition:width .5s ease;}
+
+  .ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:8px;}
+  .ach-card{
+    background:#0b1226;border:1px solid var(--card-border-soft);border-radius:12px;padding:10px;
+    text-align:center;font-size:.72rem;color:var(--text-muted);
+  }
+  .ach-card.unlocked{border-color:var(--gold);background:rgba(245,196,81,.08);color:var(--gold-2);}
+  .ach-card .aicon{font-size:1.5rem;display:block;margin-bottom:4px;}
+  .ach-card b{display:block;font-size:.74rem;margin-bottom:2px;}
+
+  .next-goal{
+    background:linear-gradient(90deg, rgba(59,130,246,.14), rgba(59,130,246,.04));
+    border:1px solid rgba(59,130,246,.4);border-radius:12px;padding:13px 15px;margin-top:16px;
+    font-size:.88rem;
+  }
+  .next-goal b{color:var(--primary-2);}
+
+  .result-actions{display:flex;flex-direction:column;gap:9px;margin-top:22px;}
+  .result-actions button{min-height:48px;}
+  .btn-secondary{background:#0b1226;border:1px solid var(--card-border);color:var(--text);}
+  .btn-secondary:hover:not(:disabled){border-color:var(--primary-2);}
+  .btn-ghost{background:transparent;border:1px solid var(--card-border-soft);color:var(--text-muted);}
+
+  footer.note{margin-top:14px;text-align:center;font-size:.7rem;color:var(--text-dim);max-width:780px;}
+
+  [hidden]{display:none!important;}
+
+  @media (max-width:480px){
+    .container{padding:16px;}
+    .prompt-text{font-size:1.12rem;}
+    .level-badge{font-size:.66rem;padding:5px 8px;}
+    .level-badge b{font-size:.95rem;}
+    .stat-chip{min-width:70px;padding:6px 6px;}
+    .stat-chip .val{font-size:.92rem;}
+    .result-stats{grid-template-columns:1fr 1fr;}
+    .mode-btn{font-size:.74rem;padding:9px 4px;}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;}
+  }
+</style>
+</head>
+<body>
+
+<div id="toastLayer" aria-live="polite" aria-atomic="true"></div>
+
+<div class="wrap">
+
+  <header class="hud">
+    <div class="hud-top">
+      <div class="brand">
+        <h1>EAC Prime British English</h1>
+        <span>Simulador Gamificado de Gramática &amp; Vocabulário</span>
+      </div>
+      <button class="review-btn" id="btnReviewWeak" type="button" aria-label="Revisar questões que você ainda não domina">
+        📋 Revisão Inteligente
+      </button>
+    </div>
+
+    <div class="level-row">
+      <div class="level-badge" id="levelBadge" aria-live="polite">
+        <span id="levelTitle">Beginner Explorer</span>
+        <b id="levelNum">Nível 1</b>
+      </div>
+      <div class="xp-track">
+        <div class="xp-track-labels">
+          <span id="xpLabel">0 / 150 XP</span>
+          <span id="xpToNext">150 XP para o próximo nível</span>
+        </div>
+        <div class="xp-bar-bg"><div class="xp-bar-fill" id="xpBarFill"></div></div>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-chip streak" id="streakChip">
+        <div class="lbl">🔥 Streak</div>
+        <div class="val" id="streakVal">0</div>
+      </div>
+      <div class="stat-chip pts">
+        <div class="lbl">⭐ Pontos</div>
+        <div class="val" id="scoreVal">0</div>
+      </div>
+      <div class="stat-chip qn">
+        <div class="lbl">Questão</div>
+        <div class="val" id="progressVal">1 / 35</div>
+      </div>
+    </div>
+    <div class="session-bar-bg"><div class="session-bar-fill" id="sessionBarFill"></div></div>
+  </header>
+
+  <main class="container" id="quizScreen">
+    <div class="mode-selector" role="tablist" aria-label="Modo de resposta">
+      <button class="mode-btn active" id="btnModeWritten" role="tab" aria-selected="true" type="button">✍️ Tradução Escrita</button>
+      <button class="mode-btn" id="btnModeChoice" role="tab" aria-selected="false" type="button">🔤 Múltipla Escolha</button>
+    </div>
+
+    <div class="card-top">
+      <span class="tag-category" id="tagCategory">Present Perfect</span>
+      <span class="tag-difficulty" id="tagDifficulty">●○○</span>
+      <span class="progress-text" id="progressIndicator">Questão 1 / 35</span>
+    </div>
+
+    <div class="prompt-box">
+      <div class="prompt-label" id="promptLabel">Traduza para o inglês (Padrão EAC Prime):</div>
+      <div class="prompt-text" id="promptText">…</div>
+    </div>
+
+    <div class="input-area" id="writtenArea">
+      <input type="text" id="userTextInput" placeholder="Digite em inglês respeitando as regras da EAC..." autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Sua resposta em inglês" />
+      <div class="hint-text">Dica: capitalização e pontuação não importam — mas a gramática e o vocabulário exigidos pela EAC, sim.</div>
+    </div>
+
+    <div class="options-grid" id="choiceArea" style="display:none;" role="radiogroup" aria-label="Alternativas"></div>
+
+    <button class="btn-action" id="btnSubmit" type="button" disabled>Verificar Resposta</button>
+
+    <div class="explanation-box" id="explanationBox" role="status" aria-live="polite">
+      <h4 id="feedbackTitle">Resultado</h4>
+      <div class="xp-gain-row" id="xpGainRow"></div>
+      <p id="feedbackExpected"></p>
+      <div class="rule-box" id="ruleContent"></div>
+      <div class="block-banner" id="blockBanner" hidden></div>
+    </div>
+  </main>
+
+  <section class="container result-screen" id="resultScreen" aria-live="polite">
+    <div class="result-hero">
+      <div class="eyebrow" id="resultEyebrow">Treino Concluído</div>
+      <h2 id="resultHeadline">Bom trabalho!</h2>
+      <div class="score-big" id="resultScoreBig">34 / 35</div>
+      <div class="score-pct" id="resultScorePct">97%</div>
+    </div>
+
+    <div class="result-stats">
+      <div class="rstat"><div class="lbl">🔥 Melhor Streak</div><div class="val" id="resBestStreak">0</div></div>
+      <div class="rstat"><div class="lbl">⭐ XP Ganho</div><div class="val" id="resXpGained">+0</div></div>
+      <div class="rstat"><div class="lbl">Nível Atual</div><div class="val" id="resLevel">1</div></div>
+      <div class="rstat"><div class="lbl">Acertos / Erros</div><div class="val" id="resHitsMiss">0 / 0</div></div>
+    </div>
+
+    <div class="section-title">Seu desempenho por tema</div>
+    <div id="perfList"></div>
+
+    <div class="next-goal" id="nextGoal">
+      <b>Próximo objetivo:</b> <span id="nextGoalText">Continue treinando para desbloquear seu próximo objetivo.</span>
+    </div>
+
+    <div class="section-title">Conquistas</div>
+    <div class="ach-grid" id="achGrid"></div>
+
+    <div class="result-actions">
+      <button class="btn-action" id="btnReviewErrors" type="button">🔁 Revisar Erros</button>
+      <button class="btn-action btn-secondary" id="btnTrainAgain" type="button">🔄 Treinar Novamente</button>
+      <button class="btn-action btn-ghost" id="btnNewChallenge" type="button">🎲 Novo Desafio</button>
+    </div>
+  </section>
+
+  <footer class="note">EAC Prime British English Simulator — conteúdo pedagógico e gabaritos preservados integralmente do material original da professora. Progresso salvo automaticamente neste dispositivo.</footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* =========================================================================
+     1) BANCO DE QUESTÕES
+     Conteúdo pedagógico (pt, gabarito, accept, distractors, category,
+     explanation) preservado 100% do material original da EAC Prime.
+     Campos adicionados (id, skills, difficulty, xp) são apenas metadados de
+     organização/gamificação e não alteram nenhuma regra gramatical.
+  ========================================================================= */
+  const QUESTIONS = [
+    { id:1, pt:"Por quanto tempo eu deveria ficar em casa?", gabarito:"How long should I stay at home?",
+      accept:["how long should i stay at home","how long should i stay at home?"],
+      category:"Preposição & Modais", skills:["prepositions","modal-verbs"], difficulty:2, xp:10,
+      explanation:"1) A professora exigiu 'at home' (ficar em casa com preposição 'at'). 2) Em perguntas com modais (should), inverte-se o modal com o sujeito: 'should I stay'.",
+      distractors:["How long I should stay home?","How long should I stay home?","How much time should I stay to home?"] },
+
+    { id:2, pt:"Você me ouviu?", gabarito:"Have you heard me?",
+      accept:["have you heard me","have you heard me?"],
+      category:"Present Perfect", skills:["present-perfect"], difficulty:1, xp:10,
+      explanation:"Na EAC Prime, perguntas recentes sem tempo definido no passado exigem Present Perfect ('Have you heard me?'), e não Simple Past ('Did you hear me?').",
+      distractors:["Did you hear me?","Do you hear me?","Have you listen me?"] },
+
+    { id:3, pt:"Você beijou ele?", gabarito:"Have you kissed him?",
+      accept:["have you kissed him","have you kissed him?"],
+      category:"Present Perfect & Pronome", skills:["present-perfect","pronouns"], difficulty:2, xp:10,
+      explanation:"1) Present Perfect obrigatório para ações recentes sem marcador de tempo ('Have you kissed...'). 2) Pronome oblíquo correto para 'ele' como objeto: 'him'.",
+      distractors:["Did you kiss him?","Have you kissed he?","Did you kissed him?"] },
+
+    { id:4, pt:"O que você disse?", gabarito:"What have you said?",
+      accept:["what have you said","what have you said?"],
+      category:"Present Perfect", skills:["present-perfect"], difficulty:1, xp:10,
+      explanation:"O curso cobra estritamente 'What have you said?' no Present Perfect quando se questiona a fala recém-dita de alguém.",
+      distractors:["What did you say?","What have you told?","What did you tell me?"] },
+
+    { id:5, pt:"Eu acho que ela foi ao supermercado.", gabarito:"I think that she has gone to the supermarket.",
+      accept:["i think that she has gone to the supermarket","i think that she has gone to the supermarket.","i think she has gone to the supermarket","i think she has gone to the supermarket."],
+      category:"Present Perfect & Deslocamento", skills:["present-perfect","prepositions"], difficulty:2, xp:10,
+      explanation:"A professora exigiu 'has gone to the supermarket' (ação recente com impacto no presente: ela foi e ainda está lá). Lembrar da preposição de movimento 'to the'.",
+      distractors:["I think that she went the supermarket.","I think she gone to the supermarket.","I think that she has been in supermarket."] },
+
+    { id:6, pt:"Eu vou te amar por toda minha vida.", gabarito:"I'm going to love you all my life.",
+      accept:["i'm going to love you all my life","i'm going to love you all my life.","i am going to love you all my life","i am going to love you all my life."],
+      category:"Expressão 'All My Life'", skills:["verb-collocations","vocabulary"], difficulty:2, xp:10,
+      explanation:"A professora riscou a preposição 'for' de caneta vermelha! Em inglês britânico/EAC, usa-se a locução direta 'all my life' (sem preposição).",
+      distractors:["I'm going to love you for all my life.","I will love you for my whole life.","I going to love you all my life."] },
+
+    { id:7, pt:"Eu poderia viver com você por toda minha vida.", gabarito:"I could live with you all my life.",
+      accept:["i could live with you all my life","i could live with you all my life."],
+      category:"Modais & Expressões", skills:["modal-verbs","verb-collocations"], difficulty:2, xp:10,
+      explanation:"1) 'Poderia' = 'could' (nunca combine 'would can'). 2) Viver com = 'live with'. 3) 'all my life' sem a preposição 'for'.",
+      distractors:["I would can live you for all my life.","I could live with you for all my life.","I could to live with you all my life."] },
+
+    { id:8, pt:"Ela é uma noiva linda, mas o noivo é muito feio.", gabarito:"She's a beautiful bride, but the bridegroom is very ugly.",
+      accept:["she's a beautiful bride, but the bridegroom is very ugly","she's a beautiful bride, but the bridegroom is very ugly.","she is a beautiful bride, but the bridegroom is very ugly","she is a beautiful bride, but the bridegroom is very ugly."],
+      category:"Vocabulário Específico", skills:["british-vocabulary"], difficulty:2, xp:10,
+      explanation:"A EAC exige o termo britânico e formal 'bridegroom' para o noivo de casamento e preferiu 'beautiful bride' em vez de pretty.",
+      distractors:["She's a pretty bride, but the groom is very ugly.","She's a beautiful bride, but the boyfriend is very ugly.","She is a pretty bride, but the bridegroom is very bad."] },
+
+    { id:9, pt:"Eu gosto da sua mão e de seus lábios.", gabarito:"I like your hand and your lips.",
+      accept:["i like your hand and your lips","i like your hand and your lips."],
+      category:"Concordância Rígida", skills:["grammar-agreement"], difficulty:2, xp:10,
+      explanation:"A professora exigiu rigor com o singular do português: 'da sua mão' = 'your hand' (e não hands). Lábios = 'your lips'.",
+      distractors:["I like your hands and your lips.","I like of your hand and your lips.","I like your hand and the lips of you."] },
+
+    { id:10, pt:"Você deveria marcar uma consulta com o doutor hoje.", gabarito:"You should make an appointment with the doctor today.",
+      accept:["you should make an appointment with the doctor today","you should make an appointment with the doctor today.","you should book an appointment with the doctor today"],
+      category:"Collocation Médica", skills:["verb-collocations","modal-verbs"], difficulty:3, xp:10,
+      explanation:"Consulta médica NUNCA é 'consult'. A colocação correta exigida é 'make an appointment with the doctor'. Use 'should' puro (nunca 'you'll should').",
+      distractors:["You'll should make a consult with a doctor today.","You should make a consultation with doctor today.","You should have a consult with the doctor today."] },
+
+    { id:11, pt:"Eu não sei contar em inglês.", gabarito:"I don't know how to count in English.",
+      accept:["i don't know how to count in english","i don't know how to count in english."],
+      category:"Habilidade Prática", skills:["verb-collocations"], difficulty:2, xp:10,
+      explanation:"Saber realizar uma habilidade prática exige 'know HOW to + verbo' ('know how to count'). 'I don't know to count' é incorreto.",
+      distractors:["I don't know to count in English.","I don't can count in English.","I not know how to count in English."] },
+
+    { id:12, pt:"Eu comprarei um carro entre outras coisas.", gabarito:"I'll buy a car among other things.",
+      accept:["i'll buy a car among other things","i'll buy a car among other things.","i will buy a car among other things","i'll buy a car, among other things"],
+      category:"Preposição Among vs Between", skills:["prepositions"], difficulty:3, xp:10,
+      explanation:"Para 'entre várias coisas/itens não especificados', a preposição correta é 'among other things'. 'Between' só se usa para duas coisas específicas.",
+      distractors:["I'll buy a car between other things.","I will buy a car in other things.","I buy a car among another things."] },
+
+    { id:13, pt:"Nossa camareira irá limpar ele para você.", gabarito:"Our chambermaid will clean it for you.",
+      accept:["our chambermaid will clean it for you","our chambermaid will clean it for you."],
+      category:"Vocabulário Britânico / EAC", skills:["british-vocabulary","hotel-english"], difficulty:2, xp:10,
+      explanation:"O material da EAC Prime exige estritamente o termo britânico tradicional 'chambermaid' para camareira de hotel.",
+      distractors:["Our maid will clean it for you.","Our cleaning lady will clean him for you.","Our chambermaid will clean him for you."] },
+
+    { id:14, pt:"Aonde o porteiro está indo?", gabarito:"Where is the doorman going?",
+      accept:["where is the doorman going","where is the doorman going?"],
+      category:"Vocabulário Específico", skills:["british-vocabulary","hotel-english"], difficulty:1, xp:10,
+      explanation:"A EAC cobra a palavra 'doorman' para porteiro de prédio/hotel, com inversão de pergunta contínua ('Where is the doorman going?').",
+      distractors:["Where is the porter going?","Where the doorman is going?","Where is the gatekeeper going?"] },
+
+    { id:15, pt:"Aqui está.", gabarito:"Here it is.",
+      accept:["here it is","here it is."],
+      category:"Expressão Fixa EAC", skills:["fixed-expressions"], difficulty:1, xp:10,
+      explanation:"A apostila e os testes da escola cobram a expressão padrão 'Here it is.' (em vez de 'Here you go').",
+      distractors:["Here you are.","Here you go.","Here is it."] },
+
+    { id:16, pt:"Você pode gostar de mim no futuro.", gabarito:"You may like me in the future.",
+      accept:["you may like me in the future","you may like me in the future."],
+      category:"Modal de Possibilidade", skills:["modal-verbs"], difficulty:2, xp:10,
+      explanation:"A professora destacou 'may' para expressar probabilidade/possibilidade futura ('You may like me...').",
+      distractors:["You can like me in the future.","You might to like me in the future.","You should like of me in future."] },
+
+    { id:17, pt:"Que pena, então eu vou sair com ele.", gabarito:"What a pity, then I am going out with him.",
+      accept:["what a pity, then i am going out with him","what a pity, then i am going out with him.","what a pity, then i'm going out with him"],
+      category:"Expressão & Futuro", skills:["fixed-expressions","future-tenses"], difficulty:3, xp:10,
+      explanation:"1) 'Que pena' = 'What a pity'. 2) O gabarito cobrou o Present Continuous formal para futuro planejado: 'then I am going out with him'.",
+      distractors:["What a shame, then I will go out with he.","What a pity, then I am going to go out with him.","What pity, then I go out with him."] },
+
+    { id:18, pt:"Hoje está nublado.", gabarito:"Today is cloudy.",
+      accept:["today is cloudy","today is cloudy.","today it's cloudy","today it's cloudy."],
+      category:"Clima", skills:["vocabulary"], difficulty:1, xp:10,
+      explanation:"O gabarito oficial aceita e cobra 'Today is cloudy.' Atenção à grafia de 'cloudy' (sem trocar letras como 'couldy').",
+      distractors:["Today is couldy.","Today does cloudy.","Today make cloudy."] },
+
+    { id:19, pt:"Onde você colocou a panela?", gabarito:"Where have you put a pot?",
+      accept:["where have you put a pot","where have you put a pot?","where have you put the pot?"],
+      category:"Present Perfect", skills:["present-perfect"], difficulty:2, xp:10,
+      explanation:"Perguntas de ações recentes no curso EAC usam Present Perfect: 'Where have you put...?' (o particípio de 'put' é 'put'). Panela = 'pot'.",
+      distractors:["Where did you put the pan?","Where have you putted a pot?","Where do you put a pot?"] },
+
+    { id:20, pt:"Eu coloquei ela no fogão.", gabarito:"I have put it on the cooker.",
+      accept:["i have put it on the cooker","i have put it on the cooker."],
+      category:"Present Perfect & British Vocab", skills:["present-perfect","british-vocabulary"], difficulty:3, xp:10,
+      explanation:"1) Como a pergunta foi em Present Perfect ('Where have you put...?'), a resposta EXIGE 'I HAVE put'. 2) No inglês britânico da EAC, fogão é 'cooker' (e não stove).",
+      distractors:["I put it on the stove.","I have put her on the cooker.","I putted it on the cooker."] },
+
+    { id:21, pt:"O que você comprou?", gabarito:"What have you bought?",
+      accept:["what have you bought","what have you bought?"],
+      category:"Present Perfect", skills:["present-perfect"], difficulty:1, xp:10,
+      explanation:"O padrão EAC para perguntar sobre compras recentes sem 'yesterday' é Present Perfect: 'What have you bought?' (particípio de buy).",
+      distractors:["What did you buy?","What have you buyed?","What did you bought?"] },
+
+    { id:22, pt:"Eu comprei uma casa bonita.", gabarito:"I have bought a pretty house.",
+      accept:["i have bought a pretty house","i have bought a pretty house.","i have bought a beautiful house"],
+      category:"Present Perfect na Resposta", skills:["present-perfect"], difficulty:2, xp:10,
+      explanation:"A professora marcou explicitamente: respondendo à pergunta 'What have you bought?', deve-se usar 'I HAVE bought...'.",
+      distractors:["I bought a pretty house.","I have buyed a pretty house.","I have bought an pretty house."] },
+
+    { id:23, pt:"Está muito frio hoje, eu vou levar um casaco para ele.", gabarito:"It's very cold today, I'm going to take a coat to him.",
+      accept:["it's very cold today, i'm going to take a coat to him","it's very cold today, i'm going to take a coat to him.","it is very cold today, i am going to take a coat to him"],
+      category:"Regência de Take (TO him)", skills:["verb-collocations","prepositions"], difficulty:3, xp:10,
+      explanation:"A professora RISCOU o 'for'! Levar/entregar algo a alguém com o verbo 'take' exige a preposição 'TO': 'take a coat TO him'.",
+      distractors:["It's very cold today, I'm going to take a coat for him.","It's very cold today, I will bring a coat for him.","Is very cold today, I'm going to take a coat to him."] },
+
+    { id:24, pt:"Eu acho que vou sair hoje à noite.", gabarito:"I think that I'm going out tonight.",
+      accept:["i think that i'm going out tonight","i think that i'm going out tonight.","i think i'm going out tonight","i think that i am going out tonight"],
+      category:"Sem redundância em 'go'", skills:["grammar-structure","future-tenses"], difficulty:2, xp:10,
+      explanation:"A professora riscou 'to go'! Não se diz 'going to go out'. A forma enxuta e natural da escola é direto 'I'm going out tonight'.",
+      distractors:["I think that I'm going to go out tonight.","I think I will go to out tonight.","I think that I go out tonight."] },
+
+    { id:25, pt:"Primeiro eu vou levar o prato principal para ela.", gabarito:"First I'm going to take the main course to her.",
+      accept:["first i'm going to take the main course to her","first i'm going to take the main course to her.","first i am going to take the main course to her"],
+      category:"Regência de Take & Prato Principal", skills:["verb-collocations","prepositions"], difficulty:2, xp:10,
+      explanation:"1) Prato principal = 'the main course'. 2) Levar para ela = 'take... TO her' (nunca 'for her').",
+      distractors:["First I'm going to take the main course for her.","First I will bring the main dish for her.","First I'm going to take the principal plate to her."] },
+
+    { id:26, pt:"Quantas malas você levou para o escritório ontem?", gabarito:"How many suitcases did you take to the office yesterday?",
+      accept:["how many suitcases did you take to the office yesterday","how many suitcases did you take to the office yesterday?"],
+      category:"Mala de Viagem & Passado", skills:["simple-past","vocabulary"], difficulty:2, xp:10,
+      explanation:"1) Mala no material EAC é estritamente 'suitcase' (plural: 'suitcases'). 2) Como há o marcador 'yesterday', usa-se Simple Past: 'did you take'.",
+      distractors:["How many bags have you taken to the office yesterday?","How much suitcases did you take to the office yesterday?","How many suitcases did you took to the office yesterday?"] },
+
+    { id:27, pt:"Ela é tudo que eu tenho.", gabarito:"She is everything I have.",
+      accept:["she is everything i have","she is everything i have.","she's everything i have"],
+      category:"Vocabulário de Quantidade", skills:["vocabulary"], difficulty:1, xp:10,
+      explanation:"A escola cobrou o pronome 'everything' para 'tudo' na frase existencial/relacional: 'She is everything I have.'",
+      distractors:["She is all that I have.","She is every thing that I have.","She's all what I have."] },
+
+    { id:28, pt:"Há vagas.", gabarito:"There are vacancies.",
+      accept:["there are vacancies","there are vacancies."],
+      category:"Vocabulário de Hotelaria EAC", skills:["hotel-english"], difficulty:2, xp:10,
+      explanation:"No inglês britânico de hotelaria da EAC, 'Há vagas' traduz-se estritamente como 'There are vacancies.' (evitar 'free rooms').",
+      distractors:["There have vacancies.","There are free rooms.","There is vacancies."] },
+
+    { id:29, pt:"De jeito nenhum / De modo algum.", gabarito:"Not at all.",
+      accept:["not at all","not at all."],
+      category:"Expressão Idiomática", skills:["fixed-expressions"], difficulty:1, xp:10,
+      explanation:"O curso cobra a expressão clássica britânica 'Not at all.' para 'de modo algum / de jeito nenhum'.",
+      distractors:["No way.","In no way.","Not in all."] },
+
+    { id:30, pt:"Você comprou pasta de dente?", gabarito:"Have you bought toothpaste?",
+      accept:["have you bought toothpaste","have you bought toothpaste?"],
+      category:"Substantivo Incontável", skills:["present-perfect","nouns-uncountable"], difficulty:2, xp:10,
+      explanation:"A professora riscou 'some'! O curso cobrou o uso direto sem partitivo: 'Have you bought toothpaste?' no Present Perfect.",
+      distractors:["Have you bought some toothpaste?","Did you buy a toothpaste?","Have you buy toothpaste?"] },
+
+    { id:31, pt:"Sim, comprei. (respondendo a 'Have you bought...')", gabarito:"I have.",
+      accept:["i have","i have.","yes, i have","yes, i have."],
+      category:"Resposta Curta em Present Perfect", skills:["present-perfect"], difficulty:2, xp:10,
+      explanation:"Em resposta curta a uma pergunta com 'Have you...?', responde-se obrigatoriamente com o auxiliar 'I have' (e nunca 'I did').",
+      distractors:["I did.","Yes, I bought.","I do."] },
+
+    { id:32, pt:"Você sabe onde fica o portão de embarque?", gabarito:"Do you know where the boarding gate is?",
+      accept:["do you know where the boarding gate is","do you know where the boarding gate is?"],
+      category:"Embedded Question (Pergunta Indireta)", skills:["embedded-questions","airport-english"], difficulty:3, xp:10,
+      explanation:"Em perguntas indiretas após 'Do you know...', a oração subordinada NÃO sofre inversão: o verbo 'is' vai para o FINAL da frase ('where the boarding gate is?').",
+      distractors:["Do you know where is the boarding gate?","Do you know where the embarkation gate is?","Do you know where is the boarding door?"] },
+
+    { id:33, pt:"Você sabe se ela sabe tocar violão?", gabarito:"Do you know if she can play the guitar?",
+      accept:["do you know if she can play the guitar","do you know if she can play the guitar?"],
+      category:"Embedded Question & Instrumentos", skills:["embedded-questions","vocabulary"], difficulty:3, xp:10,
+      explanation:"1) Pergunta indireta de sim/não usa 'if'. 2) Instrumentos musicais pedem o artigo 'the' ('play the guitar'). 3) Ordem direta: 'she can play'.",
+      distractors:["Do you know if can she play the guitar?","Do you know whether she knows play guitar?","Do you know if she plays guitar?"] },
+
+    { id:34, pt:"Eu preciso de música para viver.", gabarito:"I need music to live.",
+      accept:["i need music to live","i need music to live."],
+      category:"Regência Sem Preposição 'of'", skills:["verb-collocations"], difficulty:2, xp:10,
+      explanation:"A professora riscou o 'of' em vermelho! Verbos transitivos diretos em inglês como 'need' e 'like' não aceitam 'of': 'I need music', 'I like music'.",
+      distractors:["I need of music to live.","I need music for to live.","I have need of music to live."] },
+
+    { id:35, pt:"Onde é a alfândega?", gabarito:"Where is Customs?",
+      accept:["where is customs","where is customs?"],
+      category:"Vocabulário Aeroportuário", skills:["airport-english"], difficulty:1, xp:10,
+      explanation:"Na EAC, alfândega se escreve 'Customs' (com inicial maiúscula e sem artigo 'the'): 'Where is Customs?'.",
+      distractors:["Where is the customs?","Where is the border?","Where is customs house?"] }
+  ];
+
+  /* =========================================================================
+     2) TAXONOMIA / GAMIFICAÇÃO
+  ========================================================================= */
+  const SKILL_LABELS = {
+    "present-perfect":"Present Perfect",
+    "prepositions":"Prepositions",
+    "modal-verbs":"Modal Verbs",
+    "pronouns":"Pronouns",
+    "british-vocabulary":"British Vocabulary",
+    "verb-collocations":"Verb Collocations",
+    "grammar-agreement":"Grammar Agreement",
+    "fixed-expressions":"Fixed Expressions",
+    "future-tenses":"Future Tenses",
+    "vocabulary":"General Vocabulary",
+    "simple-past":"Simple Past",
+    "hotel-english":"Hotel English",
+    "nouns-uncountable":"Uncountable Nouns",
+    "embedded-questions":"Embedded Questions",
+    "airport-english":"Airport English",
+    "grammar-structure":"Sentence Structure"
+  };
+
+  const LEVEL_TITLES = [
+    null,
+    "Beginner Explorer","Grammar Apprentice","Intermediate Explorer","Vocabulary Voyager",
+    "Fluency Challenger","British English Adept","EAC Prime Scholar","Grammar Virtuoso",
+    "Native-Level Navigator","EAC Prime Master"
+  ];
+
+  const BLOCK_SIZE = 7;
+  const STORAGE_KEY = "eacPrimeSimulator_v1";
+
+  const ACHIEVEMENTS = [
+    { key:"first_correct", icon:"🏆", title:"Primeiro Acerto", desc:"Acerte sua primeira questão." },
+    { key:"streak_5", icon:"🔥", title:"5 em Sequência", desc:"Alcance uma sequência de 5 acertos." },
+    { key:"streak_10", icon:"🔥", title:"10 em Sequência", desc:"Alcance uma sequência de 10 acertos." },
+    { key:"xp_100", icon:"⭐", title:"100 XP", desc:"Acumule 100 XP." },
+    { key:"xp_500", icon:"⭐", title:"500 XP", desc:"Acumule 500 XP." },
+    { key:"present_perfect_master", icon:"🧠", title:"Mestre do Present Perfect", desc:"Acerte, ao menos uma vez, todas as questões de Present Perfect.", skill:"present-perfect" },
+    { key:"airport_specialist", icon:"✈️", title:"Airport Specialist", desc:"Domine todo o vocabulário de aeroporto.", skill:"airport-english" },
+    { key:"hotel_specialist", icon:"🏨", title:"Hotel English Specialist", desc:"Domine todo o inglês de hotelaria.", skill:"hotel-english" },
+    { key:"british_explorer", icon:"🇬🇧", title:"British English Explorer", desc:"Domine todo o vocabulário britânico.", skill:"british-vocabulary" }
+  ];
+
+  /* =========================================================================
+     3) ESTADO PERSISTENTE (localStorage)
+  ========================================================================= */
+  function defaultPersisted(){
+    return {
+      totalXP: 0,
+      bestStreakEver: 0,
+      achievements: {},
+      questionProgress: {}   // id -> {attempts, correct, everCorrect}
+    };
+  }
+
+  function loadPersisted(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return defaultPersisted();
+      const parsed = JSON.parse(raw);
+      return Object.assign(defaultPersisted(), parsed);
+    }catch(e){
+      return defaultPersisted();
+    }
+  }
+
+  function savePersisted(){
+    try{
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(persisted));
+    }catch(e){ /* localStorage indisponível: segue apenas em memória */ }
+  }
+
+  let persisted = loadPersisted();
+
+  /* =========================================================================
+     4) MOTOR DE NÍVEL / XP
+  ========================================================================= */
+  function xpToReachLevel(level){
+    // XP necessário (incremental) para SUBIR do nível `level` para o `level+1`.
+    return 150 + (level - 1) * 100;
+  }
+
+  function levelInfo(totalXP){
+    let level = 1, remaining = totalXP, need = xpToReachLevel(level);
+    while(remaining >= need){
+      remaining -= need;
+      level++;
+      need = xpToReachLevel(level);
+    }
+    const title = LEVEL_TITLES[Math.min(level, LEVEL_TITLES.length - 1)] || LEVEL_TITLES[LEVEL_TITLES.length - 1];
+    return { level, xpIntoLevel: remaining, xpNeeded: need, title };
+  }
+
+  /* =========================================================================
+     5) UTILITÁRIOS
+  ========================================================================= */
+  function shuffle(arr){
+    const a = arr.slice();
+    for(let i = a.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function cleanString(str){
+    return str
+      .toLowerCase()
+      .normalize("NFKC")
+      .replace(/[’‘]/g, "'")
+      .replace(/[“”]/g, '"')
+      .trim()
+      .replace(/[.,\/#!$%\^&*;:{}=\-_`~()?"']/g, "")
+      .replace(/\s+/g, " ");
+  }
+
+  function questionsBySkill(skill){
+    return QUESTIONS.filter(q => q.skills.includes(skill));
+  }
+
+  const QUESTIONS_BY_ID = {};
+  QUESTIONS.forEach(q => { QUESTIONS_BY_ID[q.id] = q; });
+
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, ch => ({
+      "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+    }[ch]));
+  }
+
+  /* =========================================================================
+     6) ESTADO DA SESSÃO
+  ========================================================================= */
+  const state = {
+    mode: "written",          // 'written' | 'choice'
+    order: [],                // array de índices em QUESTIONS para esta sessão
+    pos: 0,                   // posição atual dentro de `order`
+    score: 0,
+    streak: 0,
+    bestStreakSession: 0,
+    xpSession: 0,
+    correctCount: 0,
+    wrongCount: 0,
+    answered: false,
+    selectedChoiceBtn: null,
+    wrongIdsThisSession: [],
+    sessionSkillStats: {},    // skill -> {correct, total}
+    achievementsThisSession: []
+  };
+
+  /* =========================================================================
+     7) ELEMENTOS DOM
+  ========================================================================= */
+  const el = {
+    toastLayer: document.getElementById("toastLayer"),
+    levelTitle: document.getElementById("levelTitle"),
+    levelNum: document.getElementById("levelNum"),
+    xpLabel: document.getElementById("xpLabel"),
+    xpToNext: document.getElementById("xpToNext"),
+    xpBarFill: document.getElementById("xpBarFill"),
+    streakChip: document.getElementById("streakChip"),
+    streakVal: document.getElementById("streakVal"),
+    scoreVal: document.getElementById("scoreVal"),
+    progressVal: document.getElementById("progressVal"),
+    sessionBarFill: document.getElementById("sessionBarFill"),
+    btnReviewWeak: document.getElementById("btnReviewWeak"),
+
+    quizScreen: document.getElementById("quizScreen"),
+    resultScreen: document.getElementById("resultScreen"),
+
+    btnModeWritten: document.getElementById("btnModeWritten"),
+    btnModeChoice: document.getElementById("btnModeChoice"),
+
+    tagCategory: document.getElementById("tagCategory"),
+    tagDifficulty: document.getElementById("tagDifficulty"),
+    progressIndicator: document.getElementById("progressIndicator"),
+    promptLabel: document.getElementById("promptLabel"),
+    promptText: document.getElementById("promptText"),
+
+    writtenArea: document.getElementById("writtenArea"),
+    userTextInput: document.getElementById("userTextInput"),
+    choiceArea: document.getElementById("choiceArea"),
+
+    btnSubmit: document.getElementById("btnSubmit"),
+
+    explanationBox: document.getElementById("explanationBox"),
+    feedbackTitle: document.getElementById("feedbackTitle"),
+    xpGainRow: document.getElementById("xpGainRow"),
+    feedbackExpected: document.getElementById("feedbackExpected"),
+    ruleContent: document.getElementById("ruleContent"),
+    blockBanner: document.getElementById("blockBanner"),
+
+    resultEyebrow: document.getElementById("resultEyebrow"),
+    resultHeadline: document.getElementById("resultHeadline"),
+    resultScoreBig: document.getElementById("resultScoreBig"),
+    resultScorePct: document.getElementById("resultScorePct"),
+    resBestStreak: document.getElementById("resBestStreak"),
+    resXpGained: document.getElementById("resXpGained"),
+    resLevel: document.getElementById("resLevel"),
+    resHitsMiss: document.getElementById("resHitsMiss"),
+    perfList: document.getElementById("perfList"),
+    nextGoalText: document.getElementById("nextGoalText"),
+    achGrid: document.getElementById("achGrid"),
+
+    btnReviewErrors: document.getElementById("btnReviewErrors"),
+    btnTrainAgain: document.getElementById("btnTrainAgain"),
+    btnNewChallenge: document.getElementById("btnNewChallenge")
+  };
+
+  /* =========================================================================
+     8) HUD
+  ========================================================================= */
+  function renderHUD(pulseXp){
+    const info = levelInfo(persisted.totalXP);
+    el.levelTitle.textContent = info.title;
+    el.levelNum.textContent = "Nível " + info.level;
+    el.xpLabel.textContent = info.xpIntoLevel + " / " + info.xpNeeded + " XP";
+    el.xpToNext.textContent = (info.xpNeeded - info.xpIntoLevel) + " XP para o próximo nível";
+    const pct = Math.min(100, Math.round((info.xpIntoLevel / info.xpNeeded) * 100));
+    el.xpBarFill.style.width = pct + "%";
+    if(pulseXp){
+      el.xpBarFill.classList.remove("pulse");
+      void el.xpBarFill.offsetWidth;
+      el.xpBarFill.classList.add("pulse");
+    }
+
+    el.streakVal.textContent = state.streak;
+    el.streakChip.classList.remove("s-warm","s-hot","s-blaze","bump");
+    if(state.streak >= 12) el.streakChip.classList.add("s-blaze");
+    else if(state.streak >= 8) el.streakChip.classList.add("s-hot");
+    else if(state.streak >= 4) el.streakChip.classList.add("s-warm");
+    if(pulseXp){
+      void el.streakChip.offsetWidth;
+      el.streakChip.classList.add("bump");
+    }
+
+    el.scoreVal.textContent = state.score;
+    const total = state.order.length || 1;
+    el.progressVal.textContent = (state.pos + 1) + " / " + total;
+    el.sessionBarFill.style.width = Math.round(((state.pos) / total) * 100) + "%";
+
+    const weakPool = weakQuestionIds();
+    el.btnReviewWeak.disabled = weakPool.length === 0;
+  }
+
+  function weakQuestionIds(){
+    const ids = [];
+    QUESTIONS.forEach(q => {
+      const p = persisted.questionProgress[q.id];
+      if(p && p.attempts > 0 && !p.everCorrect) ids.push(q.id);
+    });
+    return ids;
+  }
+
+  /* =========================================================================
+     9) TOASTS & LEVEL UP
+  ========================================================================= */
+  function showToast(icon, title, desc){
+    const t = document.createElement("div");
+    t.className = "toast";
+    t.innerHTML = '<span class="icon">' + icon + '</span><div class="txt"><b>' + escapeHtml(title) + '</b><span>' + escapeHtml(desc || "") + '</span></div>';
+    el.toastLayer.appendChild(t);
+    setTimeout(() => t.remove(), 3300);
+  }
+
+  function showLevelUp(newLevel, title){
+    const overlay = document.createElement("div");
+    overlay.className = "overlay";
+    overlay.setAttribute("role","dialog");
+    overlay.setAttribute("aria-modal","true");
+    overlay.innerHTML =
+      '<div class="levelup-card">' +
+        '<div class="big">🎉</div>' +
+        '<h2>LEVEL UP!</h2>' +
+        '<p>Você alcançou o <strong>Nível ' + newLevel + '</strong><br>' + escapeHtml(title) + '</p>' +
+        '<button type="button">Continuar</button>' +
+      '</div>';
+    document.body.appendChild(overlay);
+
+    const card = overlay.querySelector(".levelup-card");
+    const colors = ["#f5c451","#3b82f6","#10b981","#ef4444","#a855f7"];
+    for(let i = 0; i < 26; i++){
+      const p = document.createElement("span");
+      p.className = "confetti-piece";
+      p.style.left = Math.round(Math.random() * 100) + "%";
+      p.style.background = colors[i % colors.length];
+      p.style.animationDuration = (1.4 + Math.random() * 1.2) + "s";
+      p.style.animationDelay = (Math.random() * 0.4) + "s";
+      card.appendChild(p);
+    }
+
+    const closeBtn = overlay.querySelector("button");
+    function close(){ overlay.remove(); }
+    closeBtn.addEventListener("click", close);
+    closeBtn.focus();
+    overlay.addEventListener("click", (e) => { if(e.target === overlay) close(); });
+  }
+
+  /* =========================================================================
+     10) CONQUISTAS
+  ========================================================================= */
+  function isSkillMastered(skill){
+    const qs = questionsBySkill(skill);
+    if(qs.length === 0) return false;
+    return qs.every(q => {
+      const p = persisted.questionProgress[q.id];
+      return p && p.everCorrect;
+    });
+  }
+
+  function checkAchievements(){
+    let anyNew = false;
+    ACHIEVEMENTS.forEach(a => {
+      if(persisted.achievements[a.key]) return;
+      let unlocked = false;
+      switch(a.key){
+        case "first_correct": unlocked = state.correctCount + priorCorrectCount() >= 1; break;
+        case "streak_5": unlocked = persisted.bestStreakEver >= 5; break;
+        case "streak_10": unlocked = persisted.bestStreakEver >= 10; break;
+        case "xp_100": unlocked = persisted.totalXP >= 100; break;
+        case "xp_500": unlocked = persisted.totalXP >= 500; break;
+        default:
+          if(a.skill) unlocked = isSkillMastered(a.skill);
+      }
+      if(unlocked){
+        persisted.achievements[a.key] = true;
+        state.achievementsThisSession.push(a.key);
+        showToast(a.icon, "Conquista desbloqueada!", a.title);
+        anyNew = true;
+      }
+    });
+    if(anyNew) savePersisted();
+  }
+
+  function priorCorrectCount(){
+    let n = 0;
+    Object.keys(persisted.questionProgress).forEach(id => {
+      if(persisted.questionProgress[id].correct > 0) n++;
+    });
+    return n;
+  }
+
+  /* =========================================================================
+     11) FLUXO DA SESSÃO
+  ========================================================================= */
+  function startSession(ids, opts){
+    opts = opts || {};
+    state.order = (opts.shuffleOrder ? shuffle(ids) : ids.slice());
+    state.pos = 0;
+    state.score = 0;
+    state.streak = 0;
+    state.bestStreakSession = 0;
+    state.xpSession = 0;
+    state.correctCount = 0;
+    state.wrongCount = 0;
+    state.wrongIdsThisSession = [];
+    state.sessionSkillStats = {};
+    state.achievementsThisSession = [];
+    state.selectedChoiceBtn = null;
+
+    el.resultScreen.style.display = "none";
+    el.quizScreen.style.display = "block";
+    el.btnModeWritten.disabled = false;
+    el.btnModeChoice.disabled = false;
+
+    loadQuestion();
+    renderHUD(false);
+  }
+
+  function currentQuestion(){
+    return QUESTIONS_BY_ID[state.order[state.pos]];
+  }
+
+  function setMode(mode){
+    // Trocar de modo só é permitido ANTES de responder a questão atual.
+    // Isso evita recarregar (e permitir responder de novo) uma questão que
+    // já foi contabilizada, e evita que o botão "Verificar/Próxima" fique
+    // preso ao estado da questão anterior. Os botões de modo já ficam
+    // desabilitados via CSS/atributo enquanto state.answered é true
+    // (ver checkAnswer/loadQuestion), esta é uma segunda barreira.
+    if(state.answered) return;
+    state.mode = mode;
+    el.btnModeWritten.classList.toggle("active", mode === "written");
+    el.btnModeWritten.setAttribute("aria-selected", mode === "written");
+    el.btnModeChoice.classList.toggle("active", mode === "choice");
+    el.btnModeChoice.setAttribute("aria-selected", mode === "choice");
+    el.writtenArea.style.display = mode === "written" ? "block" : "none";
+    el.choiceArea.style.display = mode === "choice" ? "grid" : "none";
+    loadQuestion();
+  }
+
+  function loadQuestion(){
+    const q = currentQuestion();
+    el.tagCategory.textContent = q.category;
+    el.tagDifficulty.textContent = "●".repeat(q.difficulty) + "○".repeat(3 - q.difficulty);
+    el.tagDifficulty.title = "Dificuldade " + q.difficulty + "/3";
+    el.progressIndicator.textContent = "Questão " + (state.pos + 1) + " / " + state.order.length;
+    el.promptText.textContent = q.pt;
+
+    state.answered = false;
+    state.selectedChoiceBtn = null;
+    el.explanationBox.style.display = "none";
+    el.explanationBox.className = "explanation-box";
+    el.blockBanner.hidden = true;
+    el.xpGainRow.innerHTML = "";
+
+    el.btnSubmit.textContent = "Verificar Resposta";
+    el.btnSubmit.classList.remove("next-btn");
+    el.btnSubmit.onclick = checkAnswer;
+    el.btnSubmit.disabled = (state.mode === "written");
+
+    el.btnModeWritten.disabled = false;
+    el.btnModeChoice.disabled = false;
+
+    if(state.mode === "written"){
+      el.userTextInput.value = "";
+      el.userTextInput.disabled = false;
+      el.userTextInput.focus();
+    }else{
+      renderChoiceOptions(q);
+    }
+
+    renderHUD(false);
+  }
+
+  function renderChoiceOptions(q){
+    el.choiceArea.innerHTML = "";
+    const allOptions = shuffle([q.gabarito, ...q.distractors]);
+    const letters = ["A","B","C","D"];
+    allOptions.forEach((optText, i) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "option-btn";
+      btn.dataset.text = optText;
+      btn.setAttribute("role","radio");
+      btn.setAttribute("aria-checked","false");
+      btn.innerHTML = '<span class="letter">' + letters[i] + '</span><span>' + escapeHtml(optText) + '</span>';
+      btn.addEventListener("click", () => selectOption(btn));
+      el.choiceArea.appendChild(btn);
+    });
+    el.btnSubmit.disabled = true;
+  }
+
+  function selectOption(btn){
+    if(state.answered) return;
+    const all = el.choiceArea.querySelectorAll(".option-btn");
+    all.forEach(b => { b.classList.remove("picked"); b.setAttribute("aria-checked","false"); });
+    btn.classList.add("picked");
+    btn.setAttribute("aria-checked","true");
+    state.selectedChoiceBtn = btn;
+    el.btnSubmit.disabled = false;
+  }
+
+  el.userTextInput.addEventListener("input", () => {
+    el.btnSubmit.disabled = el.userTextInput.value.trim().length === 0;
+  });
+
+  /* =========================================================================
+     12) VERIFICAÇÃO DE RESPOSTA + XP
+  ========================================================================= */
+  function checkAnswer(){
+    if(state.answered) return;
+    const q = currentQuestion();
+    let isCorrect = false;
+
+    if(state.mode === "written"){
+      const userAnswerText = el.userTextInput.value;
+      const cleanedUser = cleanString(userAnswerText);
+      if(!cleanedUser) return;
+      isCorrect = q.accept.some(acc => cleanString(acc) === cleanedUser);
+      el.userTextInput.disabled = true;
+    }else{
+      if(!state.selectedChoiceBtn) return;
+      const userAnswerText = state.selectedChoiceBtn.dataset.text;
+      isCorrect = (userAnswerText === q.gabarito);
+      const all = el.choiceArea.querySelectorAll(".option-btn");
+      all.forEach(b => {
+        b.disabled = true;
+        if(b.dataset.text === q.gabarito){
+          b.classList.add("selected-correct");
+        }else if(b === state.selectedChoiceBtn && !isCorrect){
+          b.classList.add("selected-wrong");
+        }
+      });
+    }
+
+    state.answered = true;
+    el.btnModeWritten.disabled = true;
+    el.btnModeChoice.disabled = true;
+
+    // Progresso persistente por questão
+    const qp = persisted.questionProgress[q.id] || { attempts:0, correct:0, everCorrect:false };
+    qp.attempts++;
+    if(isCorrect){ qp.correct++; qp.everCorrect = true; }
+    persisted.questionProgress[q.id] = qp;
+
+    // Estatística de skill nesta sessão
+    q.skills.forEach(sk => {
+      if(!state.sessionSkillStats[sk]) state.sessionSkillStats[sk] = { correct:0, total:0 };
+      state.sessionSkillStats[sk].total++;
+      if(isCorrect) state.sessionSkillStats[sk].correct++;
+    });
+
+    let xpBreakdown = [];
+    if(isCorrect){
+      state.streak++;
+      state.bestStreakSession = Math.max(state.bestStreakSession, state.streak);
+      persisted.bestStreakEver = Math.max(persisted.bestStreakEver, state.streak);
+      state.correctCount++;
+      state.score += 10;
+
+      const base = q.xp;
+      const streakBonus = state.streak >= 2 ? Math.min((state.streak - 1) * 2, 20) : 0;
+      const diffBonus = (q.difficulty - 1) * 3;
+      let gained = base + streakBonus + diffBonus;
+
+      xpBreakdown.push({ label: "+" + base + " XP acerto", cls:"" });
+      if(streakBonus > 0) xpBreakdown.push({ label: "+" + streakBonus + " XP combo 🔥×" + state.streak, cls:"" });
+      if(diffBonus > 0) xpBreakdown.push({ label: "+" + diffBonus + " XP dificuldade", cls:"" });
+
+      state.xpSession += gained;
+      persisted.totalXP += gained;
+
+      const titleMsgs = [
+        "✅ Resposta Exata (Padrão EAC Prime)!",
+        "✅ Perfeito! Padrão EAC confirmado.",
+        "✅ Isso mesmo! Muito bem."
+      ];
+      el.feedbackTitle.innerHTML = titleMsgs[Math.min(Math.floor(state.streak/4), titleMsgs.length-1)];
+      el.explanationBox.className = "explanation-box correct";
+    }else{
+      state.streak = 0;
+      state.wrongCount++;
+      state.wrongIdsThisSession.push(q.id);
+      el.feedbackTitle.innerHTML = "❌ Atenção ao Padrão da Escola!";
+      el.explanationBox.className = "explanation-box incorrect";
+    }
+
+    // Bônus de bloco (a cada BLOCK_SIZE questões concluídas, exceto na última da sessão)
+    const finishedCount = state.pos + 1;
+    const isBlockEdge = (finishedCount % BLOCK_SIZE === 0) && (finishedCount !== state.order.length);
+    if(isBlockEdge){
+      const blockXp = 25;
+      state.xpSession += blockXp;
+      persisted.totalXP += blockXp;
+      el.blockBanner.hidden = false;
+      el.blockBanner.textContent = "🎁 Bloco concluído! Bônus de +" + blockXp + " XP.";
+    }
+
+    el.xpGainRow.innerHTML = xpBreakdown.map(x => '<span class="xp-pill">' + x.label + '</span>').join("");
+
+    el.feedbackExpected.innerHTML = '<strong>Gabarito Oficial:</strong> <em>"' + escapeHtml(q.gabarito) + '"</em>';
+    el.ruleContent.innerHTML = '<strong>Regra & Porquê:</strong> ' + q.explanation;
+    el.explanationBox.style.display = "block";
+
+    savePersisted();
+
+    renderHUD(true);
+    checkAchievements();
+    handleLevelUpIfNeeded();
+
+    el.btnSubmit.textContent = (state.pos < state.order.length - 1) ? "Próxima Questão ➔" : "Ver Resultado Final 🏁";
+    el.btnSubmit.classList.add("next-btn");
+    el.btnSubmit.disabled = false;
+    el.btnSubmit.onclick = nextQuestion;
+    el.btnSubmit.focus();
+  }
+
+  let lastKnownLevel = null;
+  function handleLevelUpIfNeeded(){
+    const info = levelInfo(persisted.totalXP);
+    if(lastKnownLevel === null){ lastKnownLevel = info.level; return; }
+    if(info.level > lastKnownLevel){
+      showLevelUp(info.level, info.title);
+      lastKnownLevel = info.level;
+    }
+  }
+
+  function nextQuestion(){
+    if(state.pos < state.order.length - 1){
+      state.pos++;
+      loadQuestion();
+    }else{
+      finishSession();
+    }
+  }
+
+  /* =========================================================================
+     13) TELA DE RESULTADO
+  ========================================================================= */
+  function finishSession(){
+    const total = state.order.length;
+    const pct = Math.round((state.correctCount / total) * 100);
+
+    const finishBonus = 100 + pct;
+    state.xpSession += finishBonus;
+    persisted.totalXP += finishBonus;
+    savePersisted();
+    checkAchievements();
+    handleLevelUpIfNeeded();
+    renderHUD(true);
+
+    el.quizScreen.style.display = "none";
+    el.resultScreen.style.display = "block";
+
+    el.resultHeadline.textContent = pct === 100 ? "Sessão perfeita!" : (pct >= 80 ? "Excelente treino!" : "Treino concluído!");
+    el.resultScoreBig.textContent = state.correctCount + " / " + total;
+    el.resultScorePct.textContent = pct + "%";
+    el.resBestStreak.textContent = "🔥 " + state.bestStreakSession;
+    el.resXpGained.textContent = "+" + state.xpSession + " XP (+" + finishBonus + " de conclusão)";
+    const info = levelInfo(persisted.totalXP);
+    el.resLevel.textContent = "Nível " + info.level + " — " + info.title;
+    el.resHitsMiss.textContent = state.correctCount + " / " + state.wrongCount;
+
+    renderPerformanceList();
+    renderNextGoal();
+    renderAchievementGrid();
+
+    el.btnReviewErrors.disabled = state.wrongIdsThisSession.length === 0;
+    el.resultScreen.scrollIntoView({ behavior:"smooth", block:"start" });
+  }
+
+  function renderPerformanceList(){
+    const skills = Object.keys(state.sessionSkillStats);
+    if(skills.length === 0){
+      el.perfList.innerHTML = '<p style="color:var(--text-muted);font-size:.85rem;">Sem dados suficientes nesta sessão.</p>';
+      return;
+    }
+    skills.sort((a,b) => (state.sessionSkillStats[b].correct/state.sessionSkillStats[b].total) - (state.sessionSkillStats[a].correct/state.sessionSkillStats[a].total));
+    el.perfList.innerHTML = skills.map(sk => {
+      const s = state.sessionSkillStats[sk];
+      const p = Math.round((s.correct / s.total) * 100);
+      const color = p === 100 ? "var(--success)" : (p >= 60 ? "var(--gold)" : "var(--danger)");
+      return '<div class="perf-row">' +
+        '<div class="perf-top"><span>' + (SKILL_LABELS[sk] || sk) + '</span><span>' + p + '%</span></div>' +
+        '<div class="perf-bar-bg"><div class="perf-bar-fill" style="width:' + p + '%;background:' + color + ';"></div></div>' +
+      '</div>';
+    }).join("");
+  }
+
+  function renderNextGoal(){
+    const skills = Object.keys(state.sessionSkillStats);
+    if(skills.length === 0){
+      el.nextGoalText.textContent = "Continue treinando para desbloquear seu próximo objetivo.";
+      return;
+    }
+    let worst = null, worstPct = 101;
+    skills.forEach(sk => {
+      const s = state.sessionSkillStats[sk];
+      const p = (s.correct / s.total) * 100;
+      if(p < worstPct){ worstPct = p; worst = sk; }
+    });
+    if(worst === null || worstPct === 100){
+      el.nextGoalText.innerHTML = "Todos os temas desta sessão ficaram em <b>100%</b>! Tente um novo desafio para subir de nível ainda mais rápido.";
+    }else{
+      el.nextGoalText.innerHTML = "Dominar <b>" + (SKILL_LABELS[worst] || worst) + "</b> (" + Math.round(worstPct) + "% de acerto nesta sessão).";
+    }
+  }
+
+  function renderAchievementGrid(){
+    el.achGrid.innerHTML = ACHIEVEMENTS.map(a => {
+      const unlocked = !!persisted.achievements[a.key];
+      return '<div class="ach-card' + (unlocked ? " unlocked" : "") + '">' +
+        '<span class="aicon">' + a.icon + '</span>' +
+        '<b>' + escapeHtml(a.title) + '</b>' +
+        '<span>' + escapeHtml(a.desc) + '</span>' +
+      '</div>';
+    }).join("");
+  }
+
+  /* =========================================================================
+     14) AÇÕES DA TELA DE RESULTADO
+  ========================================================================= */
+  el.btnReviewErrors.addEventListener("click", () => {
+    if(state.wrongIdsThisSession.length === 0) return;
+    startSession(state.wrongIdsThisSession, { shuffleOrder:true });
+  });
+
+  el.btnTrainAgain.addEventListener("click", () => {
+    startSession(QUESTIONS.map(q => q.id), { shuffleOrder:false });
+  });
+
+  el.btnNewChallenge.addEventListener("click", () => {
+    startSession(QUESTIONS.map(q => q.id), { shuffleOrder:true });
+  });
+
+  el.btnReviewWeak.addEventListener("click", () => {
+    const ids = weakQuestionIds();
+    if(ids.length === 0) return;
+    startSession(ids, { shuffleOrder:true });
+  });
+
+  /* =========================================================================
+     15) MODE SWITCH + TECLADO
+  ========================================================================= */
+  el.btnModeWritten.addEventListener("click", () => setMode("written"));
+  el.btnModeChoice.addEventListener("click", () => setMode("choice"));
+
+  el.userTextInput.addEventListener("keypress", (e) => {
+    if(e.key === "Enter"){
+      e.preventDefault();
+      if(el.btnSubmit.classList.contains("next-btn")) nextQuestion();
+      else if(!el.btnSubmit.disabled) checkAnswer();
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if(state.mode !== "choice" || el.quizScreen.style.display === "none") return;
+    if(["1","2","3","4"].includes(e.key) && !state.answered){
+      const idx = parseInt(e.key, 10) - 1;
+      const btns = el.choiceArea.querySelectorAll(".option-btn");
+      if(btns[idx]) selectOption(btns[idx]);
+    }
+  });
+
+  /* =========================================================================
+     16) INÍCIO
+  ========================================================================= */
+  lastKnownLevel = levelInfo(persisted.totalXP).level;
+  startSession(QUESTIONS.map(q => q.id), { shuffleOrder:false });
+
+})();
+</script>
+</body>
+</html>
